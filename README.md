@@ -1,4 +1,4 @@
-# Ucabot: MakeCode microbit extension using Cutebot
+# Ucabot: MakeCode microbit extension using cuteBot
 designed for:
 ![](/image.png/)
 
@@ -20,5 +20,5 @@ Currently working on blocks!
 MIT
 
 ```package
-ucabotest=github:paulinaeb/pxt-ucabot
+ucabot=github:paulinaeb/pxt-ucabot
 ```

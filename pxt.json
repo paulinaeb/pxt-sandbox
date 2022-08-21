@@ -1,7 +1,7 @@
 {
-    "name": "cutebot",
+    "name": "ucabot",
     "version": "6.0.5",
-    "description": "ELECFREAKS cutebot car",
+    "description": "Ucabot based on cuteBot, for micro:bit",
     "license": "MIT",
     "dependencies": {
         "core": "*",
@@ -9,18 +9,18 @@
     },
     "files": [
         "README.md",
-        "cutebot.ts",
+        "ucabot.ts",
         "IR.cpp",
         "shims.d.ts",
         "enums.d.ts",
-        "_locales/zh-CN/cutebot-strings.json",
-        "_locales/zh-CN/cutebot-jsdoc-strings.json",
-        "_locales/ja/cutebot-strings.json",
-        "_locales/ja/cutebot-jsdoc-strings.json",
-        "_locales/fr/cutebot-strings.json",
-        "_locales/fr/cutebot-jsdoc-strings.json",
-        "_locales/es/cutebot-strings.json",
-        "_locales/es/cutebot-jsdoc-strings.json"
+        "_locales/zh-CN/ucabot-strings.json",
+        "_locales/zh-CN/ucabot-jsdoc-strings.json",
+        "_locales/ja/ucabot-strings.json",
+        "_locales/ja/ucabot-jsdoc-strings.json",
+        "_locales/fr/ucabot-strings.json",
+        "_locales/fr/ucabot-jsdoc-strings.json",
+        "_locales/es/ucabot-strings.json",
+        "_locales/es/ucabot-jsdoc-strings.json"
     ],
     "testFiles": [
         "tests.ts"

@@ -1,8 +1,8 @@
 /**
- * Functions to Cutebot by ELECFREAKS Co.,Ltd.
+ * Functions to ucaBot by ELECFREAKS Co.,Ltd.
  */
 //% weight=5 color=#0fbc11  icon="\uf207" 
-namespace cuteBot {
+namespace ucaBot {
 const STM8_ADDRESSS = 0x10
 let IR_Val = 0
     let _initEvents = true
@@ -188,7 +188,7 @@ let IR_Val = 0
     * @param speed Running speed, eg: 50
     * @param time Travel time, eg: 5
     */
-    //% blockId=cutebot_move_time block="Go %dir at speed%speed\\% for %time seconds"
+    //% blockId=ucaBot_move_time block="Go %dir at speed%speed\\% for %time seconds"
     //% weight=95
     export function moveTime(dir: Direction, speed: number, time: number): void {
         if (dir == 0) {
@@ -215,7 +215,7 @@ let IR_Val = 0
     /**
     * TODO: full speed move forward,speed is 100.
     */
-    //% blockId=cutebot_forward block="Go straight at full speed"
+    //% blockId=ucaBot_forward block="Go straight at full speed"
     //% weight=90
     export function forward(): void {
         // Add code here
@@ -233,7 +233,7 @@ let IR_Val = 0
     /**
     * TODO: full speed move back,speed is -100.
     */
-    //% blockId=cutebot_back block="Reverse at full speed"
+    //% blockId=ucaBot_back block="Reverse at full speed"
     //% weight=85
     export function backforward(): void {
         // Add code here
@@ -250,7 +250,7 @@ let IR_Val = 0
 	/**
     * TODO: full speed turnleft.
     */
-    //% blockId=cutebot_left block="Turn left at full speed"
+    //% blockId=ucaBot_left block="Turn left at full speed"
     //% weight=80
     export function turnleft(): void {
         // Add code here
@@ -267,7 +267,7 @@ let IR_Val = 0
 	/**
     * TODO: full speed turnright.
     */
-    //% blockId=cutebot_right block="Turn right at full speed"
+    //% blockId=ucaBot_right block="Turn right at full speed"
     //% weight=75
     export function turnright(): void {
         // Add code here
@@ -284,7 +284,7 @@ let IR_Val = 0
 	/**
     * TODO: stopcar
     */
-    //% blockId=cutebot_stopcar block="Stop car immediatly"
+    //% blockId=ucaBot_stopcar block="Stop car immediatly"
     //% weight=70
     export function stopcar(): void {
         motors(0, 0)
@@ -451,10 +451,10 @@ let IR_Val = 0
     }
     /**
      * TODO: Set the angle of servo. 
-     * @param Servo ServoList , eg: cuteBot.ServoList.S1
+     * @param Servo ServoList , eg: ucaBot.ServoList.S1
      * @param angle angle of servo, eg: 90
      */
-    //% blockId=cutebot_servo block="Set servo %servo angle to %angle °"
+    //% blockId=ucaBot_servo block="Set servo %servo angle to %angle °"
     //% angle.shadow="protractorPicker"
     //% weight=30
     export function setServo(Servo: ServoList, angle: number = 180): void {
