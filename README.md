@@ -1,41 +1,24 @@
-
-# Cute:bot Car Package
+# Testing repo for Ucabot: MakeCode microbit extension using Cutebot
 
 ![](/image.png/)
 
-This library is designed to drive Cutebot, You can get Cutebot here.
+## ~ hint
 
-https://www.elecfreaks.com/store/cute-bot.html
-## Code Example
-```JavaScript
+To use this package, go to https://makecode.microbit.org, click ``Add package`` insert the link https://github.com/paulinaeb/pxt-ucabotest for **ucabot**
 
-let strip: neopixel.Strip = null
-basic.showLeds(`
-    . . . # .
-    # . # . #
-    # . # . #
-    # . # . #
-    . # . . .
-    `)
-strip = neopixel.create(DigitalPin.P15, 24, NeoPixelMode.RGB)
-strip.showRainbow(1, 360)
-basic.showIcon(IconNames.Heart)
-basic.forever(function () {
-    cuteBot.motors(30, 90)
-    basic.pause(1500)
-    cuteBot.motors(90, 30)
-    basic.pause(1500)
-})
-basic.forever(function () {
-    strip.rotate(1)
-    basic.pause(100)
-    strip.show()
-})
-
+## Basic usage
 ```
+Currently working on blocks!
+```
+
 ## Supported targets
-for PXT/microbit
+
+* for PXT/microbit
 
 ## License
+
 MIT
 
+```package
+ucabotest=github:paulinaeb/pxt-ucabotest
+```
