@@ -1,5 +1,5 @@
-# Testing repo for Ucabot: MakeCode microbit extension using Cutebot
-
+# Ucabot: MakeCode microbit extension using Cutebot
+designed for:
 ![](/image.png/)
 
 ## ~ hint
