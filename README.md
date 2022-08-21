@@ -4,7 +4,7 @@ designed for:
 
 ## ~ hint
 
-To use this package, go to https://makecode.microbit.org, click ``Add package`` insert the link https://github.com/paulinaeb/pxt-ucabotest for **ucabot**
+To use this package, go to https://makecode.microbit.org, click ``Add package`` insert the link https://github.com/paulinaeb/pxt-ucabot for **ucabot**
 
 ## Basic usage
 ```
@@ -20,5 +20,5 @@ Currently working on blocks!
 MIT
 
 ```package
-ucabotest=github:paulinaeb/pxt-ucabotest
+ucabotest=github:paulinaeb/pxt-ucabot
 ```
