@@ -20,11 +20,11 @@ let COLOR: string = null
 	* Select a color for the agent
 	*/
     export enum AgentColor{
-        //% block="Blue" 
+        //% block="Blue" enumval=0
         blue,
-        //% block="Yellow" 
+        //% block="Yellow" enumval=1
         yellow,
-        //% block="Green" 
+        //% block="Green" enumval=2
         green
     }
 	/**
