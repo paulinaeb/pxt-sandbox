@@ -150,19 +150,19 @@ let COLOR: string = null
     //% block="Set agent color %col" 
     //% weight=200 color=#ff9da5 
     export function agentColor(col: AgentColor): void{
-        radio.on();
-        radio.setGroup(23); 
-        if(col==AgentColor.blue){
-            COLOR = 'blue'; 
-        }
-        if(col==AgentColor.yellow){
-            COLOR = 'yellow'; 
-        }
-        if(col==AgentColor.green){        
-            COLOR = 'green'; 
-        }
-        radio.sendString(COLOR);
-        basic.showString(COLOR);
+        // radio.on();
+        // radio.setGroup(23); 
+        // if(col==AgentColor.blue){
+        //     COLOR = 'blue'; 
+        // }
+        // if(col==AgentColor.yellow){
+        //     COLOR = 'yellow'; 
+        // }
+        // if(col==AgentColor.green){        
+        //     COLOR = 'green'; 
+        // }
+        // radio.sendString(COLOR);
+        basic.showNumber(col);
         return;
     }
     
