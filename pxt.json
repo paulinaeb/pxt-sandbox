@@ -6,7 +6,8 @@
     "dependencies": {
         "core": "*",
         "neopixel": "github:elecfreaks/pxt-neopixel#v0.6.18",
-        "radio": "*"
+        "radio": "*",
+        "radio-broadcast": "*"
     },
     "files": [
         "README.md",

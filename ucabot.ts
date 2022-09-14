@@ -147,7 +147,7 @@ let COLOR: string = null
     /**
     * TODO: Set color for agent.
     */
-    //% block="Set color for Agent %col" 
+    //% block="Set color for agent %col" 
     //% weight=200 color=#ff9da5 
     export function agentColor(col: AgentColor): void{
         radio.on();
@@ -161,7 +161,7 @@ let COLOR: string = null
         else if(col==2){        
             COLOR = 'green'; 
         }
-        ///radio.sendString(COLOR);
+        radio.sendString(COLOR);  
         basic.showString(COLOR);
         return;
     }
