@@ -20,11 +20,11 @@ let COLOR: string = null
 	* Select a color for the agent
 	*/
     export enum AgentColor{
-        //% block="Blue"
+        //% block="Blue" enumval=0
         blue,
-        //% block="Yellow"
+        //% block="Yellow" enumval=1
         yellow,
-        //% block="Green"
+        //% block="Green" enumval=2
         green
     }
 	/**
@@ -153,22 +153,16 @@ let COLOR: string = null
         radio.on();
         radio.setGroup(23); 
         switch (color){
-            case AgentColor.blue:
-                COLOR = 'blue';
-                radio.sendString(COLOR);
-                basic.showString(COLOR);
-                return;
-            case AgentColor.green:
+            case 0:
+                COLOR = 'blue'; 
+            case 1:
+                COLOR = 'yellow'; 
+            case 2:
                 COLOR = 'green';
-                radio.sendString(COLOR);
-                basic.showString(COLOR);
-                return;
-            case AgentColor.yellow:
-                COLOR = 'yellow';
-                radio.sendString(COLOR);
-                basic.showString(COLOR);
-                return;
         } 
+        radio.sendString(COLOR);
+        basic.showString(COLOR);
+        return;
     }
     
     /**
