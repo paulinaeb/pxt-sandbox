@@ -6,6 +6,7 @@ namespace ucaBot {
 const STM8_ADDRESSS = 0x10
 let IR_Val = 0
 let COLOR: string = null
+let ID_GROUP = 23
     let _initEvents = true
 	/**
 	* Unit of Ultrasound Module
@@ -147,11 +148,9 @@ let COLOR: string = null
     /**
     * TODO: Set color for agent.
     */
-    //% block="Set color for agent %col" 
+    //% block="Initialize and set color for agent %col" 
     //% weight=200 color=#ff9da5 
     export function agentColor(col: AgentColor): void{
-        radio.on();
-        radio.setGroup(23); 
         if(col==0){
             COLOR = 'blue'; 
         }
@@ -161,7 +160,9 @@ let COLOR: string = null
         else if(col==2){        
             COLOR = 'green'; 
         }
-        radio.sendString(COLOR);  
+        radio.on();
+        radio.setGroup(ID_GROUP); 
+        radio.sendString(COLOR);   
         basic.showString(COLOR);
         return;
     }
