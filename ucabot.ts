@@ -155,13 +155,20 @@ let COLOR: string = null
         switch (color){
             case AgentColor.blue:
                 COLOR = 'blue';
+                radio.sendString(COLOR);
+                basic.showString(COLOR);
+                return;
             case AgentColor.green:
                 COLOR = 'green';
+                radio.sendString(COLOR);
+                basic.showString(COLOR);
+                return;
             case AgentColor.yellow:
                 COLOR = 'yellow';
+                radio.sendString(COLOR);
+                basic.showString(COLOR);
+                return;
         } 
-        radio.sendString(COLOR);
-        basic.showString(COLOR);
     }
     
     /**
