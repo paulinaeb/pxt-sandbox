@@ -162,7 +162,9 @@ let COLOR: string = null
         //     COLOR = 'green'; 
         // }
         // radio.sendString(COLOR);
-        basic.showNumber(col);
+        basic.showNumber(AgentColor.blue);
+        basic.showNumber(AgentColor.green);
+        basic.showNumber(AgentColor.yellow);
         return;
     }
     
