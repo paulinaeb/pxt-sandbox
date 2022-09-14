@@ -148,7 +148,7 @@ let COLOR: string = null
     * TODO: Set agent color.
     */
     //% block="Set agent color %color" 
-    //% weight=200
+    //% weight=200 color=#ff9da5 
     export function agentColor(color: AgentColor): void{
         radio.on();
         radio.setGroup(23); 
@@ -161,6 +161,7 @@ let COLOR: string = null
                 COLOR = 'yellow';
         } 
         radio.sendString(COLOR);
+        basic.showString(COLOR);
     }
     
     /**
