@@ -152,12 +152,11 @@ let COLOR: string = null
     export function agentColor(color: AgentColor): void{
         radio.on();
         radio.setGroup(23); 
-        switch (color){
-            case 0:
+        if(color==0)
                 COLOR = 'blue'; 
-            case 1:
+        if(color==1)
                 COLOR = 'yellow'; 
-            case 2:
+        if(color==2)        
                 COLOR = 'green';
         } 
         radio.sendString(COLOR);
