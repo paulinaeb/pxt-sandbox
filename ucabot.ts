@@ -5,6 +5,7 @@
 namespace ucaBot {
 const STM8_ADDRESSS = 0x10
 let IR_Val = 0
+let COLOR: string = null
     let _initEvents = true
 	/**
 	* Unit of Ultrasound Module
@@ -14,6 +15,17 @@ let IR_Val = 0
         Centimeters,
         //% block="inches"
         Inches
+    }
+	/**
+	* Select a color for the agent
+	*/
+    export enum AgentColor{
+        //% block="Blue"
+        blue,
+        //% block="Yellow"
+        yellow,
+        //% block="Green"
+        green
     }
 	/**
 	* Select the motor on the left or right
@@ -131,6 +143,26 @@ let IR_Val = 0
         //% block="9"
         Nine = 26
     }
+
+    /**
+    * TODO: Set agent color.
+    */
+    //% block="Set agent color %color" 
+    //% weight=200
+    export function agentColor(color: AgentColor): void{
+        radio.on();
+        radio.setGroup(23); 
+        switch (color){
+            case AgentColor.blue:
+                COLOR = 'blue';
+            case AgentColor.green:
+                COLOR = 'green';
+            case AgentColor.yellow:
+                COLOR = 'yellow';
+        } 
+        radio.sendString(COLOR);
+    }
+    
     /**
      * TODO: Set the speed of left and right wheels. 
      * @param lspeed Left wheel speed , eg: 100
@@ -288,7 +320,7 @@ let IR_Val = 0
     //% weight=70
     export function stopcar(): void {
         motors(0, 0)
-    }
+    } 
     /**
     * TODO: Set LED headlights.
     */
@@ -508,5 +540,4 @@ let IR_Val = 0
             _initEvents = false;
         }
     }
-
 }
