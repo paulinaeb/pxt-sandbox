@@ -21,11 +21,11 @@ let COLOR: string = null
 	*/
     export enum AgentColor{
         //% block="Blue" 
-        blue = 0,
+        blue,
         //% block="Yellow" 
-        yellow = 1,
+        yellow,
         //% block="Green" 
-        green = 2
+        green
     }
 	/**
 	* Select the motor on the left or right
@@ -162,6 +162,7 @@ let COLOR: string = null
         //     COLOR = 'green'; 
         // }
         // radio.sendString(COLOR);
+        basic.showString('testing colors')
         basic.showNumber(AgentColor.blue);
         basic.showNumber(AgentColor.green);
         basic.showNumber(AgentColor.yellow);
