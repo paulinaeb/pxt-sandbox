@@ -155,10 +155,10 @@ let COLOR: string = null
         if(col==0){
             COLOR = 'blue'; 
         }
-        if(col==1){
+        else if(col==1){
             COLOR = 'yellow'; 
         }
-        if(col==2){        
+        else if(col==2){        
             COLOR = 'green'; 
         }
         radio.sendString(COLOR);
