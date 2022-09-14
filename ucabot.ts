@@ -161,7 +161,7 @@ let COLOR: string = null
         else if(col==2){        
             COLOR = 'green'; 
         }
-        radio.sendString(COLOR);
+        ///radio.sendString(COLOR);
         basic.showString(COLOR);
         return;
     }
