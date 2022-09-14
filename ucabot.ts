@@ -20,12 +20,12 @@ let COLOR: string = null
 	* Select a color for the agent
 	*/
     export enum AgentColor{
-        //% block="Blue" enumval=0
-        blue,
-        //% block="Yellow" enumval=1
-        yellow,
-        //% block="Green" enumval=2
-        green
+        //% block="Blue" 
+        blue = 0,
+        //% block="Yellow" 
+        yellow = 1,
+        //% block="Green" 
+        green = 2
     }
 	/**
 	* Select the motor on the left or right
@@ -152,12 +152,15 @@ let COLOR: string = null
     export function agentColor(col: AgentColor): void{
         radio.on();
         radio.setGroup(23); 
-        if(col==0)
-                COLOR = 'blue'; 
-        if(col==1)
-                COLOR = 'yellow'; 
-        if(col==2)        
-                COLOR = 'green'; 
+        if(col==AgentColor.blue){
+            COLOR = 'blue'; 
+        }
+        else if(col==AgentColor.yellow){
+            COLOR = 'yellow'; 
+        }
+        else if(col==AgentColor.green){        
+            COLOR = 'green'; 
+        }
         radio.sendString(COLOR);
         basic.showString(COLOR);
         return;
