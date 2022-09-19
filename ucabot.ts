@@ -148,7 +148,7 @@ let ID_GROUP = 23;
     /**
     * TODO: Set color for agent.
     */
-    //% block="Initialize agent" 
+    //% block="Initialize agent v1" 
     //% weight=200 color=#ff9da5 
     export function initAgent(): void{  
         radio.setGroup(ID_GROUP);   
