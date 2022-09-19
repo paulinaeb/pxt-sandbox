@@ -152,9 +152,9 @@ let ID_GROUP = 23
     export function initAgent(): void{ 
         radio.on();
         radio.setGroup(ID_GROUP);   
-        // radio.onReceivedString(function (receivedString) {
-        //     basic.showString(receivedString)
-        // })
+        radio.onReceivedString(function (receivedString) {
+            basic.showString(receivedString);
+        });
         basic.showString('ready')
         return;
     }
