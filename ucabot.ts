@@ -149,13 +149,11 @@ let ID_GROUP = 23
     */
     //% block="Initialize agent" 
     //% weight=200 color=#ff9da5 
-    export function initAgent(): void{ 
-        radio.on();
+    export function initAgent(): void{  
         radio.setGroup(ID_GROUP);   
         radio.onReceivedString(function (receivedString) {
             basic.showString(receivedString);
-        });
-        basic.showString('ready');
+        }); 
         return;
     }
     
