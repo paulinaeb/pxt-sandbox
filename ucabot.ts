@@ -156,7 +156,7 @@ let ID_GROUP = 23
             if (agent_id == null){
                 agent_id = receivedString;
                 basic.showString(agent_id);
-            }
+            };
         }); 
         return;
     }
