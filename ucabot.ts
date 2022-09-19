@@ -5,6 +5,7 @@
 namespace ucaBot {
 const STM8_ADDRESSS = 0x10
 let IR_Val = 0 
+let agent_id : string = null
 let ID_GROUP = 23
     let _initEvents = true
 	/**
@@ -152,7 +153,10 @@ let ID_GROUP = 23
     export function initAgent(): void{  
         radio.setGroup(ID_GROUP);   
         radio.onReceivedString(function (receivedString) {
-            basic.showString(receivedString);
+            if (agent_id == null){
+                agent_id = receivedString;
+                basic.showString(agent_id);
+            }
         }); 
         return;
     }
