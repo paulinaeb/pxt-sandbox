@@ -153,11 +153,10 @@ let ID_GROUP = 23;
     export function initAgent(): void{  
         radio.setGroup(ID_GROUP);   
         radio.onReceivedString(function (receivedString) {
-            // if (agent_id == '0'){
-            //     agent_id = receivedString;
-            //     basic.showString(agent_id);
-            // };
-            basic.showString(AGENT_ID);
+            if (AGENT_ID == '0'){
+                AGENT_ID = receivedString;
+                basic.showString(AGENT_ID);
+            }; 
         }); 
         return;
     }
