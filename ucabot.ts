@@ -158,6 +158,7 @@ let ID_GROUP = 23;
                 AGENT_ID = receivedString;
                 console.log('second'+AGENT_ID);
                 basic.showString(AGENT_ID);
+                return;
             }; 
         }); 
         return;
