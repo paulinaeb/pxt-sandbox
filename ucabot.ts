@@ -6,6 +6,7 @@ namespace ucaBot {
 const STM8_ADDRESSS = 0x10;
 let IR_Val = 0;
 let AGENT_ID = '0';
+let Request = '';
 let ID_GROUP = 23;
     let _initEvents = true
 	/**
@@ -17,17 +18,7 @@ let ID_GROUP = 23;
         //% block="inches"
         Inches
     }
-	/**
-	* Select a color for the agent
-	*/
-    // export enum AgentColor{
-    //     //% block="Blue" enumval=0
-    //     blue,
-    //     //% block="Yellow" enumval=1
-    //     yellow,
-    //     //% block="Green" enumval=2
-    //     green
-    // }
+    
 	/**
 	* Select the motor on the left or right
 	*/
@@ -157,8 +148,7 @@ let ID_GROUP = 23;
             if (AGENT_ID == '0'){
                 AGENT_ID = receivedString;
                 console.log('second'+AGENT_ID);
-                basic.showString(AGENT_ID);
-                return;
+                basic.showString(AGENT_ID); 
             }; 
         }); 
         return;
