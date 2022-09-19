@@ -5,7 +5,7 @@
 namespace ucaBot {
 const STM8_ADDRESSS = 0x10
 let IR_Val = 0
-let COLOR: string = null
+let agent_id 
 let ID_GROUP = 23
     let _initEvents = true
 	/**
@@ -20,14 +20,14 @@ let ID_GROUP = 23
 	/**
 	* Select a color for the agent
 	*/
-    export enum AgentColor{
-        //% block="Blue" enumval=0
-        blue,
-        //% block="Yellow" enumval=1
-        yellow,
-        //% block="Green" enumval=2
-        green
-    }
+    // export enum AgentColor{
+    //     //% block="Blue" enumval=0
+    //     blue,
+    //     //% block="Yellow" enumval=1
+    //     yellow,
+    //     //% block="Green" enumval=2
+    //     green
+    // }
 	/**
 	* Select the motor on the left or right
 	*/
@@ -148,22 +148,14 @@ let ID_GROUP = 23
     /**
     * TODO: Set color for agent.
     */
-    //% block="Initialize and set color for agent %col" 
+    //% block="Initialize agent" 
     //% weight=200 color=#ff9da5 
-    export function agentColor(col: AgentColor): void{
-        if(col==0){
-            COLOR = 'blue'; 
-        }
-        else if(col==1){
-            COLOR = 'yellow'; 
-        }
-        else if(col==2){        
-            COLOR = 'green'; 
-        }
+    export function initAgent(): void{ 
         radio.on();
-        radio.setGroup(ID_GROUP); 
-        radio.sendString(COLOR);   
-        basic.showString(COLOR);
+        radio.setGroup(ID_GROUP);  
+        let str
+        radio.onReceivedString(str);   
+        basic.showString(str);
         return;
     }
     
