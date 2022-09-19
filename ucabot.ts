@@ -5,7 +5,7 @@
 namespace ucaBot {
 const STM8_ADDRESSS = 0x10;
 let IR_Val = 0;
-let agent_id = '0';
+let AGENT_ID = '0';
 let ID_GROUP = 23;
     let _initEvents = true
 	/**
@@ -157,7 +157,7 @@ let ID_GROUP = 23;
             //     agent_id = receivedString;
             //     basic.showString(agent_id);
             // };
-            basic.showString(agent_id);
+            basic.showString(AGENT_ID);
         }); 
         return;
     }
