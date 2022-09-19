@@ -152,10 +152,10 @@ let ID_GROUP = 23
     //% weight=200 color=#ff9da5 
     export function initAgent(): void{ 
         radio.on();
-        radio.setGroup(ID_GROUP);  
-        let str
-        radio.onReceivedString(str);   
-        basic.showString(str);
+        radio.setGroup(ID_GROUP);   
+        radio.onReceivedString(function (receivedString) {
+            basic.showString(receivedString)
+        })
         return;
     }
     
