@@ -155,7 +155,7 @@ let ID_GROUP = 23
         radio.onReceivedString(function (receivedString) {
             basic.showString(receivedString);
         });
-        basic.showString('ready')
+        basic.showString('ready');
         return;
     }
     
