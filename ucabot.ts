@@ -1,7 +1,7 @@
 /**
- * Functions to ucaBot by ELECFREAKS Co.,Ltd.
+ * Functions to cuteBot by ELECFREAKS Co.,Ltd.
  */
-//% weight=5 color=#0fbc11  icon="\uf207" 
+//% weight=5 color=#0fbc11  icon="\10f544" 
 namespace ucaBot {
 const STM8_ADDRESSS = 0x10;
 let IR_Val = 0;
@@ -143,11 +143,9 @@ let ID_GROUP = 23;
     //% weight=200 color=#ff9da5 
     export function initAgent(): void{  
         radio.setGroup(ID_GROUP);   
-        radio.onReceivedString(function (receivedString) {
-            console.log('first'+AGENT_ID);
+        radio.onReceivedString(function (receivedString) { 
             if (AGENT_ID == '0'){
-                AGENT_ID = receivedString;
-                console.log('second'+AGENT_ID);
+                AGENT_ID = receivedString; 
                 basic.showString(AGENT_ID); 
             }; 
         }); 
