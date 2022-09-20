@@ -1,7 +1,7 @@
 /**
  * Functions to ucaBot by ELECFREAKS Co.,Ltd.
  */
-//% weight=5 color=#0fbc11  icon="\10f544" 
+//% weight=5 color=#0fbc11  icon="\f544" 
 namespace ucaBot {
     const STM8_ADDRESSS = 0x10
     let IR_Val = 0 
