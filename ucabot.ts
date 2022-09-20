@@ -1,13 +1,12 @@
 /**
- * Functions to cuteBot by ELECFREAKS Co.,Ltd.
+ * Functions to ucaBot based on cuteBot by ELECFREAKS Co.,Ltd.
  */
-//% weight=5 color=#0fbc11  icon="\10f544" 
+//% weight=5 color=#0fbc11  icon="\uf207" 
 namespace ucaBot {
-const STM8_ADDRESSS = 0x10;
-let IR_Val = 0;
-let AGENT_ID = '0';
-let Request = '';
-let ID_GROUP = 23;
+    const STM8_ADDRESSS = 0x10;
+    let IR_Val = 0;
+    let AGENT_ID = '0'; 
+    let ID_GROUP = 23;
     let _initEvents = true
 	/**
 	* Unit of Ultrasound Module
@@ -17,8 +16,7 @@ let ID_GROUP = 23;
         Centimeters,
         //% block="inches"
         Inches
-    }
-    
+    } 
 	/**
 	* Select the motor on the left or right
 	*/
@@ -134,20 +132,19 @@ let ID_GROUP = 23;
         Eight = 25,
         //% block="9"
         Nine = 26
-    }
-
+    } 
     /**
-    * TODO: Set color for agent.
+    * TODO: Initialize agent with id and color
     */
     //% block="Initialize agent v1" 
     //% weight=200 color=#ff9da5 
     export function initAgent(): void{  
         radio.setGroup(ID_GROUP);   
         radio.onReceivedString(function (receivedString) { 
-            if (AGENT_ID == '0'){
-                AGENT_ID = receivedString; 
-                basic.showString(AGENT_ID); 
-            }; 
+            // if (AGENT_ID == '0'){
+                // AGENT_ID = receivedString; 
+            basic.showString(receivedString); 
+            // }; 
         }); 
         return;
     }
