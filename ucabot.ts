@@ -150,7 +150,7 @@ namespace ucaBot {
       // shows json
       basic.showString(json);
       // conversion to ts object 
-      let obj = new Object();
+      let obj = <Object>{};
       obj = JSON.parse(json);
       console.log('converted '+obj);
       // get key and value
