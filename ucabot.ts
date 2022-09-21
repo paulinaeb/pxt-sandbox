@@ -7,9 +7,13 @@ namespace ucaBot {
   let IR_Val = 0;
   let ID_GROUP = 23;
   let _initEvents = true;
-  let key : string;
-  let val : string;
-  let id : string;
+  // interface for responses received by radio
+  interface Resp { 
+    a: string; //attribute id
+    v: string; //value of that attribute - up to 2 char
+  };
+  // id of agent
+  let id : string = '';
   /**
    * Unit of Ultrasound Module
    */
@@ -149,17 +153,15 @@ namespace ucaBot {
       console.log('received '+json);
       // shows json
       basic.showString(json);
-      // conversion to ts object 
-      let obj = <Object>{};
+      // conversion to ts object of interface Resp
+      let obj = <Resp>{};
+      // from json to object
       obj = JSON.parse(json);
-      console.log('converted '+obj);
-      // get key and value
-      key = Object.keys(obj)[0];
-      val = Object.values(obj)[0];
-      // separated key and val
-      console.log('k '+key+' val '+val);
-      if (key == 'i'){
-        id = val;
+      console.log('converted '+obj); 
+      console.log('k '+obj.a+' val '+obj.v);
+      // assigns id to agent
+      if ((obj.a == 'i') && (id == '')){
+        id = obj.a;
         basic.showString(id);
       }
     });
