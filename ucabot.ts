@@ -161,7 +161,7 @@ namespace ucaBot {
       console.log('k '+obj.a+' val '+obj.v);
       // assigns id to agent
       if ((obj.a == 'i') && (id == '')){
-        id = obj.a;
+        id = obj.v;
         basic.showString(id);
       }
     });
