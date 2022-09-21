@@ -7,14 +7,9 @@ namespace ucaBot {
   let IR_Val = 0;
   let ID_GROUP = 23;
   let _initEvents = true;
-  // class for responses from gateway
-  interface Resp { 
-    destiny: string; //0 for all agents, else the id 
-    attribute: string; //name of the attribute sent
-    value: string; //value of the attribute sent
-  };
-  let resp = <Resp>{};
-  let str_resp: string;
+  let key : string;
+  let val : string;
+  let id : string;
   /**
    * Unit of Ultrasound Module
    */
@@ -149,10 +144,24 @@ namespace ucaBot {
   export function initAgent(): void {
     radio.setGroup(ID_GROUP);
     radio.onReceivedString(function (receivedString) {
-      str_resp = receivedString;
-      console.log('str resp'+str_resp);
-      console.log('rec str'+receivedString);
-      basic.showString(str_resp);
+      // receives json
+      let json = receivedString;
+      console.log('received '+json);
+      // shows json
+      basic.showString(json);
+      // conversion to ts object 
+      let obj = new Object();
+      obj = JSON.parse(json);
+      console.log('converted '+obj);
+      // get key and value
+      key = Object.keys(obj)[0];
+      val = Object.values(obj)[0];
+      // separated key and val
+      console.log('k '+key+' val '+val);
+      if (key == 'i'){
+        id = val;
+        basic.showString(id);
+      }
     });
     return;
   }
