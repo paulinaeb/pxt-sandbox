@@ -148,7 +148,7 @@ namespace ucaBot {
   /**
    * TODO: Initialize agent with color and Id.
    */
-  //% block="Initialize agent v2"
+  //% block="Initialize agent v3"
   //% weight=200 color=#ff9da5
   export function initAgent(): void {
     radio.setGroup(ID_GROUP);
