@@ -7,13 +7,17 @@ namespace ucaBot {
   let IR_Val = 0;
   let ID_GROUP = 23;
   let _initEvents = true;
+
   // interface for responses received by radio
   interface Resp { 
-    a: string; //attribute id
-    v: string; //value of that attribute - up to 2 char
-  };
-  // id of agent
-  let id : string = '';
+    d: string; // d = destiny
+    f: string; // f = source
+    c: string; // c = command 
+    p: string[]; // p = list of params or variable with one param
+  }
+  // empty object
+  let obj_resp = <Resp>{};
+  
   /**
    * Unit of Ultrasound Module
    */
@@ -148,23 +152,45 @@ namespace ucaBot {
   export function initAgent(): void {
     radio.setGroup(ID_GROUP);
     radio.onReceivedString(function (receivedString) {
-      // receives json
-      let json = receivedString;
-      console.log('received '+json);
-      // shows json
-      basic.showString(json);
-      // conversion to ts object of interface Resp
-      let obj = <Resp>{};
-      // from json to object
-      obj = JSON.parse(json);
-      console.log('converted '+obj); 
-      console.log('k '+obj.a+' val '+obj.v);
-      // assigns id to agent
-      if ((obj.a == 'i') && (id == '')){
-        id = obj.v;
-        basic.showString(id);
+      // msg in fixed format json
+      let msg = receivedString;
+      console.log('received '+msg); 
+      basic.showString(msg);
+      // assign header of msg to public object
+      obj_resp.d = msg[0];
+      obj_resp.f = msg[1];
+      obj_resp.c = msg[2]+msg[3]; 
+      // init param array empty
+      obj_resp.p = []; 
+      // assign str for params (excludes header) 
+      let str_p = msg.substring(4);
+      // occurrences of '/' in str
+      let limit = (str_p.match(/\//g) || []).length;
+      // has params
+      if (limit > 0){
+          // insert params into array
+          let index = 0;
+          let aux = 0;
+          for (let i = 0; i < limit; i++){ 
+              if (i == 0){
+                  index = str_p.indexOf('/');
+                  obj_resp.p.push(str_p.substring(0, index));
+              }
+              else{
+                  index = str_p.indexOf('/', index + 1);
+                  obj_resp.p.push(str_p.substring(aux + 1, index));
+              } 
+              aux = index;
+          }
+          for (let i = 0; i < limit; i++)
+              if (/[a-zA-Z]/.test(obj_resp.p[i]))
+                  // contains letter - is a string - remove 0
+                  obj_resp.p[i] = obj_resp.p[i].replace('0',''); 
       }
+      console.log(obj_resp);
+      basic.showString(obj_resp.c);
     });
+
     return;
   }
 
