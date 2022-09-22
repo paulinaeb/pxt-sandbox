@@ -200,15 +200,20 @@ namespace ucaBot {
       console.log(obj_resp);
       console.log(obj_resp.p);
     });
-    // if there are keys
-    if (!(Object.keys(obj_resp).length === 0)){
-      if ((obj_resp.f == '0') && (obj_resp.d == 'F') && (obj_resp.c == 'II')){
-        if (id_agent == '0')
-          id_agent = obj_resp.p[0]; 
-          console.log(obj_resp.p[0]);
-          basic.showString(id_agent);
+    control.inBackground(() => {
+      while (true) {
+        // if there are keys
+        if (!(Object.keys(obj_resp).length === 0)){
+          if ((obj_resp.f == '0') && (obj_resp.d == 'F') && (obj_resp.c == 'II') && (id_agent == '0')){ 
+            id_agent = obj_resp.p[0]; 
+            console.log(obj_resp.p[0]);
+            basic.showString(id_agent);
+            basic.pause(3000);
+            break; 
+          }
+        } 
       }
-    } 
+    });
     return;
   }
 
