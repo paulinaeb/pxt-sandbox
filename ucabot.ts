@@ -15,9 +15,10 @@ namespace ucaBot {
     c: string; // c = command 
     p: string[]; // p = list of params or variable with one param
   }
-  // empty object
+  // empty object for storage response
   let obj_resp = <Resp>{};
-  
+  let obj_req = <Resp>{};
+  let id_agent = '0';
   /**
    * Unit of Ultrasound Module
    */
@@ -154,8 +155,7 @@ namespace ucaBot {
     radio.onReceivedString(function (receivedString) {
       // msg in fixed format json
       let msg = receivedString;
-      console.log('received '+msg); 
-      basic.showString(msg);
+      console.log('received '+msg);  
       // assign header of msg to public object
       obj_resp.d = msg[0];
       obj_resp.f = msg[1];
@@ -199,9 +199,15 @@ namespace ucaBot {
       }
       console.log(obj_resp);
       console.log(obj_resp.p);
-      basic.showString(obj_resp.c);
+      // if there are keys
+      if (!(Object.keys(obj_resp).length === 0)){
+        if ((obj_resp.d == '0') && (obj_resp.f == 'F') && (obj_resp.c == 'II')){
+          if (id_agent == '0')
+            id_agent = obj_resp.p[0]; 
+            console.log(obj_resp.p[0]);
+        }
+      } 
     });
-
     return;
   }
 
