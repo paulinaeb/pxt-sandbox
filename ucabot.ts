@@ -168,24 +168,34 @@ namespace ucaBot {
       let limit = (str_p.split("/").length - 1); 
       // has params
       if (limit > 0){
-          // insert params into array
-          let index = 0;
-          let aux = 0;
-          for (let i = 0; i < limit; i++){ 
-              if (i == 0){
-                  index = str_p.indexOf('/');
-                  obj_resp.p.push(str_p.slice(0, index));
-              }
-              else{
-                  index = str_p.indexOf('/', index + 1);
-                  obj_resp.p.push(str_p.slice(aux + 1, index));
-              } 
-              aux = index;
+        // insert params into array
+        let index = 0;
+        let aux = 0;
+        for (let i = 0; i < limit; i++){ 
+          if (i == 0){
+            index = str_p.indexOf('/');
+            obj_resp.p.push(str_p.slice(0, index));
           }
-          for (let i = 0; i < limit; i++)
-              if (/[a-zA-Z]/.test(obj_resp.p[i]))
-                  // contains letter - is a string - remove 0
-                  obj_resp.p[i] = obj_resp.p[i].replace('0',''); 
+          else{
+            index = str_p.indexOf('/', index + 1);
+            obj_resp.p.push(str_p.slice(aux + 1, index));
+          } 
+          aux = index;
+        }
+        for (let i = 0; i < limit; i++){
+          let flag = 0;
+          for (let char = 0; char < obj_resp.p[i].length; char++){  
+            // checks if num or str for every char 
+            if (!(((obj_resp.p[i][char] >= '0') && (obj_resp.p[i][char] <= '9')) || (obj_resp.p[i][char]=='.'))){
+                // increments str flag
+              flag+=1; 
+            }
+          }
+          // if the param is a str - remove 0
+          if (flag > 0){
+            obj_resp.p[i] = obj_resp.p[i].replace('0',''); 
+          }
+        } 
       }
       console.log(obj_resp);
       basic.showString(obj_resp.c);
