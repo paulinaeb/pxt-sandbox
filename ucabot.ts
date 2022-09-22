@@ -205,6 +205,7 @@ namespace ucaBot {
           if (id_agent == '0')
             id_agent = obj_resp.p[0]; 
             console.log(obj_resp.p[0]);
+            basic.showString(id_agent);
         }
       } 
     });
