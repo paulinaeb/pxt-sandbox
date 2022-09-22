@@ -165,7 +165,7 @@ namespace ucaBot {
       // assign str for params (excludes header) 
       let str_p = msg.slice(4);
       // occurrences of '/' in str
-      let limit = (str_p.match(/\//g) || []).length;
+      let limit = (str_p.split("/").length - 1); 
       // has params
       if (limit > 0){
           // insert params into array
