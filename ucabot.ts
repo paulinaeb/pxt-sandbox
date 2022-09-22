@@ -198,6 +198,7 @@ namespace ucaBot {
         } 
       }
       console.log(obj_resp);
+      console.log(obj_resp.p);
       basic.showString(obj_resp.c);
     });
 
