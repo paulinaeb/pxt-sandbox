@@ -10,8 +10,8 @@ namespace ucaBot {
 
   // interface for responses received by radio
   interface Resp { 
-    d: string; // d = destiny
     f: string; // f = source
+    d: string; // d = destiny
     c: string; // c = command 
     p: string[]; // p = list of params or variable with one param
   }
@@ -157,8 +157,8 @@ namespace ucaBot {
       let msg = receivedString;
       console.log('received '+msg);  
       // assign header of msg to public object
-      obj_resp.d = msg[0];
-      obj_resp.f = msg[1];
+      obj_resp.f = msg[0];
+      obj_resp.d = msg[1];
       obj_resp.c = msg[2]+msg[3]; 
       // init param array empty
       obj_resp.p = []; 
