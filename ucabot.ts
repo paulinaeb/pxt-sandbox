@@ -199,6 +199,7 @@ namespace ucaBot {
       }
       console.log(obj_resp);
       console.log(obj_resp.p);
+      console.log('pos 0'+obj_resp.p[0]);
     });
     // while (id_agent == '0') {
     //   // if there are keys
