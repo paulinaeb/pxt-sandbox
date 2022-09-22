@@ -163,7 +163,7 @@ namespace ucaBot {
       // init param array empty
       obj_resp.p = []; 
       // assign str for params (excludes header) 
-      let str_p = msg.substring(4);
+      let str_p = msg.slice(4);
       // occurrences of '/' in str
       let limit = (str_p.match(/\//g) || []).length;
       // has params
@@ -174,11 +174,11 @@ namespace ucaBot {
           for (let i = 0; i < limit; i++){ 
               if (i == 0){
                   index = str_p.indexOf('/');
-                  obj_resp.p.push(str_p.substring(0, index));
+                  obj_resp.p.push(str_p.slice(0, index));
               }
               else{
                   index = str_p.indexOf('/', index + 1);
-                  obj_resp.p.push(str_p.substring(aux + 1, index));
+                  obj_resp.p.push(str_p.slice(aux + 1, index));
               } 
               aux = index;
           }
