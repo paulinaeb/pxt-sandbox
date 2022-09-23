@@ -202,13 +202,18 @@ namespace ucaBot {
       console.log(obj_resp.p);
       // if there are keys
       if (!(Object.keys(obj_resp).length === 0)){
-        if ((obj_resp.f == '0') && (obj_resp.d == 'F') && (obj_resp.c == 'II')){
-          if (id_agent == '0'){
+        // if msg is for all and comes from sand
+        if ((obj_resp.f == '0') && (obj_resp.d == 'F')){
+          if ((id_agent == '0') && (obj_resp.c == 'II')){
             id_agent = obj_resp.p[0]; 
             console.log(id_agent);
             basic.showString(id_agent);
             basic.pause(3000);
             basic.clearScreen();
+          }
+          else if ((n_agents == '0') && (obj_resp.c == 'AI')){
+            n_agents = obj_resp.p[0]; 
+            console.log('num of agents '+n_agents);
           }
         }
       } 
@@ -222,24 +227,19 @@ namespace ucaBot {
   //% block="On all agents initialized on SandBox"
   export function Init_callback(handler: () => void) {
     control.onEvent(99, 3501, handler);
-    console.log('block on init agent')
+    console.log('block on init agent');
     control.inBackground(() => {
       while (true) {
-        if (!(Object.keys(obj_resp).length === 0)){
-          if ((obj_resp.f == '0') && (obj_resp.d == 'F') && (obj_resp.c == 'AI')){
-            if (n_agents == '0'){
-              control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire);
-              console.log('event raised');
-              console.log(obj_resp);
-              n_agents = obj_resp.p[0]; 
-              console.log(n_agents);
-              basic.showString(n_agents);
-              basic.pause(3000);
-              basic.clearScreen();
-            }
-            basic.pause(20);
-          }
-        } 
+        console.log('in a loop');
+        if (n_agents == '0'){
+          console.log('before raising event');
+          control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire);
+          console.log('after raising event');
+          basic.showString(n_agents);
+          basic.pause(3000);
+          basic.clearScreen();
+        }
+        basic.pause(20); 
       }
     });
   }
