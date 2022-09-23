@@ -19,6 +19,7 @@ namespace ucaBot {
   let obj_resp = <Resp>{};
   let obj_req = <Resp>{};
   let id_agent = '0';
+  let n_agents = '0';
   /**
    * Unit of Ultrasound Module
    */
@@ -148,7 +149,7 @@ namespace ucaBot {
   /**
    * TODO: Initialize agent with color and Id.
    */
-  //% block="Identify and initialize agent on Sandbox"
+  //% block="Initialize agent on Sandbox"
   //% weight=200 color=#ff9da5
   export function initAgent(): void {
     radio.setGroup(ID_GROUP);
@@ -202,16 +203,48 @@ namespace ucaBot {
       // if there are keys
       if (!(Object.keys(obj_resp).length === 0)){
         if ((obj_resp.f == '0') && (obj_resp.d == 'F') && (obj_resp.c == 'II')){
-          if (id_agent == '0')
+          if (id_agent == '0'){
             id_agent = obj_resp.p[0]; 
             console.log(id_agent);
             basic.showString(id_agent);
             basic.pause(3000);
             basic.clearScreen();
+          }
         }
       } 
     });
     return;
+  }
+  /**
+ * TODO: On all agents initialized on SandBox.
+ */
+  //% weight=195
+  //% block="On all agents initialized on SandBox"
+  export function Init_callback(handler: () => void) {
+    control.onEvent(195, 4000, handler);
+    control.inBackground(() => {
+      while (true) { 
+        // if (IR_Val != 0xff00) {
+        //   control.raiseEvent(195, 4000, EventCreationMode.CreateAndFire);
+        // }
+        // basic.pause(20);
+        if (!(Object.keys(obj_resp).length === 0)){
+          if ((obj_resp.f == '0') && (obj_resp.d == 'F') && (obj_resp.c == 'AI')){
+            if (n_agents == '0'){
+              control.raiseEvent(195, 4000, EventCreationMode.CreateAndFire);
+              console.log('event raised');
+              console.log(obj_resp);
+              n_agents = obj_resp.p[0]; 
+              console.log(n_agents);
+              basic.showString(n_agents);
+              basic.pause(3000);
+              basic.clearScreen();
+            }
+            basic.pause(20);
+          }
+        } 
+      }
+    });
   }
 
   /**
