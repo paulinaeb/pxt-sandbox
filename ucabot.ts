@@ -205,8 +205,7 @@ namespace ucaBot {
         // if msg is for all and comes from sand
         if ((obj_resp.f == '0') && (obj_resp.d == 'F')){
           if ((id_agent == '0') && (obj_resp.c == 'II')){
-            id_agent = obj_resp.p[0]; 
-            console.log(id_agent);
+            id_agent = obj_resp.p[0];
             basic.showString(id_agent);
             basic.pause(3000);
             basic.clearScreen();
@@ -231,12 +230,31 @@ namespace ucaBot {
       while (true) { 
         if (n_agents != '0'){ 
           control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire);
-          basic.showString(n_agents);
         }
         basic.pause(20); 
       }
     });
     return;
+  }
+  /**
+  * Agents can know how many agents are initialized on SandBox.
+  */ 
+  //% block="Number of agents on SandBox"
+  //% weight=190 color=#ff9da5
+  export function numberOfAgents(): number {
+    // parse result - only valid if agents were initialized correctly
+    let num = parseInt(n_agents);
+    return num;
+  }
+  /**
+  * Agents can know their number when initialized on SandBox.
+  */ 
+  //% block="My number"
+  //% weight=185 color=#ff9da5
+  export function myNumber(): number {
+    // parse result - only valid if agent was initialized correctly
+    let num = parseInt(id_agent);
+    return num;
   }
 
   /**
