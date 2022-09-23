@@ -227,21 +227,16 @@ namespace ucaBot {
   //% block="On all agents initialized"
   export function Init_callback(handler: () => void) {
     control.onEvent(99, 3501, handler);
-    console.log('block on init agent');
     control.inBackground(() => {
-      while (true) {
-        console.log('in a loop');
-        if (n_agents != '0'){
-          console.log('before raising event');
+      while (true) { 
+        if (n_agents != '0'){ 
           control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire);
-          console.log('after raising event');
           basic.showString(n_agents);
-          basic.pause(3000);
-          basic.clearScreen();
         }
         basic.pause(20); 
       }
     });
+    return;
   }
 
   /**
