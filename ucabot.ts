@@ -182,8 +182,6 @@ namespace ucaBot {
             obj_resp.p.push(str_p.slice(aux + 1, index));
           } 
           aux = index;
-        }
-        for (let i = 0; i < limit; i++){
           let flag = 0;
           for (let char = 0; char < obj_resp.p[i].length; char++){  
             // checks if num or str for every char 
@@ -196,7 +194,7 @@ namespace ucaBot {
           if (flag > 0){
             obj_resp.p[i] = obj_resp.p[i].replace('0',''); 
           }
-        } 
+        }
       }
       console.log(obj_resp);
       console.log(obj_resp.p);
