@@ -218,20 +218,17 @@ namespace ucaBot {
   /**
  * TODO: On all agents initialized on SandBox.
  */
-  //% weight=195
+  //% weight=195 color=#ff9da5
   //% block="On all agents initialized on SandBox"
   export function Init_callback(handler: () => void) {
-    control.onEvent(195, 4000, handler);
+    control.onEvent(99, 3501, handler);
+    console.log('block on init agent')
     control.inBackground(() => {
-      while (true) { 
-        // if (IR_Val != 0xff00) {
-        //   control.raiseEvent(195, 4000, EventCreationMode.CreateAndFire);
-        // }
-        // basic.pause(20);
+      while (true) {
         if (!(Object.keys(obj_resp).length === 0)){
           if ((obj_resp.f == '0') && (obj_resp.d == 'F') && (obj_resp.c == 'AI')){
             if (n_agents == '0'){
-              control.raiseEvent(195, 4000, EventCreationMode.CreateAndFire);
+              control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire);
               console.log('event raised');
               console.log(obj_resp);
               n_agents = obj_resp.p[0]; 
