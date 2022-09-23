@@ -231,7 +231,7 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) {
         console.log('in a loop');
-        if (n_agents == '0'){
+        if (n_agents != '0'){
           console.log('before raising event');
           control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire);
           console.log('after raising event');
