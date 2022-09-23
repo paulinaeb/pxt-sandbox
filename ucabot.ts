@@ -148,7 +148,7 @@ namespace ucaBot {
   /**
    * TODO: Initialize agent with color and Id.
    */
-  //% block="Initialize agent v3"
+  //% block="Identify and initialize agent on Sandbox"
   //% weight=200 color=#ff9da5
   export function initAgent(): void {
     radio.setGroup(ID_GROUP);
@@ -199,19 +199,18 @@ namespace ucaBot {
       }
       console.log(obj_resp);
       console.log(obj_resp.p);
-      console.log('pos 0'+obj_resp.p[0]);
+      // if there are keys
+      if (!(Object.keys(obj_resp).length === 0)){
+        if ((obj_resp.f == '0') && (obj_resp.d == 'F') && (obj_resp.c == 'II')){
+          if (id_agent == '0')
+            id_agent = obj_resp.p[0]; 
+            console.log(id_agent);
+            basic.showString(id_agent);
+            basic.pause(3000);
+            basic.clearScreen();
+        }
+      } 
     });
-    // while (id_agent == '0') {
-    //   // if there are keys
-    //   if (!(Object.keys(obj_resp).length === 0)){
-    //     if ((obj_resp.f == '0') && (obj_resp.d == 'F') && (obj_resp.c == 'II')){ 
-    //       id_agent = obj_resp.p[0]; 
-    //       console.log(obj_resp.p[0]);
-    //       basic.showString(id_agent);
-    //       basic.pause(3000); 
-    //     }
-    //   } 
-    // }
     return;
   }
 
