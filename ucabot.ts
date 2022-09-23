@@ -224,7 +224,7 @@ namespace ucaBot {
  * TODO: On all agents initialized on SandBox.
  */
   //% weight=195 color=#ff9da5
-  //% block="On all agents initialized on SandBox"
+  //% block="On all agents initialized"
   export function Init_callback(handler: () => void) {
     control.onEvent(99, 3501, handler);
     console.log('block on init agent');
