@@ -4,8 +4,8 @@
 //% weight=5 color=#0fbc11  icon="\uf207"
 namespace ucaBot {
   const STM8_ADDRESSS = 0x10;
+  const ID_GROUP = 23;
   let IR_Val = 0;
-  let ID_GROUP = 23;
   let _initEvents = true;
 
   // interface for responses received by radio
