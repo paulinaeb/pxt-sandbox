@@ -154,7 +154,7 @@ namespace ucaBot {
   export function initAgent(): void {
     radio.setGroup(ID_GROUP);
     radio.onReceivedString(function (receivedString) {
-      // msg in fixed format json
+      // msg in fixed format
       let msg = receivedString;
       console.log('received '+msg);  
       // assign header of msg to public object
@@ -163,36 +163,39 @@ namespace ucaBot {
       obj_resp.c = msg[2]+msg[3]; 
       // init param array empty
       obj_resp.p = []; 
-      // assign str for params (excludes header) 
-      let str_p = msg.slice(4);
-      // occurrences of '/' in str
-      let limit = (str_p.split("/").length - 1); 
-      // has params
-      if (limit > 0){
-        // insert params into array
-        let index = 0;
-        let aux = 0;
-        for (let i = 0; i < limit; i++){ 
-          if (i == 0){
-            index = str_p.indexOf('/');
-            obj_resp.p.push(str_p.slice(0, index));
-          }
-          else{
-            index = str_p.indexOf('/', index + 1);
-            obj_resp.p.push(str_p.slice(aux + 1, index));
-          } 
-          aux = index;
-          let flag = 0;
-          for (let char = 0; char < obj_resp.p[i].length; char++){  
-            // checks if num or str for every char 
-            if (!(((obj_resp.p[i][char] >= '0') && (obj_resp.p[i][char] <= '9')) || (obj_resp.p[i][char]=='.'))){
-                // increments str flag
-              flag+=1; 
+      // if there are params
+      if (msg.length > 4){
+        // assign str for params (excludes header) 
+        let str_p = msg.slice(4);
+        // occurrences of '/' in str
+        let limit = (str_p.split("/").length - 1); 
+        // has params
+        if (limit > 0){
+          // insert params into array
+          let index = 0;
+          let aux = 0;
+          for (let i = 0; i < limit; i++){ 
+            if (i == 0){
+              index = str_p.indexOf('/');
+              obj_resp.p.push(str_p.slice(0, index));
             }
-          }
-          // if the param is a str - remove 0
-          if (flag > 0){
-            obj_resp.p[i] = obj_resp.p[i].replace('0',''); 
+            else{
+              index = str_p.indexOf('/', index + 1);
+              obj_resp.p.push(str_p.slice(aux + 1, index));
+            } 
+            aux = index;
+            let flag = 0;
+            for (let char = 0; char < obj_resp.p[i].length; char++){  
+              // checks if num or str for every char 
+              if (!(((obj_resp.p[i][char] >= '0') && (obj_resp.p[i][char] <= '9')) || (obj_resp.p[i][char]=='.'))){
+                  // increments str flag
+                flag+=1; 
+              }
+            }
+            // if the param is a str - remove 0
+            if (flag > 0){
+              obj_resp.p[i] = obj_resp.p[i].replace('0',''); 
+            }
           }
         }
       }
