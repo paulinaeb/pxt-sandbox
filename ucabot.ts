@@ -41,6 +41,7 @@ namespace ucaBot {
   let obj_req = new Resp();
   let id_agent = '0';
   let n_agents = '0';
+  let msg = '';
   let x = 0;
   let y = 0;
   let theta = 0;
@@ -182,50 +183,47 @@ namespace ucaBot {
       console.log('received '+msg);  
       // assign header of msg to public object
       obj_resp.set_header(msg[0], msg[1], msg[2]+msg[3]);
-      // if there are params
-      if (msg.length > 4){
-        // assign str for params (excludes header) 
-        let str_p = msg.slice(4);
-        // occurrences of '/' in str
-        let limit = (str_p.split("/").length - 1); 
-        // has params
-        if (limit > 0){
-          // insert params into array
-          let index = 0;
-          let aux = 0;
-          for (let i = 0; i < limit; i++){ 
-            if (i == 0){
-              index = str_p.indexOf('/');
-              obj_resp.add_p(str_p.slice(0, index));
-            }
-            else{
-              index = str_p.indexOf('/', index + 1);
-              obj_resp.add_p(str_p.slice(aux + 1, index));
-            } 
-            aux = index;
-            let flag = 0;
-            for (let char = 0; char < obj_resp.p[i].length; char++){  
-              // checks if num or str for every char 
-              if (!(((obj_resp.p[i][char] >= '0') && (obj_resp.p[i][char] <= '9')) || (obj_resp.p[i][char]=='.'))){
-                  // increments str flag
-                flag+=1; 
+      // if the msg is for me or for all, search the params
+      if ((obj_resp.d == 'F') || (obj_resp.d == id_agent)){
+        // if there are params
+        if (msg.length > 4){
+          // assign str for params (excludes header) 
+          let str_p = msg.slice(4);
+          // occurrences of '/' in str
+          let limit = (str_p.split("/").length - 1); 
+          // has params
+          if (limit > 0){
+            // insert params into array
+            let index = 0;
+            let aux = 0;
+            for (let i = 0; i < limit; i++){ 
+              if (i == 0){
+                index = str_p.indexOf('/');
+                obj_resp.add_p(str_p.slice(0, index));
               }
-            }
-            // if the param is a str - remove 0
-            if (flag > 0){
-              obj_resp.p[i] = obj_resp.p[i].replace('0',''); 
+              else{
+                index = str_p.indexOf('/', index + 1);
+                obj_resp.add_p(str_p.slice(aux + 1, index));
+              } 
+              aux = index;
+              let flag = 0;
+              for (let char = 0; char < obj_resp.p[i].length; char++){  
+                // checks if num or str for every char 
+                if (!(((obj_resp.p[i][char] >= '0') && (obj_resp.p[i][char] <= '9')) || (obj_resp.p[i][char]=='.'))){
+                    // increments str flag
+                  flag+=1; 
+                }
+              }
+              // if the param is a str - remove 0
+              if (flag > 0){
+                obj_resp.p[i] = obj_resp.p[i].replace('0',''); 
+              }
             }
           }
         }
-      }
-      console.log(obj_resp.f);
-      console.log(obj_resp.d);
-      console.log(obj_resp.c);
-      console.log(obj_resp.p);
-      // if there are keys
-      if (obj_resp.f != null){
-        // if msg is for all and comes from sand
-        if ((obj_resp.f == '0') && ((obj_resp.d == 'F') || (obj_resp.d == id_agent))){
+        console.log(obj_resp.f+' '+obj_resp.d+' '+obj_resp.c+' '+obj_resp.p);
+        // if msg comes from sand
+        if ((obj_resp.f == '0')){
           if ((id_agent == '0') && (obj_resp.c == 'II')){
             id_agent = obj_resp.p[0];
             basic.showString(id_agent);
@@ -236,7 +234,9 @@ namespace ucaBot {
             n_agents = obj_resp.p[0];
           }
         }
-      } 
+        // if msg comes from other agent
+        else{}
+      }
     });
     return;
   }
@@ -281,50 +281,39 @@ namespace ucaBot {
   basic.forever(function(){
     if (obj_req.f != null){
       console.log('there is a request to send');
-      console.log(obj_req.f);
-      console.log(obj_req.d);
-      console.log(obj_req.c);
-      console.log(obj_req.p);
+      console.log(obj_req.f+' '+obj_req.d+' '+obj_req.c+' '+obj_req.p);
       // header of msg
-      let msg = obj_req.f + obj_req.d + obj_req.c;
-      console.log('header '+msg);
+      msg = obj_req.f + obj_req.d + obj_req.c;
       // num of params passed
       let n_param = obj_req.p.length;
-      console.log('n_param'+n_param);
       // size of params str with delimiter (/)
       let size = n_param;
       // if there are params
       if (size > 0){ 
         // adds the size of each param
-        // for (let i in obj_req.p)
-        for (let i = 0; i < obj_req.p.length; i++){
+        for (let i = 0; i < n_param; i++)
           size += obj_req.p[i].length; 
-        }
         // define the number of spaces to be filled with '0'
         let num_fill = 14 - size;
         // number of spaces that every param will have added to (if>0)
         let n_each = num_fill / n_param;
         if (num_fill >= 0){
-            if (n_param >= 1){
-                // for (let i in obj_req.p)
-                for (let i = 0; i < obj_req.p.length; i++){
-                    msg += obj_req.p[i] + '/';
-                    for(let j = 0; j < Math.floor(n_each); j++){
-                        msg += '0';
-                    }
-                }
-            } 
-            // if num to add is odd or there are less spaces to be filled than params 
-            if ((n_each != Math.floor(n_each)) || (num_fill < n_param)){
-                let ex = 18 - msg.length; 
-                for (let i = 0; i < ex; i++){
-                    msg += '0';
-                }
-            }
+          if (n_param >= 1){
+              for (let i = 0; i < n_param; i++){
+                msg += obj_req.p[i] + '/';
+                for(let j = 0; j < Math.floor(n_each); j++)
+                  msg += '0';
+              }
+          } 
+          // if num to add is odd or there are less spaces to be filled than params 
+          if ((n_each != Math.floor(n_each)) || (num_fill < n_param)){
+            let ex = 18 - msg.length; 
+            for (let i = 0; i < ex; i++)
+              msg += '0';
+          }
         } 
-        else{
-            console.log('El tamaño de los parámetros ingresados sobrepasa el limite permitido. Verifique e intente nuevamente.');
-        }
+        else
+          console.log('The number of chars you tried to pass in parameters overload the allowed (14). Verify and try again.'); 
     }
     console.log('serialized: '+msg);
     obj_req = new Resp();
@@ -334,13 +323,21 @@ namespace ucaBot {
   /**
   * Agents can know their position in cm on SandBox.
   */ 
-  //% block="My position on SandBox (cm)"
+  //% block="My position on SandBox ... (cm)"
   //% weight=180 color=#ff9da5
   export function myPosition(): number {
     // request pos
-    console.log('enter to my position');
-    obj_req.set_values(id_agent, '0', 'GP', ['90', '1.1']);
+    obj_req.set_values(id_agent, '0', 'GP', ['90', '1.1', 'ana']);
     console.log('values set');
+    while (true){ 
+      if (msg != ''){
+        console.log('sending '+msg);
+        radio.sendString(msg);
+        break;
+      }
+    }
+    console.log('sent');
+    msg = '';
     let num = parseInt(id_agent);
     return num;
   }
