@@ -30,8 +30,10 @@ namespace ucaBot {
     }
   }
   // empty object for storage response
-  let obj_resp = <Resp>{};
-  let obj_req = <Resp>{};
+  // let obj_resp = <Resp>{};
+  // let obj_req = <Resp>{};
+  let obj_resp = new Resp();
+  let obj_req = new Resp();
   let id_agent = '0';
   let n_agents = '0';
   let x = 0;
