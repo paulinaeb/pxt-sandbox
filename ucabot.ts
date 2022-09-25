@@ -224,7 +224,6 @@ namespace ucaBot {
       console.log(obj_resp.p);
       // if there are keys
       if (obj_resp.f != null){
-        console.log('enters to validation');
         // if msg is for all and comes from sand
         if ((obj_resp.f == '0') && ((obj_resp.d == 'F') || (obj_resp.d == id_agent))){
           if ((id_agent == '0') && (obj_resp.c == 'II')){
@@ -234,8 +233,7 @@ namespace ucaBot {
             basic.clearScreen();
           }
           else if ((n_agents == '0') && (obj_resp.c == 'AI')){
-            n_agents = obj_resp.p[0]; 
-            console.log('num of agents '+n_agents);
+            n_agents = obj_resp.p[0];
           }
         }
       } 
@@ -281,11 +279,18 @@ namespace ucaBot {
   }
 
   function serializeMsg(d: string, c: string, p: string[]): string{
+    console.log('enters to function');
     obj_req.set_values(id_agent, d, c, p);
+    console.log(obj_req.f);
+    console.log(obj_req.d);
+    console.log(obj_req.c);
+    console.log(obj_req.p);
     // header of msg
     let msg = obj_req.f + obj_req.d + obj_req.c;
+    console.log('header '+msg);
     // num of params passed
     let n_param = obj_req.p.length;
+    console.log('n_param'+n_param);
     // size of params str with delimiter (/)
     let size = n_param;
     // if there are params
@@ -318,8 +323,8 @@ namespace ucaBot {
       else{
           console.log('El tamaño de los parámetros ingresados sobrepasa el limite permitido. Verifique e intente nuevamente.');
       }
-      console.log('serialized: '+msg);
   }
+  console.log('serialized: '+msg);
   return msg;
   }
 
@@ -330,7 +335,9 @@ namespace ucaBot {
   //% weight=180 color=#ff9da5
   export function myPosition(): number {
     // request pos
+    console.log('enter to my position');
     let msg = serializeMsg('0', 'GP', ['90', '1.1']);
+    console.log('msg'+msg);
     radio.sendString(msg);
     let num = parseInt(id_agent);
     return num;
