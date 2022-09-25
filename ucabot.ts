@@ -224,7 +224,8 @@ namespace ucaBot {
       console.log(obj_resp.c);
       console.log(obj_resp.p);
       // if there are keys
-      if (!(Object.keys(obj_resp).length === 0)){
+      if (obj_resp.f != null){
+        console.log('enters to validation');
         // if msg is for all and comes from sand
         if ((obj_resp.f == '0') && ((obj_resp.d == 'F') || (obj_resp.d == id_agent))){
           if ((id_agent == '0') && (obj_resp.c == 'II')){
