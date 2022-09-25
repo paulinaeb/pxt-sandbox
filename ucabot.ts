@@ -277,7 +277,7 @@ namespace ucaBot {
     // num of params passed
     let n_param = obj_req.p.length;
     // size of params str with delimiter (/)
-    let size = n_param
+    let size = n_param;
     // if there are params
     if (size > 0){ 
       // adds the size of each param
