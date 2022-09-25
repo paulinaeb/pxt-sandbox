@@ -16,7 +16,9 @@ namespace ucaBot {
     p: string[]; // p = list of params or variable with one param
     // init constructor
     constructor(){
-      this.f = this.d = this.c = '';
+      this.f = null;
+      this.d = null;
+      this.c = null;
       this.p = [];
     }
     // methods
