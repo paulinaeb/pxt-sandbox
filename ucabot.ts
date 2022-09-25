@@ -26,6 +26,7 @@ namespace ucaBot {
       this.f = f;
       this.d = d;
       this.c = c; 
+      this.p = [];
     }
     set_values(f: string, d: string, c:  string, p: string[]): void {
       this.set_header(f, d, c);
@@ -35,9 +36,7 @@ namespace ucaBot {
       this.p.push(p);
     }
   }
-  // empty object for storage response
-  // let obj_resp = <Resp>{};
-  // let obj_req = <Resp>{};
+  // empty object for storage response 
   let obj_resp = new Resp();
   let obj_req = new Resp();
   let id_agent = '0';
@@ -281,61 +280,61 @@ namespace ucaBot {
     return num;
   }
 
-  // function serializeMsg(d: string, c: string, p: string[]): string{
-  //   obj_req.set_values(id_agent, d, c, p);
-  //   // header of msg
-  //   let msg = obj_req.f + obj_req.d + obj_req.c;
-  //   // num of params passed
-  //   let n_param = obj_req.p.length;
-  //   // size of params str with delimiter (/)
-  //   let size = n_param;
-  //   // if there are params
-  //   if (size > 0){ 
-  //     // adds the size of each param
-  //     for (let i in obj_req.p){
-  //         size += obj_req.p[i].length; 
-  //     }
-  //     // define the number of spaces to be filled with '0'
-  //     let num_fill = 14 - size;
-  //     // number of spaces that every param will have added to (if>0)
-  //     let n_each = num_fill / n_param;
-  //     if (num_fill >= 0){
-  //         if (n_param >= 1){
-  //             for (let i in obj_req.p){
-  //                 msg += obj_req.p[i] + '/';
-  //                 for(let j = 0; j < Math.floor(n_each); j++){
-  //                     msg += '0';
-  //                 }
-  //             }
-  //         } 
-  //         // if num to add is odd or there are less spaces to be filled than params 
-  //         if ((n_each != Math.floor(n_each)) || (num_fill < n_param)){
-  //             let ex = 18 - msg.length; 
-  //             for (let i = 0; i < ex; i++){
-  //                 msg += '0';
-  //             }
-  //         }
-  //     } 
-  //     else{
-  //         console.log('El tamaño de los parámetros ingresados sobrepasa el limite permitido. Verifique e intente nuevamente.');
-  //     }
-  //     console.log('serialized: '+msg);
-  // }
-  // return msg;
-  // }
+  function serializeMsg(d: string, c: string, p: string[]): string{
+    obj_req.set_values(id_agent, d, c, p);
+    // header of msg
+    let msg = obj_req.f + obj_req.d + obj_req.c;
+    // num of params passed
+    let n_param = obj_req.p.length;
+    // size of params str with delimiter (/)
+    let size = n_param;
+    // if there are params
+    if (size > 0){ 
+      // adds the size of each param
+      for (let i in obj_req.p){
+          size += obj_req.p[i].length; 
+      }
+      // define the number of spaces to be filled with '0'
+      let num_fill = 14 - size;
+      // number of spaces that every param will have added to (if>0)
+      let n_each = num_fill / n_param;
+      if (num_fill >= 0){
+          if (n_param >= 1){
+              for (let i in obj_req.p){
+                  msg += obj_req.p[i] + '/';
+                  for(let j = 0; j < Math.floor(n_each); j++){
+                      msg += '0';
+                  }
+              }
+          } 
+          // if num to add is odd or there are less spaces to be filled than params 
+          if ((n_each != Math.floor(n_each)) || (num_fill < n_param)){
+              let ex = 18 - msg.length; 
+              for (let i = 0; i < ex; i++){
+                  msg += '0';
+              }
+          }
+      } 
+      else{
+          console.log('El tamaño de los parámetros ingresados sobrepasa el limite permitido. Verifique e intente nuevamente.');
+      }
+      console.log('serialized: '+msg);
+  }
+  return msg;
+  }
 
-  // /**
-  // * Agents can know their position in cm on SandBox.
-  // */ 
-  // //% block="My position on sand (cm)"
-  // //% weight=180 color=#ff9da5
-  // export function myPosition(): number {
-  //   // request pos
-  //   let msg = serializeMsg('0', 'GP', ['90', '1.1']);
-  //   radio.sendString(msg);
-  //   let num = parseInt(id_agent);
-  //   return num;
-  // }
+  /**
+  * Agents can know their position in cm on SandBox.
+  */ 
+  //% block="My position on sand (cm)"
+  //% weight=180 color=#ff9da5
+  export function myPosition(): number {
+    // request pos
+    let msg = serializeMsg('0', 'GP', ['90', '1.1']);
+    radio.sendString(msg);
+    let num = parseInt(id_agent);
+    return num;
+  }
 
   /**
    * TODO: Set the speed of left and right wheels.
