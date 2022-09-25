@@ -320,7 +320,7 @@ namespace ucaBot {
   //% weight=180 color=#ff9da5
   export function myPosition(): number {
     // request pos
-    let msg = serializeMsg('0', 'GP', []);
+    let msg = serializeMsg('0', 'GP', ['90', '1.1']);
     radio.sendString(msg);
     let num = parseInt(id_agent);
     return num;
