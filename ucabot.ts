@@ -219,7 +219,9 @@ namespace ucaBot {
           }
         }
       }
-      console.log(obj_resp);
+      console.log(obj_resp.f);
+      console.log(obj_resp.d);
+      console.log(obj_resp.c);
       console.log(obj_resp.p);
       // if there are keys
       if (!(Object.keys(obj_resp).length === 0)){
