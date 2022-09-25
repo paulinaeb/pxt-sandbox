@@ -14,12 +14,16 @@ namespace ucaBot {
     d: string; // d = destiny
     c: string; // c = command 
     p: string[]; // p = list of params or variable with one param
+    // init constructor
+    constructor(){
+      this.f = this.d = this.c = '';
+      this.p = [];
+    }
     // methods
     set_header(f: string, d: string, c:  string): void{
       this.f = f;
       this.d = d;
-      this.c = c;
-      this.p = [];
+      this.c = c; 
     }
     set_values(f: string, d: string, c:  string, p: string[]): void {
       this.set_header(f, d, c);
@@ -318,7 +322,7 @@ namespace ucaBot {
   /**
   * Agents can know their position in cm on SandBox.
   */ 
-  //% block="My position (cm)"
+  //% block="My position on sand (cm)"
   //% weight=180 color=#ff9da5
   export function myPosition(): number {
     // request pos
