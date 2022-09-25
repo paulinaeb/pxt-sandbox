@@ -8,18 +8,35 @@ namespace ucaBot {
   let IR_Val = 0;
   let _initEvents = true;
 
-  // interface for responses received by radio
-  interface Resp { 
+  // class for responses received by radio
+  class Resp { 
     f: string; // f = source
     d: string; // d = destiny
     c: string; // c = command 
     p: string[]; // p = list of params or variable with one param
+    // methods
+    set_header(f: string, d: string, c:  string): void{
+      this.f = f;
+      this.d = d;
+      this.c = c;
+      this.p = [];
+    }
+    set_values(f: string, d: string, c:  string, p: string[]): void {
+      this.set_header(f, d, c);
+      this.p = p;
+    }
+    add_p(p: string): void{
+      this.p.push(p);
+    }
   }
   // empty object for storage response
   let obj_resp = <Resp>{};
   let obj_req = <Resp>{};
   let id_agent = '0';
   let n_agents = '0';
+  let x = 0;
+  let y = 0;
+  let theta = 0;
   /**
    * Unit of Ultrasound Module
    */
@@ -145,7 +162,6 @@ namespace ucaBot {
     //% block="9"
     Nine = 26,
   }
-
   /**
    * TODO: Initialize agent with color and Id.
    */
@@ -158,11 +174,7 @@ namespace ucaBot {
       let msg = receivedString;
       console.log('received '+msg);  
       // assign header of msg to public object
-      obj_resp.f = msg[0];
-      obj_resp.d = msg[1];
-      obj_resp.c = msg[2]+msg[3]; 
-      // init param array empty
-      obj_resp.p = []; 
+      obj_resp.set_header(msg[0], msg[1], msg[2]+msg[3]);
       // if there are params
       if (msg.length > 4){
         // assign str for params (excludes header) 
@@ -177,11 +189,11 @@ namespace ucaBot {
           for (let i = 0; i < limit; i++){ 
             if (i == 0){
               index = str_p.indexOf('/');
-              obj_resp.p.push(str_p.slice(0, index));
+              obj_resp.add_p(str_p.slice(0, index));
             }
             else{
               index = str_p.indexOf('/', index + 1);
-              obj_resp.p.push(str_p.slice(aux + 1, index));
+              obj_resp.add_p(str_p.slice(aux + 1, index));
             } 
             aux = index;
             let flag = 0;
@@ -204,7 +216,7 @@ namespace ucaBot {
       // if there are keys
       if (!(Object.keys(obj_resp).length === 0)){
         // if msg is for all and comes from sand
-        if ((obj_resp.f == '0') && (obj_resp.d == 'F')){
+        if ((obj_resp.f == '0') && ((obj_resp.d == 'F') || (obj_resp.d == id_agent))){
           if ((id_agent == '0') && (obj_resp.c == 'II')){
             id_agent = obj_resp.p[0];
             basic.showString(id_agent);
@@ -254,6 +266,62 @@ namespace ucaBot {
   //% weight=185 color=#ff9da5
   export function myNumber(): number {
     // parse result - only valid if agent was initialized correctly
+    let num = parseInt(id_agent);
+    return num;
+  }
+
+  function serializeMsg(d: string, c: string, p: string[]): string{
+    obj_req.set_values(id_agent, d, c, p);
+    // header of msg
+    let msg = obj_req.f + obj_req.d + obj_req.c;
+    // num of params passed
+    let n_param = obj_req.p.length;
+    // size of params str with delimiter (/)
+    let size = n_param
+    // if there are params
+    if (size > 0){ 
+      // adds the size of each param
+      for (let i in obj_req.p){
+          size += obj_req.p[i].length; 
+      }
+      // define the number of spaces to be filled with '0'
+      let num_fill = 14 - size;
+      // number of spaces that every param will have added to (if>0)
+      let n_each = num_fill / n_param;
+      if (num_fill >= 0){
+          if (n_param >= 1){
+              for (let i in obj_req.p){
+                  msg += obj_req.p[i] + '/';
+                  for(let j = 0; j < Math.floor(n_each); j++){
+                      msg += '0';
+                  }
+              }
+          } 
+          // if num to add is odd or there are less spaces to be filled than params 
+          if ((n_each != Math.floor(n_each)) || (num_fill < n_param)){
+              let ex = 18 - msg.length; 
+              for (let i = 0; i < ex; i++){
+                  msg += '0';
+              }
+          }
+      } 
+      else{
+          console.log('El tamaño de los parámetros ingresados sobrepasa el limite permitido. Verifique e intente nuevamente.');
+      }
+      console.log('serialized: '+msg);
+  }
+  return msg;
+  }
+
+  /**
+  * Agents can know their position in cm on SandBox.
+  */ 
+  //% block="My position (cm)"
+  //% weight=180 color=#ff9da5
+  export function myPosition(): number {
+    // request pos
+    let msg = serializeMsg('0', 'GP', []);
+    radio.sendString(msg);
     let num = parseInt(id_agent);
     return num;
   }
