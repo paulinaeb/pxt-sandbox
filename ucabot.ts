@@ -41,7 +41,6 @@ namespace ucaBot {
   let obj_req = new Resp();
   let id_agent = '0';
   let n_agents = '0';
-  let msg = '';
   let x = 0;
   let y = 0;
   let theta = 0;
@@ -283,7 +282,7 @@ namespace ucaBot {
       console.log('there is a request to send');
       console.log(obj_req.f+' '+obj_req.d+' '+obj_req.c+' '+obj_req.p);
       // header of msg
-      msg = obj_req.f + obj_req.d + obj_req.c;
+      let msg = obj_req.f + obj_req.d + obj_req.c;
       // num of params passed
       let n_param = obj_req.p.length;
       // size of params str with delimiter (/)
@@ -316,6 +315,8 @@ namespace ucaBot {
           console.log('The number of chars you tried to pass in parameters overload the allowed (14). Verify and try again.'); 
     }
     console.log('serialized: '+msg);
+    radio.sendString(msg);
+    console.log('sent');
     obj_req = new Resp();
   }
   });
@@ -329,15 +330,6 @@ namespace ucaBot {
     // request pos
     obj_req.set_values(id_agent, '0', 'GP', ['90', '1.1', 'ana']);
     console.log('values set');
-    while (true){ 
-      if (msg != ''){
-        console.log('sending '+msg);
-        radio.sendString(msg);
-        break;
-      }
-    }
-    console.log('sent');
-    msg = '';
     let num = parseInt(id_agent);
     return num;
   }
