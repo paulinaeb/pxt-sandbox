@@ -296,8 +296,9 @@ namespace ucaBot {
       // if there are params
       if (size > 0){ 
         // adds the size of each param
-        for (let i in obj_req.p){
-            size += obj_req.p[i].length; 
+        // for (let i in obj_req.p)
+        for (let i = 0; i < obj_req.p.length; i++){
+          size += obj_req.p[i].length; 
         }
         // define the number of spaces to be filled with '0'
         let num_fill = 14 - size;
@@ -305,7 +306,8 @@ namespace ucaBot {
         let n_each = num_fill / n_param;
         if (num_fill >= 0){
             if (n_param >= 1){
-                for (let i in obj_req.p){
+                // for (let i in obj_req.p)
+                for (let i = 0; i < obj_req.p.length; i++){
                     msg += obj_req.p[i] + '/';
                     for(let j = 0; j < Math.floor(n_each); j++){
                         msg += '0';
