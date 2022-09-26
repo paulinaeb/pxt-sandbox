@@ -334,13 +334,13 @@ namespace ucaBot {
     // request pos
     obj_req.set_values(id_agent, '0', 'GP', []);
     console.log('values set');
-    control.inBackground(() => {
-      while (true){
-        if (act_pos == true)
-          break;
-      }
-    });
-    act_pos = false;
+    // control.inBackground(() => {
+    //   while (true){
+    //     if (act_pos == true)
+    //       break;
+    //   }
+    //   act_pos = false;
+    // });
     return x;
   }
 
