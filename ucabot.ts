@@ -282,7 +282,6 @@ namespace ucaBot {
   }
 
   basic.forever(function(){ 
-    
       if (obj_req.f != null){
         console.log('there is a request to send');
         console.log(obj_req.f+' '+obj_req.d+' '+obj_req.c+' '+obj_req.p);
@@ -331,7 +330,7 @@ namespace ucaBot {
   */ 
   //% block="My position on SandBox (cm)"
   //% weight=180 color=#ff9da5
-  export function myPosition(): number { 
+  export function myPosition(): number[] { 
     // request pos
     obj_req.set_values(id_agent, '0', 'GP', []);
     console.log('values set');  
@@ -341,7 +340,8 @@ namespace ucaBot {
         break;
       }
     }
-    return x;
+    act_pos = false;
+    return [x, y];
   }
 
   /**
