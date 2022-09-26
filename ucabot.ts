@@ -322,11 +322,11 @@ namespace ucaBot {
   /**
   * Agents can know their position in cm on SandBox.
   */ 
-  //% block="My position on SandBox ... (cm)"
+  //% block="My position on SandBox (cm)"
   //% weight=180 color=#ff9da5
   export function myPosition(): number {
     // request pos
-    obj_req.set_values(id_agent, '0', 'GP', ['90', '1.1', 'ana']);
+    obj_req.set_values(id_agent, '0', 'GP', []);
     console.log('values set');
     let num = parseInt(id_agent);
     return num;
