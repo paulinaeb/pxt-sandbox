@@ -281,8 +281,7 @@ namespace ucaBot {
     return num;
   }
 
-  basic.forever(function(){
-    control.inBackground(() => {
+  basic.forever(function(){ 
       if (obj_req.f != null){
         console.log('there is a request to send');
         console.log(obj_req.f+' '+obj_req.d+' '+obj_req.c+' '+obj_req.p);
@@ -323,8 +322,7 @@ namespace ucaBot {
       radio.sendString(msg);
       console.log('sent');
       obj_req = new Resp();
-    }
-  });
+    } 
   });
 
   /**
@@ -336,11 +334,12 @@ namespace ucaBot {
     // request pos
     obj_req.set_values(id_agent, '0', 'GP', []);
     console.log('values set');
-    while (true){
-      if (act_pos == true){
-        break;
+    control.inBackground(() => {
+      while (true){
+        if (act_pos == true)
+          break;
       }
-    }
+    });
     act_pos = false;
     return x;
   }
