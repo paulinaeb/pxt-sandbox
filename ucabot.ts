@@ -318,6 +318,8 @@ namespace ucaBot {
     radio.sendString(msg);
     console.log('sent');
     obj_req = new Resp();
+    console.log('after sent '+obj_req.f+' '+obj_req.d+' '+obj_req.c);
+    console.log(obj_req.p);
   }
   });
 
