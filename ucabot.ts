@@ -330,7 +330,7 @@ namespace ucaBot {
   */ 
   //% block="My position on SandBox (cm)"
   //% weight=180 color=#ff9da5
-  export function myPosition(): number[] { 
+  export function myPosition(): number { 
     // request pos
     obj_req.set_values(id_agent, '0', 'GP', []);
     console.log('values set');  
@@ -341,7 +341,7 @@ namespace ucaBot {
       }
     }
     act_pos = false;
-    return [x, y];
+    return x;
   }
 
   /**
