@@ -282,6 +282,7 @@ namespace ucaBot {
   }
 
   basic.forever(function(){ 
+    control.inBackground(() => {
       if (obj_req.f != null){
         console.log('there is a request to send');
         console.log(obj_req.f+' '+obj_req.d+' '+obj_req.c+' '+obj_req.p);
@@ -324,6 +325,7 @@ namespace ucaBot {
       obj_req = new Resp();
     } 
   });
+  });
 
   /**
   * Agents can know their position in cm on SandBox.
@@ -333,14 +335,7 @@ namespace ucaBot {
   export function myPosition(): number {
     // request pos
     obj_req.set_values(id_agent, '0', 'GP', []);
-    console.log('values set');
-    // control.inBackground(() => {
-    //   while (true){
-    //     if (act_pos == true)
-    //       break;
-    //   }
-    //   act_pos = false;
-    // });
+    console.log('values set'); 
     return x;
   }
 
