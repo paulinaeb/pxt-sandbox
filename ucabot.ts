@@ -44,6 +44,7 @@ namespace ucaBot {
   let x = 0;
   let y = 0;
   let act_pos = false;
+  let act_dir = false;
   let theta = 0;
   /**
    * Unit of Ultrasound Module
@@ -242,6 +243,10 @@ namespace ucaBot {
             y = parseFloat(obj_resp.p[1]);
             act_pos = true;
           }
+          else if (obj_resp.c == 'GD'){
+            theta = parseFloat(obj_resp.p[0]);
+            act_dir = true;
+          }
         }
         // if msg comes from other agent
         else{}
@@ -330,7 +335,6 @@ namespace ucaBot {
       obj_req = new Resp();
     } 
   });
-
   /**
   * Agents can know their position in cm on SandBox.
   */ 
@@ -352,7 +356,23 @@ namespace ucaBot {
     else
       return y;
   }
-
+  /**
+  * Agents can know their direction in degrees on SandBox.
+  */ 
+  //% block="My direction (degrees)"
+  //% weight=175 color=#ff9da5
+  export function myDirection(): number { 
+    // request pos
+    obj_req.set_values(id_agent, '0', 'GD', []);
+    console.log('values set');  
+    while (true){
+      if (act_dir == true)
+        break;
+      basic.pause(20);
+    }
+    act_dir = false;
+    return theta;
+  }
   /**
    * TODO: Set the speed of left and right wheels.
    * @param lspeed Left wheel speed , eg: 100
