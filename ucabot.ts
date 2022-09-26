@@ -54,6 +54,12 @@ namespace ucaBot {
     //% block="inches"
     Inches,
   }
+  export enum Position {
+    //% block="x"
+    x,
+    //% block="y"
+    y,
+  }
   /**
    * Select the motor on the left or right
    */
@@ -328,21 +334,22 @@ namespace ucaBot {
   /**
   * Agents can know their position in cm on SandBox.
   */ 
-  //% block="My position on SandBox (cm)"
+  //% block="My position %pos (cm)"
   //% weight=180 color=#ff9da5
-  export function myPosition(): number { 
+  export function myPosition(pos: Position): number { 
     // request pos
     obj_req.set_values(id_agent, '0', 'GP', []);
     console.log('values set');  
     while (true){
-      console.log(act_pos);
-      if (act_pos == true){
+      if (act_pos == true)
         break;
-      }
       basic.pause(20);
     }
     act_pos = false;
-    return x;
+    if(pos == Position.x)
+      return x;
+    else
+      return y;
   }
 
   /**
