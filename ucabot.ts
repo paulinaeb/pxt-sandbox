@@ -339,6 +339,7 @@ namespace ucaBot {
       if (act_pos == true){
         break;
       }
+      basic.pause(20);
     }
     act_pos = false;
     return x;
