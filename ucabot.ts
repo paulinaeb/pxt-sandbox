@@ -43,6 +43,7 @@ namespace ucaBot {
   let n_agents = '0';
   let x = 0;
   let y = 0;
+  let act_pos = false;
   let theta = 0;
   /**
    * Unit of Ultrasound Module
@@ -230,6 +231,11 @@ namespace ucaBot {
           }
           else if ((n_agents == '0') && (obj_resp.c == 'AI'))
             n_agents = obj_resp.p[0];
+          else if (obj_resp.c == 'GP'){
+            x = parseFloat(obj_resp.p[0]);
+            y = parseFloat(obj_resp.p[1]);
+            act_pos = true;
+          }
         }
         // if msg comes from other agent
         else{}
@@ -328,8 +334,13 @@ namespace ucaBot {
     // request pos
     obj_req.set_values(id_agent, '0', 'GP', []);
     console.log('values set');
-    let num = parseInt(id_agent);
-    return num;
+    while (true){
+      if (act_pos == true){
+        break;
+      }
+    }
+    act_pos = false;
+    return x;
   }
 
   /**
