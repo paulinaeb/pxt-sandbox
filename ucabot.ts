@@ -282,47 +282,49 @@ namespace ucaBot {
   }
 
   basic.forever(function(){
-    if (obj_req.f != null){
-      console.log('there is a request to send');
-      console.log(obj_req.f+' '+obj_req.d+' '+obj_req.c+' '+obj_req.p);
-      // header of msg
-      let msg = obj_req.f + obj_req.d + obj_req.c;
-      // num of params passed
-      let n_param = obj_req.p.length;
-      // size of params str with delimiter (/)
-      let size = n_param;
-      // if there are params
-      if (size > 0){ 
-        // adds the size of each param
-        for (let i = 0; i < n_param; i++)
-          size += obj_req.p[i].length; 
-        // define the number of spaces to be filled with '0'
-        let num_fill = 14 - size;
-        // number of spaces that every param will have added to (if>0)
-        let n_each = num_fill / n_param;
-        if (num_fill >= 0){
-          if (n_param >= 1){
-              for (let i = 0; i < n_param; i++){
-                msg += obj_req.p[i] + '/';
-                for(let j = 0; j < Math.floor(n_each); j++)
-                  msg += '0';
-              }
+    control.inBackground(() => {
+      if (obj_req.f != null){
+        console.log('there is a request to send');
+        console.log(obj_req.f+' '+obj_req.d+' '+obj_req.c+' '+obj_req.p);
+        // header of msg
+        let msg = obj_req.f + obj_req.d + obj_req.c;
+        // num of params passed
+        let n_param = obj_req.p.length;
+        // size of params str with delimiter (/)
+        let size = n_param;
+        // if there are params
+        if (size > 0){ 
+          // adds the size of each param
+          for (let i = 0; i < n_param; i++)
+            size += obj_req.p[i].length; 
+          // define the number of spaces to be filled with '0'
+          let num_fill = 14 - size;
+          // number of spaces that every param will have added to (if>0)
+          let n_each = num_fill / n_param;
+          if (num_fill >= 0){
+            if (n_param >= 1){
+                for (let i = 0; i < n_param; i++){
+                  msg += obj_req.p[i] + '/';
+                  for(let j = 0; j < Math.floor(n_each); j++)
+                    msg += '0';
+                }
+            } 
+            // if num to add is odd or there are less spaces to be filled than params 
+            if ((n_each != Math.floor(n_each)) || (num_fill < n_param)){
+              let ex = 18 - msg.length; 
+              for (let i = 0; i < ex; i++)
+                msg += '0';
+            }
           } 
-          // if num to add is odd or there are less spaces to be filled than params 
-          if ((n_each != Math.floor(n_each)) || (num_fill < n_param)){
-            let ex = 18 - msg.length; 
-            for (let i = 0; i < ex; i++)
-              msg += '0';
-          }
-        } 
-        else
-          console.log('The number of chars you tried to pass in parameters overload the allowed (14). Verify and try again.'); 
+          else
+            console.log('The number of chars you tried to pass in parameters overload the allowed (14). Verify and try again.'); 
+      }
+      console.log('serialized: '+msg);
+      radio.sendString(msg);
+      console.log('sent');
+      obj_req = new Resp();
     }
-    console.log('serialized: '+msg);
-    radio.sendString(msg);
-    console.log('sent');
-    obj_req = new Resp();
-  }
+  });
   });
 
   /**
