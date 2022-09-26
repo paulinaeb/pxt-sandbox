@@ -346,6 +346,7 @@ namespace ucaBot {
       basic.pause(20);
     }
     act_pos = false;
+    console.log('pos '+pos.toString());
     if(pos == Position.x)
       return x;
     else
