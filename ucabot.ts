@@ -208,19 +208,18 @@ namespace ucaBot {
               let flag = 0;
               for (let char = 0; char < obj_resp.p[i].length; char++){  
                 // checks if num or str for every char 
-                if (!(((obj_resp.p[i][char] >= '0') && (obj_resp.p[i][char] <= '9')) || (obj_resp.p[i][char]=='.'))){
+                if (!(((obj_resp.p[i][char] >= '0') && (obj_resp.p[i][char] <= '9')) || (obj_resp.p[i][char]=='.')))
                     // increments str flag
                   flag+=1; 
-                }
               }
               // if the param is a str - remove 0
-              if (flag > 0){
+              if (flag > 0)
                 obj_resp.p[i] = obj_resp.p[i].replace('0',''); 
-              }
             }
           }
         }
-        console.log(obj_resp.f+' '+obj_resp.d+' '+obj_resp.c+' '+obj_resp.p);
+        console.log(obj_resp.f+' '+obj_resp.d+' '+obj_resp.c);
+        console.log(obj_resp.p);
         // if msg comes from sand
         if ((obj_resp.f == '0')){
           if ((id_agent == '0') && (obj_resp.c == 'II')){
@@ -229,9 +228,8 @@ namespace ucaBot {
             basic.pause(3000);
             basic.clearScreen();
           }
-          else if ((n_agents == '0') && (obj_resp.c == 'AI')){
+          else if ((n_agents == '0') && (obj_resp.c == 'AI'))
             n_agents = obj_resp.p[0];
-          }
         }
         // if msg comes from other agent
         else{}
@@ -318,8 +316,6 @@ namespace ucaBot {
     radio.sendString(msg);
     console.log('sent');
     obj_req = new Resp();
-    console.log('after sent '+obj_req.f+' '+obj_req.d+' '+obj_req.c);
-    console.log(obj_req.p);
   }
   });
 
