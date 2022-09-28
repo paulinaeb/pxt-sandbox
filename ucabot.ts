@@ -392,7 +392,13 @@ namespace ucaBot {
   //% weight=175 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
     // request pos
-    obj_req.set_values(id_agent, '0', 'GD', []);
+    while (true){
+      if (id_agent != '0'){
+        obj_req.set_values(id_agent, '0', 'GD', []);
+        break;
+      }
+      basic.pause(20);
+    }
     console.log('values set');  
     while (true){
       if (act_dir == true)
@@ -415,6 +421,10 @@ namespace ucaBot {
     let e = Math.abs(theta - theta_p);
     console.log('error '+e); 
     // while here
+    // while(e != 0){
+      //   d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new);
+      //   motors()
+    // }
     d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
     console.log('dir '+d+' '+-d);
     // while (e != 0){ 
