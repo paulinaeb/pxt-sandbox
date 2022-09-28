@@ -390,7 +390,7 @@ namespace ucaBot {
   */ 
   //% block="Rotate agent %p ° to %dir"
   //% weight=175 color=#ff9da5
-  export function rotate(dir: RotateDir, p: number) { 
+  export function rotate(p: number, dir: RotateDir) { 
     // request pos
     obj_req.set_values(id_agent, '0', 'GD', []);
     console.log('values set');  
