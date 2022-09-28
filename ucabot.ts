@@ -433,30 +433,25 @@ namespace ucaBot {
     console.log('new angle' + theta_p);
     let e = Math.abs(theta - theta_p);
     console.log('error '+e); 
-    // while here
-    // while(e != 0){
-      //   d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new);
-      //   motors(d, -d);
-      //   obj_req.set_values(id_agent, '0', 'GD', []);
-          // console.log('values set');  
-          // while (true){
-          //   if (act_dir)
-          //     break;
-          //   basic.pause(20);
-          // }
-          // act_dir = false;
-          // console.log('theta'+theta);
-    // }
-    d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
-    console.log('dir '+d+' '+-d);
-    // while (e != 0){ 
-    //   d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new);
-    //   // set motors here 
-    //   // get theta again
-    //   e = Math.abs(theta - theta_p);
-    //   console.log(d);
-    //   console.log(-d);
-    // }
+    while(e > 0){
+    //PID adaptation
+      d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new);
+      motors(d, -d);
+      obj_req.set_values(id_agent, '0', 'GD', []);
+      console.log('values set');  
+      while (true){
+        if (act_dir)
+          break;
+        basic.pause(20);
+      }
+      act_dir = false;
+      console.log('theta in loop'+theta);
+      e = Math.abs(theta - theta_p);
+      console.log('error in loop '+e); 
+    }
+    motors(0,0);
+    // d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
+    // console.log('dir '+d+' '+-d);
     console.log('end');
   }
 
