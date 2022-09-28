@@ -354,7 +354,14 @@ namespace ucaBot {
   //% weight=180 color=#ff9da5
   export function myPosition(pos: Position): number { 
     // request pos
-    obj_req.set_values(id_agent, '0', 'GP', []);
+    while (true){
+      if (id_agent != '0'){
+        // request pos
+        obj_req.set_values(id_agent, '0', 'GP', []);
+        break;
+      }
+      basic.pause(20);
+    }
     console.log('values set');  
     while (true){
       if (act_pos == true)
@@ -371,11 +378,17 @@ namespace ucaBot {
   /**
   * Agents can know their direction in degrees on SandBox.
   */ 
-  //% block="My direction (degrees)"
+  //% block="My direction"
   //% weight=175 color=#ff9da5
   export function myDirection(): number { 
-    // request pos
-    obj_req.set_values(id_agent, '0', 'GD', []);
+    while (true){
+      if (id_agent != '0'){
+        // request pos
+        obj_req.set_values(id_agent, '0', 'GD', []);
+        break;
+      }
+      basic.pause(20);
+    }
     console.log('values set');  
     while (true){
       if (act_dir == true)
@@ -423,7 +436,16 @@ namespace ucaBot {
     // while here
     // while(e != 0){
       //   d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new);
-      //   motors()
+      //   motors(d, -d);
+      //   obj_req.set_values(id_agent, '0', 'GD', []);
+          // console.log('values set');  
+          // while (true){
+          //   if (act_dir)
+          //     break;
+          //   basic.pause(20);
+          // }
+          // act_dir = false;
+          // console.log('theta'+theta);
     // }
     d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
     console.log('dir '+d+' '+-d);
