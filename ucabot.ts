@@ -355,7 +355,7 @@ namespace ucaBot {
   export function myPosition(pos: Position): number { 
     // request pos
     while (true){
-      if (id_agent != '0'){
+      if (n_agents != '0'){
         // request pos
         obj_req.set_values(id_agent, '0', 'GP', []);
         break;
@@ -382,7 +382,7 @@ namespace ucaBot {
   //% weight=175 color=#ff9da5
   export function myDirection(): number { 
     while (true){
-      if (id_agent != '0'){
+      if (n_agents != '0'){
         // request pos
         obj_req.set_values(id_agent, '0', 'GD', []);
         break;
@@ -406,7 +406,7 @@ namespace ucaBot {
   export function rotate(p: number, dir: RotateDir) { 
     // request pos
     while (true){
-      if (id_agent != '0'){
+      if (n_agents != '0'){
         obj_req.set_values(id_agent, '0', 'GD', []);
         break;
       }
