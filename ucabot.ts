@@ -55,11 +55,23 @@ namespace ucaBot {
     //% block="inches"
     Inches,
   }
+  /**
+   * Select the position desired
+   */
   export enum Position {
     //% block="x"
     x,
     //% block="y"
     y,
+  }
+  /**
+ * Select the position desired
+ */
+  export enum RotateDir {
+    //% block="Right"
+    dir_right,
+    //% block="Left"
+    dir_left,
   }
   /**
    * Select the motor on the left or right
@@ -373,6 +385,50 @@ namespace ucaBot {
     act_dir = false;
     return theta;
   }
+    /**
+  * Agents can know their direction in degrees on SandBox.
+  */ 
+  //% block="Rotate agent %p ° to %dir"
+  //% weight=175 color=#ff9da5
+  export function rotate(dir: RotateDir, p: number) { 
+    // request pos
+    obj_req.set_values(id_agent, '0', 'GD', []);
+    console.log('values set');  
+    while (true){
+      if (act_dir == true)
+        break;
+      basic.pause(20);
+    }
+    act_dir = false;
+    console.log('theta'+theta);
+    let theta_p = 0;
+    let d = 0;
+    let min_prev = 5;
+    let max_prev = 180;
+    let min_new = 15;
+    let max_new = 30;
+    if (dir == RotateDir.dir_right)
+      theta_p = theta + p;
+    else
+      theta_p = theta - p;
+    console.log('new angle' + theta_p);
+    let e = Math.abs(theta - theta_p);
+    console.log('error '+e); 
+    // while here
+    d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
+    console.log('dir '+d+' '+-d);
+    // while (e != 0){ 
+    //   d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new);
+    //   // set motors here 
+    //   // get theta again
+    //   e = Math.abs(theta - theta_p);
+    //   console.log(d);
+    //   console.log(-d);
+    // }
+    console.log('end');
+  }
+
+
   /**
    * TODO: Set the speed of left and right wheels.
    * @param lspeed Left wheel speed , eg: 100
