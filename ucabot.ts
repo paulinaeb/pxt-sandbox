@@ -249,6 +249,7 @@ namespace ucaBot {
             basic.clearScreen();
           }
           else if ((n_agents == '0') && (obj_resp.c == 'AI')){
+            radio.sendString('agents initialized');
             n_agents = obj_resp.p[0];
           }
           else if (obj_resp.c == 'GP'){
