@@ -243,7 +243,6 @@ namespace ucaBot {
         // if msg comes from sand
         if ((obj_resp.f == '0')){
           if ((id_agent == '0') && (obj_resp.c == 'II')){
-            radio.sendString('initialized');
             id_agent = obj_resp.p[0];
             basic.showString(id_agent);
             basic.pause(1800);
@@ -367,6 +366,7 @@ namespace ucaBot {
         break;
       basic.pause(20);
     }
+    radio.sendString('done');
     act_pos = false; 
     if(pos == Position.x)
       return x;
