@@ -260,6 +260,9 @@ namespace ucaBot {
             theta = parseFloat(obj_resp.p[0]);
             act_dir = true;
           }
+          else if (obj_resp.c == 'PI'){
+            radio.sendString('done');
+          }
         }
         // if msg comes from other agent
         else{}
@@ -425,8 +428,7 @@ namespace ucaBot {
         motors(30, -30);
       else 
         motors(-30, 30);
-      basic.pause(100);
-      console.log('menor a 30');
+      basic.pause(100); 
       if (dir == RotateDir.dir_right)
         motors(d, -d);
       else 
