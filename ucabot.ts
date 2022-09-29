@@ -391,7 +391,7 @@ namespace ucaBot {
   /**
   * Agents can know their direction in degrees on SandBox.
   */ 
-  //% block="Rotate agent %p ° to %dir"
+  //% block="Rotate agent %p ° to %dir v2"
   //% weight=175 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
