@@ -408,7 +408,7 @@ namespace ucaBot {
     let min_prev = 5;
     let max_prev = 180;
     let min_new = 24;
-    let max_new = 30;
+    let max_new = 27;
     if (dir == RotateDir.dir_right)
       theta_p = theta + p;
     else
@@ -419,15 +419,13 @@ namespace ucaBot {
     console.log('error '+e); 
     while ((e > 5) && (first_e >= e)){
     //PID adaptation
-      d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new);
-      if (d < 30){
-        if (dir == RotateDir.dir_right)
-          motors(30, -30);
-        else 
-          motors(-30, 30);
-        basic.pause(100);
-        console.log('menor a 30');
-      }
+      d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
+      if (dir == RotateDir.dir_right)
+        motors(30, -30);
+      else 
+        motors(-30, 30);
+      basic.pause(100);
+      console.log('menor a 30');
       if (dir == RotateDir.dir_right)
         motors(d, -d);
       else 
