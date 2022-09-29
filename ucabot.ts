@@ -369,7 +369,6 @@ namespace ucaBot {
         break;
       basic.pause(20);
     }
-    radio.sendString('done');
     act_pos = false; 
     if(pos == Position.x)
       return x;
