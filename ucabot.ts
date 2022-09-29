@@ -192,7 +192,7 @@ namespace ucaBot {
   /**
    * TODO: Initialize agent with color and Id.
    */
-  //% block="Initialize agent on Sandbox v2"
+  //% block="Initialize agent on Sandbox"
   //% weight=200 color=#ff9da5
   export function initAgent(): void {
     radio.setGroup(ID_GROUP);
@@ -245,11 +245,12 @@ namespace ucaBot {
           if ((id_agent == '0') && (obj_resp.c == 'II')){
             id_agent = obj_resp.p[0];
             basic.showString(id_agent);
-            basic.pause(3000);
+            basic.pause(1800);
             basic.clearScreen();
           }
-          else if ((n_agents == '0') && (obj_resp.c == 'AI'))
+          else if ((n_agents == '0') && (obj_resp.c == 'AI')){
             n_agents = obj_resp.p[0];
+          }
           else if (obj_resp.c == 'GP'){
             x = parseFloat(obj_resp.p[0]);
             y = parseFloat(obj_resp.p[1]);
@@ -264,6 +265,13 @@ namespace ucaBot {
         else{}
       }
     });
+// the block does not end until agents are initialized
+    while (true) { 
+      if ((n_agents != '0') && (id_agent != '0'))
+        break; 
+      basic.pause(20); 
+    }
+    basic.showString('Ready');
     return;
   }
   /**
@@ -275,9 +283,8 @@ namespace ucaBot {
     control.onEvent(99, 3501, handler);
     control.inBackground(() => {
       while (true) { 
-        if (n_agents != '0'){ 
-          control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire);
-        }
+        if (n_agents != '0')
+          control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire); 
         basic.pause(20); 
       }
     });
@@ -354,22 +361,13 @@ namespace ucaBot {
   //% weight=180 color=#ff9da5
   export function myPosition(pos: Position): number { 
     // request pos
-    while (true){
-      if (n_agents != '0'){
-        // request pos
-        obj_req.set_values(id_agent, '0', 'GP', []);
-        break;
-      }
-      basic.pause(20);
-    }
-    console.log('values set');  
+    obj_req.set_values(id_agent, '0', 'GP', []); 
     while (true){
       if (act_pos == true)
         break;
       basic.pause(20);
     }
-    act_pos = false;
-    console.log('pos '+pos.toString());
+    act_pos = false; 
     if(pos == Position.x)
       return x;
     else
@@ -381,15 +379,8 @@ namespace ucaBot {
   //% block="My direction"
   //% weight=175 color=#ff9da5
   export function myDirection(): number { 
-    while (true){
-      if (n_agents != '0'){
-        // request pos
-        obj_req.set_values(id_agent, '0', 'GD', []);
-        break;
-      }
-      basic.pause(20);
-    }
-    console.log('values set');  
+    // request direction
+    obj_req.set_values(id_agent, '0', 'GD', []); 
     while (true){
       if (act_dir == true)
         break;
@@ -398,34 +389,27 @@ namespace ucaBot {
     act_dir = false;
     return theta;
   }
-    /**
+  /**
   * Agents can know their direction in degrees on SandBox.
   */ 
   //% block="Rotate agent %p ° to %dir"
   //% weight=175 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
-    // request pos
-    while (true){
-      if (n_agents != '0'){
-        obj_req.set_values(id_agent, '0', 'GD', []);
-        break;
-      }
-      basic.pause(20);
-    }
-    console.log('values set');  
+    // request direction
+    obj_req.set_values(id_agent, '0', 'GD', []); 
     while (true){
       if (act_dir == true)
         break;
       basic.pause(20);
     }
     act_dir = false;
-    console.log('theta'+theta);
+    console.log('theta '+theta);
     let theta_p = 0;
     let d = 0;
     let min_prev = 5;
     let max_prev = 180;
-    let min_new = 15;
-    let max_new = 30;
+    let min_new = 24;
+    let max_new = 32;
     if (dir == RotateDir.dir_right)
       theta_p = theta + p;
     else
@@ -433,12 +417,16 @@ namespace ucaBot {
     console.log('new angle' + theta_p);
     let e = Math.abs(theta - theta_p);
     console.log('error '+e); 
-    while(e > 0){
+    while(e > 2){
     //PID adaptation
       d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new);
+      if (d < 30){
+        motors(30, -30);
+        basic.pause(100);
+        console.log('menor a 30');
+      }
       motors(d, -d);
-      obj_req.set_values(id_agent, '0', 'GD', []);
-      console.log('values set');  
+      obj_req.set_values(id_agent, '0', 'GD', []); 
       while (true){
         if (act_dir)
           break;
@@ -450,8 +438,6 @@ namespace ucaBot {
       console.log('error in loop '+e); 
     }
     motors(0,0);
-    // d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
-    // console.log('dir '+d+' '+-d);
     console.log('end');
   }
 
