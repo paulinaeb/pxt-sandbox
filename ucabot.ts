@@ -270,8 +270,7 @@ namespace ucaBot {
       if ((n_agents != '0') && (id_agent != '0'))
         break; 
       basic.pause(20); 
-    }
-    basic.showString('Ready');
+    } 
     return;
   }
   /**
@@ -416,16 +415,23 @@ namespace ucaBot {
       theta_p = theta - p;
     console.log('new angle' + theta_p);
     let e = Math.abs(theta - theta_p);
+    let first_e = e;
     console.log('error '+e); 
-    while(e > 2){
+    while ((e > 5) && (first_e >= e)){
     //PID adaptation
       d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new);
       if (d < 30){
-        motors(30, -30);
+        if (dir == RotateDir.dir_right)
+          motors(30, -30);
+        else 
+          motors(-30, 30);
         basic.pause(100);
         console.log('menor a 30');
       }
-      motors(d, -d);
+      if (dir == RotateDir.dir_right)
+        motors(d, -d);
+      else 
+        motors(-d, d);
       obj_req.set_values(id_agent, '0', 'GD', []); 
       while (true){
         if (act_dir)
