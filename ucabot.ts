@@ -408,7 +408,7 @@ namespace ucaBot {
     let min_prev = 5;
     let max_prev = 180;
     let min_new = 24;
-    let max_new = 32;
+    let max_new = 28;
     if (dir == RotateDir.dir_right)
       theta_p = theta + p;
     else
