@@ -451,6 +451,10 @@ namespace ucaBot {
         p = theta - theta_p;
       else
         p =  theta_p - theta;
+      if (p < 0)
+        p = 360 + p;
+      if (p > 180)
+        p = 360 - p;
       console.log('theta in loop '+theta); 
       console.log('p (delta) in loop '+p); 
     }
