@@ -394,7 +394,7 @@ namespace ucaBot {
   /**
   * Agents can know their direction in degrees on SandBox.
   */ 
-  //% block="Rotate agent %p ° to %dir v2"
+  //% block="Rotate agent %p ° to %dir"
   //% weight=175 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
@@ -412,26 +412,31 @@ namespace ucaBot {
     let max_prev = 180;
     let min_new = 24;
     let max_new = 27;
-    if (dir == RotateDir.dir_right)
-      theta_p = theta + p;
-    else
+    if (dir == RotateDir.dir_right){
       theta_p = theta - p;
-    console.log('new angle' + theta_p);
-    let e = Math.abs(theta - theta_p);
-    let first_e = e;
-    console.log('error '+e); 
-    while ((e > 5) && (first_e >= e)){
+      if (theta_p < 0)
+        theta_p = 360 + theta_p;
+    }
+    // left
+    else{
+      theta_p = theta + p;
+      if (theta_p > 360)
+        theta_p = theta_p - 360;
+    }
+    console.log('new angle ' + theta_p); 
+    while (p > 3){
     //PID adaptation
-      d = Math.round((e - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
-      if (dir == RotateDir.dir_right)
+      d = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
+      if (dir == RotateDir.dir_right){
         motors(30, -30);
-      else 
-        motors(-30, 30);
-      basic.pause(100); 
-      if (dir == RotateDir.dir_right)
+        basic.pause(100);
         motors(d, -d);
-      else 
+      }
+      else{
+        motors(-30, 30);
+        basic.pause(100);
         motors(-d, d);
+      }
       obj_req.set_values(id_agent, '0', 'GD', []); 
       while (true){
         if (act_dir)
@@ -439,9 +444,12 @@ namespace ucaBot {
         basic.pause(20);
       }
       act_dir = false;
-      console.log('theta in loop'+theta);
-      e = Math.abs(theta - theta_p);
-      console.log('error in loop '+e); 
+      if (dir == RotateDir.dir_right)
+        p = theta - theta_p;
+      else
+        p =  theta_p - theta;
+      console.log('theta in loop '+theta); 
+      console.log('p (delta) in loop '+p); 
     }
     motors(0,0);
     console.log('end');
