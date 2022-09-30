@@ -397,7 +397,7 @@ namespace ucaBot {
   //% block="Rotate agent %p ° to %dir"
   //% p.shadow="protractorPicker"
   //% p.min=10 p.max=180
-  //% weight=175 color=#ff9da5
+  //% weight=170 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
     obj_req.set_values(id_agent, '0', 'GD', []); 
@@ -412,8 +412,8 @@ namespace ucaBot {
     let d = 0;
     let min_prev = 10;
     let max_prev = 180;
-    let min_new = 24;
-    let max_new = 27;
+    let min_new = 22;
+    let max_new = 25;
     if (dir == RotateDir.dir_right){
       theta_p = theta - p;
       if (theta_p < 0)
@@ -456,7 +456,24 @@ namespace ucaBot {
     motors(0,0);
     console.log('end');
   }
+  /**
+  * Move in centimeters.
+  */ 
+  //% block="Move forward %cm centimeters"
+  //% cm.min = 5 cm.max = 50
+  //% weight=165 color=#ff9da5
+  export function moveCm(cm: number): void { 
+    // request pos
+    obj_req.set_values(id_agent, '0', 'GP', []); 
+    while (true){
+      if (act_pos == true)
+        break;
+      basic.pause(20);
+    }
+    act_pos = false;
 
+    return;
+  }
 
   /**
    * TODO: Set the speed of left and right wheels.
