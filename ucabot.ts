@@ -200,6 +200,9 @@ namespace ucaBot {
       // msg in fixed format
       let msg = receivedString;
       console.log('received '+msg);  
+      if (msg == 'ping'){
+        radio.sendString('ping received');
+      }
       // assign header of msg to public object
       obj_resp.set_header(msg[0], msg[1], msg[2]+msg[3]);
       // if the msg is for me or for all, search the params
@@ -259,9 +262,6 @@ namespace ucaBot {
           else if (obj_resp.c == 'GD'){
             theta = parseFloat(obj_resp.p[0]);
             act_dir = true;
-          }
-          else if (obj_resp.c == 'PI'){
-            radio.sendString('done');
           }
         }
         // if msg comes from other agent
