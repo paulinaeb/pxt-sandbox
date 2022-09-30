@@ -392,9 +392,11 @@ namespace ucaBot {
     return theta;
   }
   /**
-  * Agents can know their direction in degrees on SandBox.
+  * Rotate agent at an angle between 10 and 180
   */ 
   //% block="Rotate agent %p ° to %dir"
+  //% p.shadow="protractorPicker"
+  //% p.min=10 p.max=180
   //% weight=175 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
@@ -408,7 +410,7 @@ namespace ucaBot {
     console.log('theta '+theta);
     let theta_p = 0;
     let d = 0;
-    let min_prev = 5;
+    let min_prev = 10;
     let max_prev = 180;
     let min_new = 24;
     let max_new = 27;
