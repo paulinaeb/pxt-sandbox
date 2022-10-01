@@ -432,12 +432,12 @@ namespace ucaBot {
       d = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
       if (dir == RotateDir.dir_right){
         motors(30, -30);
-        basic.pause(100);
+        basic.pause(150);
         motors(d, -d);
       }
       else{
         motors(-30, 30);
-        basic.pause(100);
+        basic.pause(150);
         motors(-d, d);
       }
       obj_req.set_values(id_agent, '0', 'GD', []); 
@@ -448,11 +448,9 @@ namespace ucaBot {
       }
       act_dir = false;
       p_aux = p;
-      p =  theta_p - theta;
+      p =  Math.abs(theta_p - theta); 
       if (p > 180)
         p = 360 - p;
-      if (p < 0)
-        p = 360 + p;
       console.log('theta in loop '+theta); 
       console.log('p (delta) in loop '+p); 
     }
