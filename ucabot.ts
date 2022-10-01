@@ -412,8 +412,8 @@ namespace ucaBot {
     let d = 0;
     let min_prev = 10;
     let max_prev = 180;
-    let min_new = 22;
-    let max_new = 25;
+    let min_new = 24;
+    let max_new = 27;
     if (dir == RotateDir.dir_right){
       theta_p = theta - p;
       if (theta_p < 0)
@@ -427,7 +427,7 @@ namespace ucaBot {
     }
     console.log('new angle ' + theta_p); 
     let p_aux = p;
-    while ((p > 3) && (p <= p_aux)){
+    while ((p > 5) && (p <= p_aux)){
     //PID adaptation
       d = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
       if (dir == RotateDir.dir_right){
