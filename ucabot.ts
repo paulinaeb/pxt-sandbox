@@ -447,6 +447,7 @@ namespace ucaBot {
         basic.pause(20);
       }
       act_dir = false;
+      p_aux = p;
       p =  theta_p - theta;
       if (p > 180)
         p = 360 - p;
