@@ -447,12 +447,7 @@ namespace ucaBot {
         basic.pause(20);
       }
       act_dir = false;
-      if (dir == RotateDir.dir_right)
-        p = theta - theta_p;
-      else
-        p =  theta_p - theta;
-      if (p < 0)
-        p = 360 + p;
+      p =  theta_p - theta;
       if (p > 180)
         p = 360 - p;
       console.log('theta in loop '+theta); 
