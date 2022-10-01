@@ -257,6 +257,7 @@ namespace ucaBot {
           else if (obj_resp.c == 'GP'){
             x = parseFloat(obj_resp.p[0]);
             y = parseFloat(obj_resp.p[1]);
+            theta = parseInt(obj_resp.p[2]);
             act_pos = true;
           }
           else if (obj_resp.c == 'GD'){
@@ -412,8 +413,8 @@ namespace ucaBot {
     let d = 0;
     let min_prev = 10;
     let max_prev = 180;
-    let min_new = 24;
-    let max_new = 27;
+    let min_new = 23;
+    let max_new = 25;
     if (dir == RotateDir.dir_right){
       theta_p = theta - p;
       if (theta_p < 0)
@@ -427,7 +428,7 @@ namespace ucaBot {
     }
     console.log('new angle ' + theta_p); 
     let p_aux = p;
-    while ((p > 5) && (p <= p_aux)){
+    while ((p > 8) && (p <= p_aux)){
     //PID adaptation
       d = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
       if (dir == RotateDir.dir_right){
@@ -472,7 +473,7 @@ namespace ucaBot {
       basic.pause(20);
     }
     act_pos = false;
-
+    console.log(x+' '+y+' '+theta);
     return;
   }
 
