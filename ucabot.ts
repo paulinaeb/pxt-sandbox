@@ -364,18 +364,25 @@ namespace ucaBot {
   //% weight=180 color=#ff9da5
   export function myPosition(pos: Position): number { 
     // request pos
-    obj_req.set_values(id_agent, '0', 'GP', []); 
-    while (true){
-      if (act_pos == true)
-        break;
-      basic.pause(20);
-    }
-    act_pos = false; 
+    // obj_req.set_values(id_agent, '0', 'GP', []); 
+    // while (true){
+    //   if (act_pos == true)
+    //     break;
+    //   basic.pause(20);
+    // }
+    // act_pos = false; 
+    let num = add(2,8);
+    x = y = num;
     if(pos == Position.x)
       return x;
     else
       return y;
   }
+
+  function add(x : number, y : number): number {
+    return x + y;
+  }
+
   /**
   * Agents can know their direction in degrees on SandBox.
   */ 
