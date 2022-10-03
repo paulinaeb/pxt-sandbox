@@ -491,7 +491,7 @@ namespace ucaBot {
         xv = x; yv = y;
         v = pid(cm, 5, 100, 16, 22);
         motors(v, v);
-        for (let i = 0; i < 5; i++){
+        for (let i = 0; i < 6; i++){
           console.log(i + ' reconnecting with sandbox');
           if (sendRequest('0', 'GP', [])){
             cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
@@ -507,7 +507,7 @@ namespace ucaBot {
           else{
             if (i == 0)
             stopcar();
-            if (i == 4){
+            if (i == 5){
               stopSearching();
               basic.showString('Lost communication in move');
             }
