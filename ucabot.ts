@@ -322,7 +322,7 @@ namespace ucaBot {
     }
     else
       basic.showString('Lost communication with sandBox');
-    return;
+    return 0;
   }
   /**
   * Agents can know their direction in degrees on SandBox.
