@@ -474,18 +474,19 @@ namespace ucaBot {
   * Move in centimeters.
   */ 
   //% block="Move forward %cm centimeters"
-  //% cm.min = 5 cm.max = 50
+  //% cm.min = 5 cm.max = 90
   //% weight=165 color=#ff9da5
   export function moveCm(cm: number): void { 
     // request pos
     if (sendRequest('0', 'GP', [])){
-      console.log(x+' '+y+' '+theta);
+      console.log('pos '+x+' '+y+' '+theta);
       let aux = cm;
       let xo = cm * Math.cos(theta) + x;
       let yo = cm * Math.sin(theta) + y;
-      while ((cm > 4) && (cm <= aux)){
+      console.log('pos obj '+xo+' '+yo);
+      // while ((cm > 4) && (cm <= aux)){
 
-      }
+      // }
     }
     else{
       stopSearching();
