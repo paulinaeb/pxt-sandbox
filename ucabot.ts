@@ -496,7 +496,7 @@ namespace ucaBot {
           if (sendRequest('0', 'GP', [])){
             cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
             d_theta = theta_o - theta;
-            vc = pid(Math.abs(d_theta), 0, 15, 1, 2);
+            vc = pid(Math.abs(d_theta), 0, 15, 1, 4);
             if (d_theta < 0)
               motors(v - vc, v + vc);
             else
