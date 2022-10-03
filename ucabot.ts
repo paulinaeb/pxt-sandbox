@@ -45,6 +45,7 @@ namespace ucaBot {
   let y = 0;
   let act_pos = false;
   let theta = 0;
+  let a_exists = 0;
   /**
    * Unit of Ultrasound Module
    */
@@ -257,6 +258,9 @@ namespace ucaBot {
             y = parseFloat(obj_resp.p[1]);
             theta = parseInt(obj_resp.p[2]);
             act_pos = true;
+          }
+          else if (obj_resp.c == 'AE'){
+            a_exists = parseInt(obj_resp.p[0]);
           }
         }
         // if msg comes from other agent
@@ -552,8 +556,13 @@ namespace ucaBot {
     else{
       for (let i = 0; i < 3; i++){
         if (sendRequest('0', 'AE', [id_followed])){ 
-          console.log('agent exists');
-          // ask for info here
+          console.log('agent exists '+a_exists);
+          if (a_exists == 1){
+            console.log('agent exist');
+            // ask for info here
+          }
+          else
+            basic.showString('ID in follow agent does not exist on SandBox');
           break;
         }
         else{ 
@@ -565,6 +574,7 @@ namespace ucaBot {
         }
       }
     }
+    return;
   }
   /**
    * TODO: Set the speed of left and right wheels.
