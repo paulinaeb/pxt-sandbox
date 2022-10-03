@@ -44,7 +44,6 @@ namespace ucaBot {
   let x = 0;
   let y = 0;
   let act_pos = false;
-  let act_dir = false;
   let theta = 0;
   /**
    * Unit of Ultrasound Module
