@@ -260,10 +260,6 @@ namespace ucaBot {
             theta = parseInt(obj_resp.p[2]);
             act_pos = true;
           }
-          else if (obj_resp.c == 'GD'){
-            theta = parseFloat(obj_resp.p[0]);
-            act_dir = true;
-          }
         }
         // if msg comes from other agent
         else{}
@@ -314,49 +310,6 @@ namespace ucaBot {
     return num;
   }
 
-  // basic.forever(function(){ 
-    // if (obj_req.f != null){
-    //   console.log('there is a request to send');
-    //   console.log(obj_req.f+' '+obj_req.d+' '+obj_req.c+' '+obj_req.p);
-    //   // header of msg
-    //   let msg = obj_req.f + obj_req.d + obj_req.c;
-    //   // num of params passed
-    //   let n_param = obj_req.p.length;
-    //   // size of params str with delimiter (/)
-    //   let size = n_param;
-    //   // if there are params
-    //   if (size > 0){ 
-    //     // adds the size of each param
-    //     for (let i = 0; i < n_param; i++)
-    //       size += obj_req.p[i].length; 
-    //     // define the number of spaces to be filled with '0'
-    //     let num_fill = 14 - size;
-    //     // number of spaces that every param will have added to (if>0)
-    //     let n_each = num_fill / n_param;
-    //     if (num_fill >= 0){
-    //       if (n_param >= 1){
-    //           for (let i = 0; i < n_param; i++){
-    //             msg += obj_req.p[i] + '/';
-    //             for(let j = 0; j < Math.floor(n_each); j++)
-    //               msg += '0';
-    //           }
-    //       } 
-    //       // if num to add is odd or there are less spaces to be filled than params 
-    //       if ((n_each != Math.floor(n_each)) || (num_fill < n_param)){
-    //         let ex = 18 - msg.length; 
-    //         for (let i = 0; i < ex; i++)
-    //           msg += '0';
-    //       }
-    //     } 
-    //     else
-    //       console.log('The number of chars you tried to pass in parameters overload the allowed (14). Verify and try again.'); 
-    // }
-    // console.log('serialized: '+msg);
-    // radio.sendString(msg);
-    // console.log('sent');
-    // obj_req = new Resp();
-    // } 
-  // });
   /**
   * Agents can know their position in cm on SandBox.
   */ 
@@ -365,13 +318,6 @@ namespace ucaBot {
   export function myPosition(pos: Position): number { 
     // request pos
     sendRequest('0', 'GP', []);
-    // obj_req.set_values(id_agent, '0', 'GP', []); 
-    // while (true){
-    //   if (act_pos == true)
-    //     break;
-    //   basic.pause(20);
-    // }
-    // act_pos = false;  
     if(pos == Position.x)
       return x;
     else
@@ -435,13 +381,7 @@ namespace ucaBot {
   //% weight=175 color=#ff9da5
   export function myDirection(): number { 
     // request direction
-    obj_req.set_values(id_agent, '0', 'GD', []); 
-    while (true){
-      if (act_dir == true)
-        break;
-      basic.pause(20);
-    }
-    act_dir = false;
+    sendRequest('0', 'GP', []);
     return theta;
   }
   /**
@@ -453,20 +393,11 @@ namespace ucaBot {
   //% weight=170 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
-    obj_req.set_values(id_agent, '0', 'GD', []); 
-    while (true){
-      if (act_dir == true)
-        break;
-      basic.pause(20);
-    }
-    act_dir = false;
+    sendRequest('0', 'GP', []);
     console.log('theta '+theta);
-    let theta_p = 0;
-    let d = 0;
-    let min_prev = 10;
-    let max_prev = 180;
-    let min_new = 23;
-    let max_new = 25;
+    let theta_p = 0;    let d = 0;
+    let min_prev = 10;  let max_prev = 180;
+    let min_new = 23;   let max_new = 25;
     if (dir == RotateDir.dir_right){
       theta_p = theta - p;
       if (theta_p < 0)
@@ -493,13 +424,7 @@ namespace ucaBot {
         basic.pause(150);
         motors(-d, d);
       }
-      obj_req.set_values(id_agent, '0', 'GD', []); 
-      while (true){
-        if (act_dir)
-          break;
-        basic.pause(20);
-      }
-      act_dir = false;
+      sendRequest('0', 'GP', []);
       p_aux = p;
       p =  Math.abs(theta_p - theta); 
       if (p > 180)
@@ -507,7 +432,7 @@ namespace ucaBot {
       console.log('theta in loop '+theta); 
       console.log('p (delta) in loop '+p); 
     }
-    motors(0,0);
+    motors(0, 0);
     console.log('end');
   }
   /**
