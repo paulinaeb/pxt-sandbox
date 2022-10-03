@@ -385,8 +385,8 @@ namespace ucaBot {
     radio.sendString(msg);
     obj_req = new Resp();
     // waits for answer from radio
-    // 500ms approx for waiting a response 
-    for (let i = 0; i < 25; i++){
+    // 300ms approx for waiting a response 
+    for (let i = 0; i < 15; i++){
       console.log(i + ' waiting resp');
       if (act_pos == true){
         act_pos = false;
