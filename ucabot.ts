@@ -540,6 +540,33 @@ namespace ucaBot {
     return;
   }
   /**
+ * TODO: Follow other agent on sandbox.
+ */
+  //% weight=160 color=#ff9da5
+  //% block="Follow agent ID %id_followed"
+  //% id.min = 1 id.max = 3
+  export function followAgent(id: number) {
+    let id_followed = id.toString();
+    if (id_followed == id_agent)
+      basic.showString('I cannot follow myself. Enter another ID');
+    else{
+      for (let i = 0; i < 3; i++){
+        if (sendRequest('0', 'AE', [id_followed])){ 
+          console.log('agent exists');
+          // ask for info here
+          break;
+        }
+        else{ 
+          console.log(i + ' reconnecting with sandbox');
+          if (i == 2){
+            stopSearching();
+            basic.showString('Lost communication in follow agent');
+          }
+        }
+      }
+    }
+  }
+  /**
    * TODO: Set the speed of left and right wheels.
    * @param lspeed Left wheel speed , eg: 100
    * @param rspeed Right wheel speed, eg: -100
