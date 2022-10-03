@@ -320,7 +320,13 @@ namespace ucaBot {
       else
         return y;
     }
+    else
+      stopSearching();
     return undefined;
+  }
+
+  function stopSearching(){
+    radio.sendString('SS');
   }
   /**
   * Agents can know their direction in degrees on SandBox.
@@ -331,6 +337,8 @@ namespace ucaBot {
     // request direction
     if (sendRequest('0', 'GP', []))
       return theta;
+    else 
+      stopSearching();
     return undefined;
   }
   /**
@@ -446,15 +454,21 @@ namespace ucaBot {
             console.log('p (delta) in loop '+p); 
             break;
           }
-          else
-            stopcar();
+          else{
+            if (i == 0)
+              stopcar();
+            if (i == 2)
+              stopSearching();
+          }
         }
       } 
       stopcar();
       console.log('end');
     }
-    else 
+    else {
+      stopSearching();
       basic.showString('Lost communication in rotate');
+    }
   }
   /**
   * Move in centimeters.
