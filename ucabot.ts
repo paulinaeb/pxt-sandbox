@@ -263,88 +263,18 @@ namespace ucaBot {
         else{}
       }
     });
-// the block does not end until agents are initialized
+  // the block does not end until agents are initialized
     while (true) { 
       if ((n_agents != '0') && (id_agent != '0'))
         break; 
       basic.pause(20); 
     } 
     return;
-  }
-  /**
- * TODO: On all agents initialized on SandBox.
- */
-  //% weight=195 color=#ff9da5
-  //% block="On all agents initialized"
-  export function Init_callback(handler: () => void) {
-    control.onEvent(99, 3501, handler);
-    control.inBackground(() => {
-      while (true) { 
-        if (n_agents != '0')
-          control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire); 
-        basic.pause(20); 
-      }
-    });
-    return;
-  }
-  /**
-  * Agents can know how many agents are initialized on SandBox.
-  */ 
-  //% block="Number of agents on SandBox"
-  //% weight=190 color=#ff9da5
-  export function numberOfAgents(): number {
-    // parse result - only valid if agents were initialized correctly
-    let num = parseInt(n_agents);
-    return num;
-  }
-  /**
-  * Agents can know their number when initialized on SandBox.
-  */ 
-  //% block="My number"
-  //% weight=185 color=#ff9da5
-  export function myNumber(): number {
-    // parse result - only valid if agent was initialized correctly
-    let num = parseInt(id_agent);
-    return num;
-  }
-  /**
-  * Agents can know their position in cm on SandBox.
-  */ 
-  //% block="My position %pos (cm)"
-  //% weight=180 color=#ff9da5
-  export function myPosition(pos: Position): number { 
-    // request pos
-    if (sendRequest('0', 'GP', [])){
-      if(pos == Position.x)
-        return x;
-      else
-        return y;
-    }
-    else
-      stopSearching();
-    return undefined;
-  }
-
-  function stopSearching(){
-    radio.sendString('SS');
-  }
-  /**
-  * Agents can know their direction in degrees on SandBox.
-  */ 
-  //% block="My direction"
-  //% weight=175 color=#ff9da5
-  export function myDirection(): number { 
-    // request direction
-    if (sendRequest('0', 'GP', []))
-      return theta;
-    else 
-      stopSearching();
-    return undefined;
-  }
+  } 
   /**
   * serialize msg and send request to sandBox.
   */ 
-  function sendRequest(d: string, c: string, p: string[]): boolean {
+   function sendRequest(d: string, c: string, p: string[]): boolean {
     obj_req.set_values(id_agent, d, c, p);
     console.log('sending request');
     console.log(obj_req.f+' '+obj_req.d+' '+obj_req.c+' '+obj_req.p);
@@ -397,6 +327,12 @@ namespace ucaBot {
     return false;
   }
   /**
+  * indicates to Sandbox to stop sending current values due to timeout 
+  */ 
+     function stopSearching(){
+      radio.sendString('SS');
+    }
+  /**
   * Adaptation of PID function
   */ 
   function pid(p: number, min_prev: number, max_prev: number, min_new: number, max_new: number): number{
@@ -404,12 +340,67 @@ namespace ucaBot {
     return num;
   }
   /**
+  * Keep agents safe and always on sand (avoid them to fall).
+  */ 
+  //% block="Always on sand"
+  //% weight=198 color=#ff9da5
+  export function onSand() {
+    control.inBackground(() => {
+      while (true) {
+        if (tracking(TrackingState.L_R_line)) {
+          stopcar();
+        }
+        basic.pause(200); 
+      }
+    });
+  }
+  /**
+  * Agents can know their number when initialized on SandBox.
+  */ 
+  //% block="My number (ID)"
+  //% weight=195 color=#ff9da5
+  export function myNumber(): number {
+    // parse result - only valid if agent was initialized correctly
+    let num = parseInt(id_agent);
+    return num;
+  }
+  /**
+  * Agents can know their position in cm on SandBox.
+  */ 
+  //% block="My position %pos (cm)"
+  //% weight=190 color=#ff9da5
+  export function myPosition(pos: Position): number { 
+    // request pos
+    if (sendRequest('0', 'GP', [])){
+      if(pos == Position.x)
+        return x;
+      else
+        return y;
+    }
+    else
+      stopSearching();
+    return undefined;
+  }
+  /**
+  * Agents can know their direction in degrees on SandBox.
+  */ 
+  //% block="My direction"
+  //% weight=185 color=#ff9da5
+  export function myDirection(): number { 
+    // request direction
+    if (sendRequest('0', 'GP', []))
+      return theta;
+    else 
+      stopSearching();
+    return undefined;
+  }
+  /**
   * Rotate agent at an angle between 10 and 180
   */ 
   //% block="Rotate agent %p ° to %dir"
   //% p.shadow="protractorPicker"
   //% p.min=10 p.max=180
-  //% weight=170 color=#ff9da5
+  //% weight=180 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
     if (sendRequest('0', 'GP', [])){
@@ -475,7 +466,7 @@ namespace ucaBot {
   */ 
   //% block="Move forward %cm centimeters"
   //% cm.min = 5 cm.max = 90
-  //% weight=165 color=#ff9da5
+  //% weight=175 color=#ff9da5
   export function moveCm(cm: number): void { 
     // request pos
     if (sendRequest('0', 'GP', [])){
@@ -496,7 +487,7 @@ namespace ucaBot {
           if (sendRequest('0', 'GP', [])){
             cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
             d_theta = theta_o - theta;
-            vc = pid(Math.abs(d_theta), 0, 15, 1, 4);
+            vc = pid(Math.abs(d_theta), 0, 15, 3, 6);
             if (d_theta < 0)
               motors(v - vc, v + vc);
             else
@@ -506,7 +497,7 @@ namespace ucaBot {
           }
           else{
             if (i == 0)
-            stopcar();
+              stopcar();
             if (i == 5){
               stopSearching();
               basic.showString('Lost communication in move');
@@ -522,7 +513,32 @@ namespace ucaBot {
     }
     return;
   }
-
+  /**
+  * Agents can know how many agents are initialized on SandBox.
+  */ 
+  //% block="Number of agents on SandBox"
+  //% weight=170 color=#ff9da5
+  export function numberOfAgents(): number {
+    // parse result - only valid if agents were initialized correctly
+    let num = parseInt(n_agents);
+    return num;
+  }
+/**
+ * TODO: On all agents initialized on SandBox.
+ */
+  //% weight=165 color=#ff9da5
+  //% block="On all agents initialized"
+  export function Init_callback(handler: () => void) {
+    control.onEvent(99, 3501, handler);
+    control.inBackground(() => {
+      while (true) { 
+        if (n_agents != '0')
+          control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire); 
+        basic.pause(20); 
+      }
+    });
+    return;
+  }
   /**
    * TODO: Set the speed of left and right wheels.
    * @param lspeed Left wheel speed , eg: 100
