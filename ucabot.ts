@@ -320,8 +320,6 @@ namespace ucaBot {
       else
         return y;
     }
-    else
-      basic.showString('Lost communication with sandBox');
     return undefined;
   }
   /**
@@ -331,8 +329,9 @@ namespace ucaBot {
   //% weight=175 color=#ff9da5
   export function myDirection(): number { 
     // request direction
-    sendRequest('0', 'GP', []);
-    return theta;
+    if (sendRequest('0', 'GP', []))
+      return theta;
+    return undefined;
   }
   /**
   * serialize msg and send request to sandBox.
@@ -385,9 +384,9 @@ namespace ucaBot {
     //   basic.pause(20);
     // }
     // act_pos = false;
-    // 700 ms for waiting a response 
+    // 700ms for waiting a response 
     for (let i = 0; i < 35; i++){
-      console.log(i+' waiting resp');
+      console.log(i + ' waiting resp');
       if (act_pos == true){
         act_pos = false;
         return true;
@@ -405,47 +404,57 @@ namespace ucaBot {
   //% weight=170 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
-    sendRequest('0', 'GP', []);
-    console.log('theta '+theta);
-    let theta_p = 0;    let d = 0;
-    let min_prev = 10;  let max_prev = 180;
-    let min_new = 23;   let max_new = 25;
-    if (dir == RotateDir.dir_right){
-      theta_p = theta - p;
-      if (theta_p < 0)
-        theta_p = 360 + theta_p;
-    }
-    // left
-    else{
-      theta_p = theta + p;
-      if (theta_p > 360)
-        theta_p = theta_p - 360;
-    }
-    console.log('new angle ' + theta_p); 
-    let p_aux = p;
-    while ((p > 8) && (p <= p_aux)){
-    //PID adaptation
-      d = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
+    if (sendRequest('0', 'GP', [])){
+      console.log('theta ' + theta);
+      let theta_p = 0;    let d = 0;
+      let min_prev = 10;  let max_prev = 180;
+      let min_new = 23;   let max_new = 25;
       if (dir == RotateDir.dir_right){
-        motors(30, -30);
-        basic.pause(150);
-        motors(d, -d);
+        theta_p = theta - p;
+        if (theta_p < 0)
+          theta_p = 360 + theta_p;
       }
+      // left
       else{
-        motors(-30, 30);
-        basic.pause(150);
-        motors(-d, d);
+        theta_p = theta + p;
+        if (theta_p > 360)
+          theta_p = theta_p - 360;
       }
-      sendRequest('0', 'GP', []);
-      p_aux = p;
-      p =  Math.abs(theta_p - theta); 
-      if (p > 180)
-        p = 360 - p;
-      console.log('theta in loop '+theta); 
-      console.log('p (delta) in loop '+p); 
-    } 
-    stopcar();
-    console.log('end');
+      console.log('new angle ' + theta_p); 
+      let p_aux = p;
+      while ((p > 8) && (p <= p_aux)){
+      //PID adaptation
+        d = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
+        if (dir == RotateDir.dir_right){
+          motors(30, -30);
+          basic.pause(150);
+          motors(d, -d);
+        }
+        else{
+          motors(-30, 30);
+          basic.pause(150);
+          motors(-d, d);
+        }
+        for (let i = 0; i < 3; i++){
+          console.log(i + ' reconnecting with sandbox');
+          if (sendRequest('0', 'GP', [])){
+            p_aux = p;
+            p =  Math.abs(theta_p - theta); 
+            if (p > 180)
+              p = 360 - p;
+            console.log('theta in loop '+theta); 
+            console.log('p (delta) in loop '+p); 
+            break;
+          }
+          else
+            stopcar();
+        }
+      } 
+      stopcar();
+      console.log('end');
+    }
+    else 
+      basic.showString('Lost communication in rotate');
   }
   /**
   * Move in centimeters.
@@ -455,8 +464,8 @@ namespace ucaBot {
   //% weight=165 color=#ff9da5
   export function moveCm(cm: number): void { 
     // request pos
-    sendRequest('0', 'GP', []);
-    console.log(x+' '+y+' '+theta);
+    if (sendRequest('0', 'GP', []))
+      console.log(x+' '+y+' '+theta);
     return;
   }
 
