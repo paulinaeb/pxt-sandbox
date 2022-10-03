@@ -433,12 +433,12 @@ namespace ucaBot {
         d = pid(p, 10, 180, 24, 25);
         if (dir == RotateDir.dir_right){
           motors(30, -30);
-          basic.pause(150);
+          basic.pause(100);
           motors(d, -d);
         }
         else{
           motors(-30, 30);
-          basic.pause(150);
+          basic.pause(100);
           motors(-d, d);
         }
         for (let i = 0; i < 3; i++){
@@ -480,13 +480,41 @@ namespace ucaBot {
     // request pos
     if (sendRequest('0', 'GP', [])){
       console.log('pos '+x+' '+y+' '+theta);
-      let aux = cm;
-      let xo = cm * Math.cos(theta) + x;
-      let yo = cm * Math.sin(theta) + y;
-      console.log('pos obj '+xo+' '+yo);
-      // while ((cm > 4) && (cm <= aux)){
-
-      // }
+      let aux = cm;  let v = 0;
+      let xv = 0;    let yv = 0;
+      let theta_o = theta; 
+      let d_theta = 0;  let vc = 0;
+      let x_o = cm * Math.cos(theta) + x;
+      let y_o = cm * Math.sin(theta) + y;
+      console.log('pos obj '+x_o+' '+y_o);
+      while ((cm > 2) && (cm <= aux)){
+        xv = x; yv = y;
+        v = pid(cm, 20, 26, 5, 100);
+        motors(v, v);
+        for (let i = 0; i < 3; i++){
+          console.log(i + ' reconnecting with sandbox');
+          if (sendRequest('0', 'GP', [])){
+            cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
+            d_theta = theta_o - theta;
+            vc = pid(Math.abs(d_theta), 0, 15, 1, 3);
+            if (d_theta < 0)
+              motors(v - vc, v + vc);
+            else
+              if (d_theta > 0)
+                motors(v + vc, v - vc);
+            break;
+          }
+          else{
+            if (i == 0)
+            stopcar();
+            if (i == 2){
+              stopSearching();
+              basic.showString('Lost communication in move');
+            }
+          }
+        }
+      }
+      stopcar();
     }
     else{
       stopSearching();
