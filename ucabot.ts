@@ -386,7 +386,7 @@ namespace ucaBot {
     obj_req = new Resp();
     // waits for answer from radio
     // 300ms approx for waiting a response 
-    for (let i = 0; i < 15; i++){
+    for (let i = 0; i < 10; i++){
       console.log(i + ' waiting resp');
       if (act_pos == true){
         act_pos = false;
@@ -395,6 +395,13 @@ namespace ucaBot {
       basic.pause(20);
     }
     return false;
+  }
+  /**
+  * Adaptation of PID function
+  */ 
+  function pid(p: number, min_prev: number, max_prev: number, min_new: number, max_new: number): number{
+    let num = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
+    return num;
   }
   /**
   * Rotate agent at an angle between 10 and 180
@@ -408,8 +415,6 @@ namespace ucaBot {
     if (sendRequest('0', 'GP', [])){
       console.log('theta ' + theta);
       let theta_p = 0;    let d = 0;
-      let min_prev = 10;  let max_prev = 180;
-      let min_new = 24;   let max_new = 25;
       if (dir == RotateDir.dir_right){
         theta_p = theta - p;
         if (theta_p < 0)
@@ -425,7 +430,7 @@ namespace ucaBot {
       let p_aux = p;
       while ((p > 8) && (p <= p_aux)){
       //PID adaptation
-        d = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
+        d = pid(p, 10, 180, 24, 25);
         if (dir == RotateDir.dir_right){
           motors(30, -30);
           basic.pause(150);
@@ -473,8 +478,19 @@ namespace ucaBot {
   //% weight=165 color=#ff9da5
   export function moveCm(cm: number): void { 
     // request pos
-    if (sendRequest('0', 'GP', []))
+    if (sendRequest('0', 'GP', [])){
       console.log(x+' '+y+' '+theta);
+      let aux = cm;
+      let xo = cm * Math.cos(theta) + x;
+      let yo = cm * Math.sin(theta) + y;
+      while ((cm > 4) && (cm <= aux)){
+
+      }
+    }
+    else{
+      stopSearching();
+      basic.showString('Lost communication in move');
+    }
     return;
   }
 
