@@ -385,15 +385,8 @@ namespace ucaBot {
     radio.sendString(msg);
     obj_req = new Resp();
     // waits for answer from radio
-
-    // while (true){
-    //   if (act_pos == true)
-    //     break;
-    //   basic.pause(20);
-    // }
-    // act_pos = false;
-    // 700ms for waiting a response 
-    for (let i = 0; i < 35; i++){
+    // 500ms approx for waiting a response 
+    for (let i = 0; i < 25; i++){
       console.log(i + ' waiting resp');
       if (act_pos == true){
         act_pos = false;
@@ -416,7 +409,7 @@ namespace ucaBot {
       console.log('theta ' + theta);
       let theta_p = 0;    let d = 0;
       let min_prev = 10;  let max_prev = 180;
-      let min_new = 23;   let max_new = 25;
+      let min_new = 24;   let max_new = 26;
       if (dir == RotateDir.dir_right){
         theta_p = theta - p;
         if (theta_p < 0)
@@ -457,8 +450,10 @@ namespace ucaBot {
           else{
             if (i == 0)
               stopcar();
-            if (i == 2)
+            if (i == 2){
               stopSearching();
+              basic.showString('Lost communication in rotate');
+            }
           }
         }
       } 
