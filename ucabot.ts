@@ -199,11 +199,10 @@ namespace ucaBot {
       // msg in fixed format
       let msg = receivedString;
       console.log('received '+msg);  
-      if (msg == 'ping'){
+      if (msg == 'ping')
         radio.sendString('ping received');
-      }
       // assign header of msg to public object
-      obj_resp.set_header(msg[0], msg[1], msg[2]+msg[3]);
+      obj_resp.set_header(msg[0], msg[1], msg[2] + msg[3]);
       // if the msg is for me or for all, search the params
       if ((obj_resp.d == 'F') || (obj_resp.d == id_agent)){
         // if there are params
@@ -308,7 +307,6 @@ namespace ucaBot {
     let num = parseInt(id_agent);
     return num;
   }
-
   /**
   * Agents can know their position in cm on SandBox.
   */ 
@@ -316,16 +314,32 @@ namespace ucaBot {
   //% weight=180 color=#ff9da5
   export function myPosition(pos: Position): number { 
     // request pos
-    sendRequest('0', 'GP', []);
-    if(pos == Position.x)
-      return x;
+    if (sendRequest('0', 'GP', [])){
+      if(pos == Position.x)
+        return x;
+      else
+        return y;
+    }
     else
-      return y;
+      basic.showString('Lost communication with sandBox');
+    return;
   }
-
-  function sendRequest(d: string, c: string, p: string[]): void {
+  /**
+  * Agents can know their direction in degrees on SandBox.
+  */ 
+  //% block="My direction"
+  //% weight=175 color=#ff9da5
+  export function myDirection(): number { 
+    // request direction
+    sendRequest('0', 'GP', []);
+    return theta;
+  }
+  /**
+  * serialize msg and send request to sandBox.
+  */ 
+  function sendRequest(d: string, c: string, p: string[]): boolean {
     obj_req.set_values(id_agent, d, c, p);
-    console.log('there is a request to send');
+    console.log('sending request');
     console.log(obj_req.f+' '+obj_req.d+' '+obj_req.c+' '+obj_req.p);
     // header of msg
     let msg = obj_req.f + obj_req.d + obj_req.c;
@@ -359,29 +373,28 @@ namespace ucaBot {
       } 
       else
         console.log('The number of chars you tried to pass in parameters overload the allowed (14). Verify and try again.'); 
-  }
-  console.log('serialized: '+msg);
-  radio.sendString(msg);
-  console.log('sent');
-  obj_req = new Resp();
-  // waits for answer from radio
-  while (true){
-    if (act_pos == true)
-      break;
-    basic.pause(20);
-  }
-  act_pos = false;
-  }
+    }
+    console.log('serialized: '+msg);
+    radio.sendString(msg);
+    obj_req = new Resp();
+    // waits for answer from radio
 
-  /**
-  * Agents can know their direction in degrees on SandBox.
-  */ 
-  //% block="My direction"
-  //% weight=175 color=#ff9da5
-  export function myDirection(): number { 
-    // request direction
-    sendRequest('0', 'GP', []);
-    return theta;
+    // while (true){
+    //   if (act_pos == true)
+    //     break;
+    //   basic.pause(20);
+    // }
+    // act_pos = false;
+    // 700 ms for waiting a response 
+    for (let i = 0; i < 35; i++){
+      console.log(i+' waiting resp');
+      if (act_pos == true){
+        act_pos = false;
+        return true;
+      }
+      basic.pause(20);
+    }
+    return false;
   }
   /**
   * Rotate agent at an angle between 10 and 180
@@ -430,8 +443,8 @@ namespace ucaBot {
         p = 360 - p;
       console.log('theta in loop '+theta); 
       console.log('p (delta) in loop '+p); 
-    }
-    motors(0, 0);
+    } 
+    stopcar();
     console.log('end');
   }
   /**
