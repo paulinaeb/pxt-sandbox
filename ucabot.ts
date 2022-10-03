@@ -443,13 +443,7 @@ namespace ucaBot {
   //% weight=165 color=#ff9da5
   export function moveCm(cm: number): void { 
     // request pos
-    obj_req.set_values(id_agent, '0', 'GP', []); 
-    while (true){
-      if (act_pos == true)
-        break;
-      basic.pause(20);
-    }
-    act_pos = false;
+    sendRequest('0', 'GP', []);
     console.log(x+' '+y+' '+theta);
     return;
   }
