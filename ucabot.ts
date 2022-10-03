@@ -489,7 +489,7 @@ namespace ucaBot {
       console.log('pos obj '+x_o+' '+y_o);
       while ((cm > 2) && (cm <= aux)){
         xv = x; yv = y;
-        v = pid(cm, 10, 15, 5, 100);
+        v = pid(cm, 5, 100, 15, 22);
         motors(v, v);
         for (let i = 0; i < 3; i++){
           console.log(i + ' reconnecting with sandbox');
