@@ -489,14 +489,14 @@ namespace ucaBot {
       console.log('pos obj '+x_o+' '+y_o);
       while ((cm > 2) && (cm <= aux)){
         xv = x; yv = y;
-        v = pid(cm, 20, 26, 5, 100);
+        v = pid(cm, 20, 23, 5, 100);
         motors(v, v);
         for (let i = 0; i < 3; i++){
           console.log(i + ' reconnecting with sandbox');
           if (sendRequest('0', 'GP', [])){
             cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
             d_theta = theta_o - theta;
-            vc = pid(Math.abs(d_theta), 0, 15, 1, 3);
+            vc = pid(Math.abs(d_theta), 0, 15, 1, 2);
             if (d_theta < 0)
               motors(v - vc, v + vc);
             else
