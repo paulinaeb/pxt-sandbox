@@ -409,7 +409,7 @@ namespace ucaBot {
       console.log('theta ' + theta);
       let theta_p = 0;    let d = 0;
       let min_prev = 10;  let max_prev = 180;
-      let min_new = 24;   let max_new = 26;
+      let min_new = 24;   let max_new = 25;
       if (dir == RotateDir.dir_right){
         theta_p = theta - p;
         if (theta_p < 0)
