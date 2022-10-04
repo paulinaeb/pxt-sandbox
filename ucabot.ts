@@ -45,6 +45,8 @@ namespace ucaBot {
   let x = 0;
   let y = 0;
   let act_pos = false;
+  let ae = false;
+  let nm = false;
   let theta = 0;
   let a_exists = 0;
   /**
@@ -261,9 +263,11 @@ namespace ucaBot {
             act_pos = true;
           }
           else if (obj_resp.c == 'AE'){
+            ae = true;
             a_exists = parseInt(obj_resp.p[0]);
           }
           else if (obj_resp.c == 'WN'){
+            nm = true;
             near_me = obj_resp.p[0];
           }
         }
@@ -326,8 +330,16 @@ namespace ucaBot {
     // 300ms approx for waiting a response 
     for (let i = 0; i < 10; i++){
       console.log(i + ' waiting resp');
-      if (act_pos == true){
+      if (act_pos){
         act_pos = false;
+        return true;
+      }
+      if (nm){
+        nm = false;
+        return true;
+      }
+      if (ae){
+        ae = false;
         return true;
       }
       basic.pause(20);
@@ -553,11 +565,11 @@ namespace ucaBot {
   //% weight=160 color=#ff9da5
   //% block="Who are at least %d cm near me?"
   //% d.min = 12 d.max = 100
-  export function nearMe(d: number): string {
+  export function nearMe(d: number): string { 
     for (let i = 0; i < 6; i++){
       if (sendRequest('0', 'WN', [d.toString()])){  
         console.log('there are agents near me:'+near_me); 
-        return near_me;
+        break;
       }
       else{ 
         console.log(i + ' reconnecting with sandbox');
@@ -567,7 +579,7 @@ namespace ucaBot {
         }
       }
     }
-    return '';
+    return ''
   }
   /**
  * TODO: Follow other agent on sandbox.
