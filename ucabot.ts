@@ -41,6 +41,7 @@ namespace ucaBot {
   let obj_req = new Resp();
   let id_agent = '0';
   let n_agents = '0';
+  let near_me = '0'
   let x = 0;
   let y = 0;
   let act_pos = false;
@@ -261,6 +262,9 @@ namespace ucaBot {
           }
           else if (obj_resp.c == 'AE'){
             a_exists = parseInt(obj_resp.p[0]);
+          }
+          else if (obj_resp.c == 'WN'){
+            near_me = obj_resp.p[0];
           }
         }
         // if msg comes from other agent
@@ -544,9 +548,31 @@ namespace ucaBot {
     return;
   }
   /**
- * TODO: Follow other agent on sandbox.
+ * TODO: gent is able to know which agent(s) are around or near itself.
  */
   //% weight=160 color=#ff9da5
+  //% block="Who are at least %d cm near me?"
+  //% d.min = 12 d.max = 100
+  export function nearMe(d: number): string {
+    for (let i = 0; i < 3; i++){
+      if (sendRequest('0', 'WN', [d.toString()])){  
+        console.log('there are agents near me:'+near_me); 
+        return near_me;
+      }
+      else{ 
+        console.log(i + ' reconnecting with sandbox');
+        if (i == 2){
+          stopSearching();
+          basic.showString('Lost communication in who are near');
+          return '';
+        }
+      }
+    }
+  }
+  /**
+ * TODO: Follow other agent on sandbox.
+ */
+  //% weight=150 color=#ff9da5
   //% block="Follow agent ID %id_followed"
   //% id.min = 1 id.max = 3
   export function followAgent(id: number) {
