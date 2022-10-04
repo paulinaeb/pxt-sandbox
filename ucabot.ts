@@ -554,14 +554,14 @@ namespace ucaBot {
   //% block="Who are at least %d cm near me?"
   //% d.min = 12 d.max = 100
   export function nearMe(d: number): string {
-    for (let i = 0; i < 3; i++){
+    for (let i = 0; i < 6; i++){
       if (sendRequest('0', 'WN', [d.toString()])){  
         console.log('there are agents near me:'+near_me); 
         return near_me;
       }
       else{ 
         console.log(i + ' reconnecting with sandbox');
-        if (i == 2){
+        if (i == 5){
           stopSearching();
           basic.showString('Lost communication in who are near');
         }
