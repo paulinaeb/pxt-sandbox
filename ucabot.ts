@@ -564,10 +564,10 @@ namespace ucaBot {
         if (i == 2){
           stopSearching();
           basic.showString('Lost communication in who are near');
-          return '';
         }
       }
     }
+    return '';
   }
   /**
  * TODO: Follow other agent on sandbox.
