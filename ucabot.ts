@@ -44,9 +44,7 @@ namespace ucaBot {
   let near_me = '0'
   let x = 0;
   let y = 0;
-  let act_pos = false;
-  let ae = false;
-  let nm = false;
+  let act_value = false;
   let theta = 0;
   let a_exists = 0;
   /**
@@ -260,15 +258,15 @@ namespace ucaBot {
             x = parseFloat(obj_resp.p[0]);
             y = parseFloat(obj_resp.p[1]);
             theta = parseInt(obj_resp.p[2]);
-            act_pos = true;
+            act_value = true;
           }
           else if (obj_resp.c == 'AE'){
-            ae = true;
             a_exists = parseInt(obj_resp.p[0]);
+            act_value = true;
           }
           else if (obj_resp.c == 'WN'){
-            nm = true;
             near_me = obj_resp.p[0];
+            act_value = true;
           }
         }
         // if msg comes from other agent
@@ -330,18 +328,10 @@ namespace ucaBot {
     // 300ms approx for waiting a response 
     for (let i = 0; i < 10; i++){
       console.log(i + ' waiting resp');
-      if (act_pos){
-        act_pos = false;
+      if (act_value){
+        act_value = false;
         return true;
-      }
-      if (nm){
-        nm = false;
-        return true;
-      }
-      if (ae){
-        ae = false;
-        return true;
-      }
+      } 
       basic.pause(20);
     }
     return false;
