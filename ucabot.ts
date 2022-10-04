@@ -558,8 +558,8 @@ namespace ucaBot {
   export function nearMe(d: number): string { 
     for (let i = 0; i < 6; i++){
       if (sendRequest('0', 'WN', [d.toString()])){  
-        console.log('there are agents near me:'+near_me); 
-        break;
+        console.log('near me: '+near_me); 
+        return near_me;
       }
       else{ 
         console.log(i + ' reconnecting with sandbox');
@@ -586,7 +586,6 @@ namespace ucaBot {
         if (sendRequest('0', 'AE', [id_followed])){ 
           console.log('agent exists '+a_exists);
           if (a_exists == 1){
-            console.log('agent exist');
             // ask for info here
           }
           else
