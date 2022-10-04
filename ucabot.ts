@@ -191,7 +191,7 @@ namespace ucaBot {
     Nine = 26,
   }
   /**
-   * TODO: Initialize agent with color and Id.
+   * TODO: Initialize agent with an ID on Sandbox.
    */
   //% block="Initialize agent on Sandbox"
   //% weight=200 color=#ff9da5
@@ -405,11 +405,12 @@ namespace ucaBot {
     return undefined;
   }
   /**
-  * Rotate agent at an angle between 10 and 180
+  * TODO: Rotate agent at an angle between 10 and 180
+  * @param p degrees to rotate, eg: 90
   */ 
   //% block="Rotate agent %p ° to %dir"
   //% p.shadow="protractorPicker"
-  //% p.min=10 p.max=180
+  //% p.min=20 p.max=180
   //% weight=180 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
@@ -472,7 +473,8 @@ namespace ucaBot {
     }
   }
   /**
-  * Move in centimeters.
+  * TODO: Move in centimeters.
+  * @param cm distance to move, eg: 30 
   */ 
   //% block="Move forward %cm centimeters"
   //% cm.min = 5 cm.max = 90
@@ -550,7 +552,8 @@ namespace ucaBot {
     return;
   }
   /**
- * TODO: gent is able to know which agent(s) are around or near itself.
+ * Agent is able to know which agent(s) are around or near itself.
+ * @param d distance between agents, eg: 45
  */
   //% weight=160 color=#ff9da5
   //% block="Who are at least %d cm near me?"
@@ -569,13 +572,14 @@ namespace ucaBot {
         }
       }
     }
-    return ''
+    return '0'
   }
   /**
  * TODO: Follow other agent on sandbox.
+ * @param id id of agent to follow, eg: 1
  */
   //% weight=150 color=#ff9da5
-  //% block="Follow agent ID %id_followed"
+  //% block="Follow agent ID %id"
   //% id.min = 1 id.max = 3
   export function followAgent(id: number) {
     let id_followed = id.toString();
