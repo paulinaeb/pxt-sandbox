@@ -464,7 +464,6 @@ namespace ucaBot {
           motors(-d, d);
         }
         for (let i = 0; i < 15; i++){
-          console.log(i + ' reconnecting with sandbox');
           if (sendMsg('0', 'GP', [], true)){
             p_aux = p;
             p =  Math.abs(theta_p - theta); 
@@ -475,11 +474,13 @@ namespace ucaBot {
             break;
           }
           else{
+            console.log(i + ' reconnecting with sandbox');
             if (i == 0)
               stopcar();
             if (i == 14){
               stopSearching();
               basic.showString('Lost communication in rotate');
+              return;
             }
           }
         }
@@ -514,7 +515,7 @@ namespace ucaBot {
         xv = x; yv = y;
         v = pid(cm, 5, 100, 16, 22);
         motors(v, v);
-        for (let i = 0; i < 6; i++){
+        for (let i = 0; i < 10; i++){
           console.log(i + ' reconnecting with sandbox');
           if (sendMsg('0', 'GP', [], true)){
             cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
@@ -530,9 +531,10 @@ namespace ucaBot {
           else{
             if (i == 0)
               stopcar();
-            if (i == 5){
+            if (i == 9){
               stopSearching();
               basic.showString('Lost communication in move');
+              return;
             }
           }
         }
