@@ -588,6 +588,17 @@ namespace ucaBot {
         let d = distance(px, x, py, y);
         let angle = rotationAngle(x, px, y, py, theta, d);
         console.log('d '+d+'angle '+angle);
+        if (angle > 180){
+          angle = 360 - angle;
+          // right
+          rotate(angle, RotateDir.dir_right);
+        }
+        else{
+          if (angle < 180)
+            // left
+            rotate(angle, RotateDir.dir_left);
+        }
+        moveCm(d);
         break;
       }
       else{
