@@ -343,7 +343,7 @@ namespace ucaBot {
     if (req){
       // waits for answer from radio
       // 300ms approx for waiting a response 
-      for (let i = 0; i < 10; i++){
+      for (let i = 0; i < 6; i++){
         console.log(i + ' waiting resp');
         if (act_value){
           act_value = false;
@@ -463,7 +463,7 @@ namespace ucaBot {
           basic.pause(100);
           motors(-d, d);
         }
-        for (let i = 0; i < 3; i++){
+        for (let i = 0; i < 15; i++){
           console.log(i + ' reconnecting with sandbox');
           if (sendMsg('0', 'GP', [], true)){
             p_aux = p;
@@ -477,7 +477,7 @@ namespace ucaBot {
           else{
             if (i == 0)
               stopcar();
-            if (i == 2){
+            if (i == 14){
               stopSearching();
               basic.showString('Lost communication in rotate');
             }
