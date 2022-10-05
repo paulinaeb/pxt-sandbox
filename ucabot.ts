@@ -51,6 +51,8 @@ namespace ucaBot {
   let y_c = 0;
   let a_c = 0;
   let called = false;
+  let d = 0;
+  let r_angle = 0;
   /**
    * Unit of Ultrasound Module
    */
@@ -276,6 +278,11 @@ namespace ucaBot {
           else if (obj_resp.c == 'WN'){
             near_me = obj_resp.p[0];
             act_value = true;
+          }
+          else if (obj_resp.c == 'CA'){
+            d = parseInt(obj_resp.p[0]);
+            r_angle = parseInt(obj_resp.p[1]);
+            called = true;
           }
         }
         // if msg comes from other agent
@@ -538,6 +545,61 @@ namespace ucaBot {
     }
     return;
   }
+    //function to get distance between 2 points
+    function distance(x1: number, x2: number, y1: number, y2: number): number{
+      let d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+      return Math.round(d);
+    }
+    // get degrees to radians
+    function degrees2radians(angle: number): number{
+      let radians = angle / 180 * Math.PI;
+      return radians;
+    }
+    // get radians to degrees
+    function radians2degrees(angle: number): number{
+      let degrees = angle * 180 / Math.PI;
+      return degrees;
+    }
+    // transform center to get rotation angle
+    function rotationAngle(xa: number, xb: number, ya: number, yb: number, angle_a: number, d: number): number{
+      let angle = -1 * degrees2radians(angle_a);
+      let xt = ((xb - xa) * Math.cos(angle)) - ((yb - ya) * Math.sin(angle));
+      let yt = ((xb - xa) * Math.sin(angle)) + ((yb - ya) * Math.cos(angle));
+      angle = Math.asin(yt / d);
+      angle = radians2degrees(angle);
+      if (xt < 0)
+        angle = 180 - angle;
+      else{
+        if (yt < 0)
+          angle = 360 + angle;
+      }
+      return Math.round(angle);
+    }
+  /**
+  * Go from a point to another.
+  */ 
+  //% block="Go to point x:%px y:%py"
+  //% x.min = 5 x.max = 100
+  //% y.min = 5 y.max = 57
+  //% weight=170 color=#ff9da5
+  export function goToPoint(px: number, py: number) {
+    for (let i = 0; i < 3; i++){
+      if (sendMsg('0', 'GP', [], true)){
+        let d = distance(px, x, py, y);
+        let angle = rotationAngle(x, px, y, py, theta, d);
+        console.log('d '+d+'angle '+angle);
+        break;
+      }
+      else{
+        console.log(i + ' reconnecting with sandbox');
+        if (i == 2){
+          stopSearching();
+          basic.showString('Lost communication in go to point');
+        }
+      }
+    }
+    return;
+  }
   /**
   * Agents can know how many agents are initialized on SandBox.
   */ 
@@ -587,36 +649,7 @@ namespace ucaBot {
     }
     return '0'
   }
-  //function to get distance between 2 points
-  function distance(x1: number, x2: number, y1: number, y2: number): number{
-    let d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-    return Math.round(d);
-  }
-  // get degrees to radians
-  function degrees2radians(angle: number): number{
-    let radians = angle / 180 * Math.PI;
-    return radians;
-  }
-  // get radians to degrees
-  function radians2degrees(angle: number): number{
-    let degrees = angle * 180 / Math.PI;
-    return degrees;
-  }
-  // transform center to get rotation angle
-  function rotationAngle(xa: number, xb: number, ya: number, yb: number, angle_a: number, d: number): number{
-    let angle = -1 * degrees2radians(angle_a);
-    let xt = ((xb - xa) * Math.cos(angle)) - ((yb - ya) * Math.sin(angle));
-    let yt = ((xb - xa) * Math.sin(angle)) + ((yb - ya) * Math.cos(angle));
-    angle = Math.asin(yt / d);
-    angle = radians2degrees(angle);
-    if (xt < 0)
-      angle = 180 - angle;
-    else{
-      if (yt < 0)
-        angle = 360 + angle;
-    }
-    return Math.round(angle);
-  }
+
   /**
  * TODO: Call other agent on sandbox.
  * @param id id of agent to call, eg: 1
@@ -674,8 +707,11 @@ namespace ucaBot {
     control.onEvent(100, 3502, handler);
     control.inBackground(() => {
       while (true) { 
-        if (n_agents != '0')
+        if (called){
           control.raiseEvent(100, 3502, EventCreationMode.CreateAndFire); 
+          called = false;
+          
+        }
         basic.pause(20); 
       }
     });
