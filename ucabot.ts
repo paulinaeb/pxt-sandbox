@@ -49,6 +49,8 @@ namespace ucaBot {
   let a_exists = 0;
   let x_c = 0;
   let y_c = 0;
+  let a_c = 0;
+  let called = false;
   /**
    * Unit of Ultrasound Module
    */
@@ -267,6 +269,7 @@ namespace ucaBot {
             if (a_exists == 1){
               x_c = parseInt(obj_resp.p[1]);
               y_c = parseInt(obj_resp.p[2]);
+              a_c = parseInt(obj_resp.p[3]);
             }
             act_value = true;
           }
@@ -589,6 +592,31 @@ namespace ucaBot {
     let d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
     return Math.round(d);
   }
+  // get degrees to radians
+  function degrees2radians(angle: number): number{
+    let radians = angle / 180 * Math.PI;
+    return radians;
+  }
+  // get radians to degrees
+  function radians2degrees(angle: number): number{
+    let degrees = angle * 180 / Math.PI;
+    return degrees;
+  }
+  // transform center to get rotation angle
+  function rotationAngle(xa: number, xb: number, ya: number, yb: number, angle_a: number, d: number): number{
+    let angle = -1 * degrees2radians(angle_a);
+    let xt = ((xb - xa) * Math.cos(angle)) - ((yb - ya) * Math.sin(angle));
+    let yt = ((xb - xa) * Math.sin(angle)) + ((yb - ya) * Math.cos(angle));
+    angle = Math.asin(yt / d);
+    angle = radians2degrees(angle);
+    if (xt < 0)
+      angle = 180 - angle;
+    else{
+      if (yt < 0)
+        angle = 360 + angle;
+    }
+    return Math.round(angle);
+  }
   /**
  * TODO: Call other agent on sandbox.
  * @param id id of agent to call, eg: 1
@@ -604,12 +632,13 @@ namespace ucaBot {
       for (let i = 0; i < 3; i++){
         if (sendMsg('0', 'AE', [id_called], true)){ 
           if (a_exists == 1){
-            console.log('agent exists '+a_exists+' in '+x_c+' '+y_c);
-            // get my pos to send event to agent called
+            console.log('agent exists '+a_exists+' in '+x_c+' '+y_c+' '+a_c);
+            // get my pos to get distance between agents
             for (let i = 0; i < 3; i++){
               if (sendMsg('0', 'GP', [], true)){
                 let d = distance(x, x_c, y, y_c);
-                sendMsg('0', 'CA', [id_called, d.toString(), theta.toString()], false);
+                let angle = rotationAngle(x_c, x, y_c, y, a_c, d);
+                sendMsg('0', 'CA', [id_called, d.toString(), angle.toString()], false);
                 break;
               }
               else{
@@ -634,6 +663,22 @@ namespace ucaBot {
         }
       }
     }
+    return;
+  }
+  /**
+ * TODO: On an agent calling me
+ */
+  //% weight=165 color=#ff9da5
+  //% block="On all agents initialized"
+  export function calledByAgent(handler: () => void) {
+    control.onEvent(100, 3502, handler);
+    control.inBackground(() => {
+      while (true) { 
+        if (n_agents != '0')
+          control.raiseEvent(100, 3502, EventCreationMode.CreateAndFire); 
+        basic.pause(20); 
+      }
+    });
     return;
   }
   /**
