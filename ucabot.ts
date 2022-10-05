@@ -579,51 +579,51 @@ namespace ucaBot {
     return '0'
   }
   /**
-   * TODO: Call other agent on sandbox.
-   * @param id id of agent to call, eg: 1
-   */
-    //% weight=150 color=#ff9da5
-    //% block="Call agent ID %id"
-    //% id.min = 1 id.max = 3
-    export function callAgent(id: number) {
-      let id_called = id.toString();
-      if (id_called == id_agent)
-        basic.showString('I cannot call myself. Enter another ID');
-      else{
-        for (let i = 0; i < 3; i++){
-          if (sendMsg('0', 'AE', [id_called], true)){ 
-            console.log('agent exists '+a_exists);
-            if (a_exists == 1){
-              // get my pos to send event to agent called
-              for (let i = 0; i < 3; i++){
-                if (sendMsg('0', 'GP', [], true)){
-                  sendMsg('0', 'CA', [id_called, x.toString(), y.toString(), theta.toString()], false);
-                  break;
+ * TODO: Call other agent on sandbox.
+ * @param id id of agent to call, eg: 1
+ */
+  //% weight=150 color=#ff9da5
+  //% block="Call agent ID %id"
+  //% id.min = 1 id.max = 3
+  export function callAgent(id: number) {
+    let id_called = id.toString();
+    if (id_called == id_agent)
+      basic.showString('I cannot call myself. Enter another ID');
+    else{
+      for (let i = 0; i < 3; i++){
+        if (sendMsg('0', 'AE', [id_called], true)){ 
+          console.log('agent exists '+a_exists);
+          if (a_exists == 1){
+            // get my pos to send event to agent called
+            for (let i = 0; i < 3; i++){
+              if (sendMsg('0', 'GP', [], true)){
+                sendMsg('0', 'CA', [id_called, x.toString(), y.toString(), theta.toString()], false);
+                break;
+              }
+              else{
+                console.log(i + ' reconnecting with sandbox');
+                if (i == 2){
+                  stopSearching();
+                  basic.showString('Lost communication getting my position');
                 }
-                else{
-                  console.log(i + ' reconnecting with sandbox');
-                  if (i == 2){
-                    stopSearching();
-                    basic.showString('Lost communication getting my position');
-                  }
-                }
-              } 
-            }
-            else
-              basic.showString('ID in call agent does not exist on SandBox');
-            break;
+              }
+            } 
           }
-          else{ 
-            console.log(i + ' reconnecting with sandbox');
-            if (i == 2){
-              stopSearching();
-              basic.showString('Lost communication in call agent');
-            }
+          else
+            basic.showString('ID in call agent does not exist on SandBox');
+          break;
+        }
+        else{ 
+          console.log(i + ' reconnecting with sandbox');
+          if (i == 2){
+            stopSearching();
+            basic.showString('Lost communication in call agent');
           }
         }
       }
-      return;
     }
+    return;
+  }
   /**
  * TODO: Follow other agent on sandbox.
  * @param id id of agent to follow, eg: 1
