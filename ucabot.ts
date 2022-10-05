@@ -594,8 +594,20 @@ namespace ucaBot {
           if (sendMsg('0', 'AE', [id_called], true)){ 
             console.log('agent exists '+a_exists);
             if (a_exists == 1){
-              // ask for info here
-              // radio.sendString()
+              // get my pos to send event to agent called
+              for (let i = 0; i < 3; i++){
+                if (sendMsg('0', 'GP', [], true)){
+                  sendMsg('0', 'CA', [id_called, x.toString(), y.toString(), theta.toString()], false);
+                  break;
+                }
+                else{
+                  console.log(i + ' reconnecting with sandbox');
+                  if (i == 2){
+                    stopSearching();
+                    basic.showString('Lost communication getting my position');
+                  }
+                }
+              } 
             }
             else
               basic.showString('ID in call agent does not exist on SandBox');
