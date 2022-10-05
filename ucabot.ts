@@ -47,6 +47,8 @@ namespace ucaBot {
   let act_value = false;
   let theta = 0;
   let a_exists = 0;
+  let x_c = 0;
+  let y_c = 0;
   /**
    * Unit of Ultrasound Module
    */
@@ -262,6 +264,10 @@ namespace ucaBot {
           }
           else if (obj_resp.c == 'AE'){
             a_exists = parseInt(obj_resp.p[0]);
+            if (a_exists == 1){
+              x_c = parseInt(obj_resp.p[1]);
+              y_c = parseInt(obj_resp.p[2]);
+            }
             act_value = true;
           }
           else if (obj_resp.c == 'WN'){
@@ -578,6 +584,11 @@ namespace ucaBot {
     }
     return '0'
   }
+  //function to get distance between 2 points
+  function distance(x1: number, x2: number, y1: number, y2: number): number{
+    let d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    return Math.round(d);
+  }
   /**
  * TODO: Call other agent on sandbox.
  * @param id id of agent to call, eg: 1
@@ -592,12 +603,13 @@ namespace ucaBot {
     else{
       for (let i = 0; i < 3; i++){
         if (sendMsg('0', 'AE', [id_called], true)){ 
-          console.log('agent exists '+a_exists);
           if (a_exists == 1){
+            console.log('agent exists '+a_exists+' in '+x_c+' '+y_c);
             // get my pos to send event to agent called
             for (let i = 0; i < 3; i++){
               if (sendMsg('0', 'GP', [], true)){
-                sendMsg('0', 'CA', [id_called, x.toString(), y.toString(), theta.toString()], false);
+                let d = distance(x, x_c, y, y_c);
+                sendMsg('0', 'CA', [id_called, d.toString(), theta.toString()], false);
                 break;
               }
               else{
