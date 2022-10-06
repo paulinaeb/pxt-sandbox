@@ -340,24 +340,25 @@ namespace ucaBot {
     console.log('serialized: '+msg);
     radio.sendString(msg);
     obj_req = new Resp();
-    let n_times = 100;
+    let n_times = 250;
     if (req){
       // waits for answer from radio
-      // 300ms approx for waiting a response 
+      // 5000ms approx for waiting a response 
       for (let i = 0; i < n_times; i++){
-        console.log(i + ' waiting resp');
         if (act_value){
+          console.log(i + ' value found');
           act_value = false;
           return true;
         }
         else{
+          console.log(i + ' waiting resp');
           if ((i != 0) && (i == stop)){
             stopcar();
             console.log('stop car and waiting resp');
           }
           if (i == n_times - 1){
-            console.log('lost communication');
             stopSearching();
+            basic.showString('lost communication');
           }
         } 
         basic.pause(20);
@@ -443,7 +444,7 @@ namespace ucaBot {
   //% weight=180 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
-    if (sendMsg('0', 'GP', [], true, 5)){
+    if (sendMsg('0', 'GP', [], true, 0)){
       console.log('theta ' + theta);
       let theta_p = 0;    let d = 0;
       if (dir == RotateDir.dir_right){
@@ -457,9 +458,9 @@ namespace ucaBot {
         if (theta_p > 360)
           theta_p = theta_p - 360;
       }
-      console.log('new angle ' + theta_p); 
+      console.log('desired angle ' + theta_p); 
       let p_aux = p;
-      while ((p > 8) && (p <= p_aux)){
+      while ((p > 3) && (p <= p_aux)){
       //PID adaptation
         d = pid(p, 10, 180, 23, 25);
         if (dir == RotateDir.dir_right){
@@ -471,36 +472,22 @@ namespace ucaBot {
           motors(-35, 35);
           basic.pause(100);
           motors(-d, d);
+        } 
+        if (sendMsg('0', 'GP', [], true, 5)){
+          p_aux = p;
+          p =  Math.abs(theta_p - theta); 
+          if (p > 180)
+            p = 360 - p;
+          console.log('theta in loop '+theta); 
+          console.log('p (delta) in loop '+p);
         }
-        for (let i = 0; i < 15; i++){
-          if (sendMsg('0', 'GP', [], true, 5)){
-            p_aux = p;
-            p =  Math.abs(theta_p - theta); 
-            if (p > 180)
-              p = 360 - p;
-            console.log('theta in loop '+theta); 
-            console.log('p (delta) in loop '+p); 
-            break;
-          }
-          else{
-            console.log(i + ' reconnecting with sandbox');
-            if (i == 0)
-              stopcar();
-            if (i == 14){
-              stopSearching();
-              basic.showString('Lost communication in rotate');
-              return;
-            }
-          }
-        }
+        else
+          return;   
       } 
       stopcar();
       console.log('end');
     }
-    else {
-      stopSearching();
-      basic.showString('Lost communication in rotate');
-    }
+    return;
   }
   /**
   * TODO: Move in centimeters.
