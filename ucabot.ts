@@ -460,7 +460,7 @@ namespace ucaBot {
       }
       console.log('desired angle ' + theta_p); 
       let p_aux = p;
-      while ((p > 3) && (p <= p_aux)){
+      while ((p >= 3) && (p <= p_aux)){
       //PID adaptation
         d = pid(p, 10, 180, 23, 25);
         if (dir == RotateDir.dir_right){
@@ -473,7 +473,7 @@ namespace ucaBot {
           basic.pause(100);
           motors(-d, d);
         } 
-        if (sendMsg('0', 'GP', [], true, 5)){
+        if (sendMsg('0', 'GP', [], true, 3)){
           p_aux = p;
           p =  Math.abs(theta_p - theta); 
           if (p > 180)
