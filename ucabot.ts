@@ -498,7 +498,7 @@ namespace ucaBot {
   //% weight=175 color=#ff9da5
   export function moveCm(cm: number): void { 
     // request pos
-    if (sendMsg('0', 'GP', [], true, 5)){
+    if (sendMsg('0', 'GP', [], true, 0)){
       console.log('pos '+x+' '+y+' '+theta);
       let aux = cm;  let v = 0;
       let xv = 0;    let yv = 0;
@@ -536,10 +536,6 @@ namespace ucaBot {
         }
       }
       stopcar();
-    }
-    else{
-      stopSearching();
-      basic.showString('Lost communication in move');
     }
     return;
   }
@@ -581,32 +577,22 @@ namespace ucaBot {
   //% y.min = 5 y.max = 57
   //% weight=170 color=#ff9da5
   export function goToPoint(px: number, py: number) {
-    for (let i = 0; i < 3; i++){
-      if (sendMsg('0', 'GP', [], true, 0)){
-        let d = distance(px, x, py, y);
-        let angle = rotationAngle(x, px, y, py, theta, d);
-        console.log('d '+d+'angle '+angle);
-        if (angle > 180){
-          angle = 360 - angle;
-          // right
-          rotate(angle, RotateDir.dir_right);
-        }
-        else{
-          if (angle < 180)
-            // left
-            rotate(angle, RotateDir.dir_left);
-        }
-        moveCm(d);
-        break;
+    if (sendMsg('0', 'GP', [], true, 0)){
+      let d = distance(px, x, py, y);
+      let angle = rotationAngle(x, px, y, py, theta, d);
+      console.log('d '+d+'angle '+angle);
+      if (angle > 180){
+        angle = 360 - angle;
+        // right
+        rotate(angle, RotateDir.dir_right);
       }
       else{
-        console.log(i + ' reconnecting with sandbox');
-        if (i == 2){
-          stopSearching();
-          basic.showString('Lost communication in go to point');
-        }
+        if (angle < 180)
+          // left
+          rotate(angle, RotateDir.dir_left);
       }
-    }
+      moveCm(d); 
+    } 
     return;
   }
   /**
@@ -643,20 +629,10 @@ namespace ucaBot {
   //% block="Who are at least %d cm near me?"
   //% d.min = 12 d.max = 100
   export function nearMe(d: number): string { 
-    for (let i = 0; i < 6; i++){
-      if (sendMsg('0', 'WN', [d.toString()], true, 0)){  
-        console.log('near me: '+near_me); 
-        return near_me;
-      }
-      else{ 
-        console.log(i + ' reconnecting with sandbox');
-        if (i == 5){
-          stopSearching();
-          basic.showString('Lost communication in who are near');
-        }
-      }
-    }
-    return '0'
+    if (sendMsg('0', 'WN', [d.toString()], true, 0))
+      return near_me;
+    else
+      return '0'
   }
 
   /**
@@ -671,38 +647,18 @@ namespace ucaBot {
     if (id_called == id_agent)
       basic.showString('I cannot call myself. Enter another ID');
     else{
-      for (let i = 0; i < 3; i++){
-        if (sendMsg('0', 'AE', [id_called], true, 0)){ 
-          if (a_exists == 1){
-            console.log('agent exists '+a_exists+' in '+x_c+' '+y_c+' '+a_c);
-            // get my pos to get distance between agents
-            for (let i = 0; i < 3; i++){
-              if (sendMsg('0', 'GP', [], true, 0)){
-                let d = distance(x, x_c, y, y_c);
-                let angle = rotationAngle(x_c, x, y_c, y, a_c, d);
-                sendMsg('0', 'CA', [id_called, d.toString(), angle.toString()], false, 0);
-                break;
-              }
-              else{
-                console.log(i + ' reconnecting with sandbox');
-                if (i == 2){
-                  stopSearching();
-                  basic.showString('Lost communication getting my position');
-                }
-              }
-            } 
-          }
-          else
-            basic.showString('ID in call agent does not exist on SandBox');
-          break;
-        }
-        else{ 
-          console.log(i + ' reconnecting with sandbox');
-          if (i == 2){
-            stopSearching();
-            basic.showString('Lost communication in call agent');
+      if (sendMsg('0', 'AE', [id_called], true, 0)){ 
+        if (a_exists == 1){
+          console.log('agent exists '+a_exists+' in '+x_c+' '+y_c+' '+a_c);
+          // get my pos to get distance between agents
+          if (sendMsg('0', 'GP', [], true, 0)){
+            let d = distance(x, x_c, y, y_c);
+            let angle = rotationAngle(x_c, x, y_c, y, a_c, d);
+            sendMsg('0', 'CA', [id_called, d.toString(), angle.toString()], false, 0);
           }
         }
+        else
+          basic.showString('ID in call agent does not exist on SandBox'); 
       }
     }
     return;
@@ -738,24 +694,14 @@ namespace ucaBot {
     if (id_followed == id_agent)
       basic.showString('I cannot follow myself. Enter another ID');
     else{
-      for (let i = 0; i < 3; i++){
-        if (sendMsg('0', 'AE', [id_followed], true, 0)){ 
-          console.log('agent exists '+a_exists);
-          if (a_exists == 1){
-            // ask for info here
-          }
-          else
-            basic.showString('ID in follow agent does not exist on SandBox');
-          break;
+      if (sendMsg('0', 'AE', [id_followed], true, 0)){ 
+        console.log('agent exists '+a_exists);
+        if (a_exists == 1){
+          // ask for info here
         }
-        else{ 
-          console.log(i + ' reconnecting with sandbox');
-          if (i == 2){
-            stopSearching();
-            basic.showString('Lost communication in follow agent');
-          }
-        }
-      }
+        else
+          basic.showString('ID in follow agent does not exist on SandBox');
+      } 
     }
     return;
   }
