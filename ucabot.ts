@@ -355,14 +355,12 @@ namespace ucaBot {
           if ((i != 0) && (i == stop)){
             stopcar();
             console.log('stop car and waiting resp');
-          }
-          if (i == (n_times - 1)){
-            stopSearching();
-            basic.showString('lost communication');
-          }
+          } 
         } 
         basic.pause(60);
       }
+      stopSearching();
+      console.log('lost communication');
       return false;
     }
     else 
