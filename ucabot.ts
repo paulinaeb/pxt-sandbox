@@ -508,22 +508,19 @@ namespace ucaBot {
       let y_o = cm * Math.sin(theta) + y;
       console.log('pos obj '+x_o+' '+y_o);
       while ((cm > 1) && (cm <= aux)){
-        xv = x; yv = y;
+        xv = x; 
+        yv = y;
         v = pid(cm, 5, 100, 16, 22);
-        motors(v, v);
-        for (let i = 0; i < 10; i++){
-          console.log(i + ' reconnecting with sandbox');
-          if (sendMsg('0', 'GP', [], true, 5)){
-            cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
-            d_theta = theta_o - theta;
-            vc = pid(Math.abs(d_theta), 0, 15, 3, 6);
-            if (d_theta < 0)
-              motors(v - vc, v + vc);
-            else
-              if (d_theta > 0)
-                motors(v + vc, v - vc);
-            break;
-          }
+        motors(v, v);  
+        if (sendMsg('0', 'GP', [], true, 5)){
+          cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
+          d_theta = theta_o - theta;
+          vc = pid(Math.abs(d_theta), 0, 15, 3, 6);
+          if (d_theta < 0)
+            motors(v - vc, v + vc);
+          else
+            if (d_theta > 0)
+              motors(v + vc, v - vc);
         }
       }
       stopcar();
