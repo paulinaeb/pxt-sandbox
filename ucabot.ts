@@ -340,7 +340,7 @@ namespace ucaBot {
     console.log('serialized: '+msg);
     radio.sendString(msg);
     obj_req = new Resp();
-    let n_times = 250;
+    let n_times = 170;
     if (req){
       // waits for answer from radio
       // 5000ms approx for waiting a response 
@@ -356,7 +356,7 @@ namespace ucaBot {
             stopcar();
             console.log('stop car and waiting resp');
           }
-          if (i == n_times - 1){
+          if (i == (n_times - 1)){
             stopSearching();
             basic.showString('lost communication');
           }
@@ -472,7 +472,7 @@ namespace ucaBot {
           basic.pause(100);
           motors(-d, d);
         } 
-        if (sendMsg('0', 'GP', [], true, 3)){
+        if (sendMsg('0', 'GP', [], true, 1)){
           p_aux = p;
           p =  Math.abs(theta_p - theta); 
           if (p > 180)
