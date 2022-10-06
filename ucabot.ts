@@ -389,9 +389,8 @@ namespace ucaBot {
   export function onSand() {
     control.inBackground(() => {
       while (true) {
-        if (tracking(TrackingState.L_R_line)) {
+        if (tracking(TrackingState.L_R_line))
           stopcar();
-        }
         basic.pause(200); 
       }
     });
