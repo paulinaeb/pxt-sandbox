@@ -459,7 +459,7 @@ namespace ucaBot {
       }
       console.log('desired angle ' + theta_p); 
       let p_aux = p;
-      while ((p >= 3) && (p <= p_aux)){
+      while ((p > 5) && (p <= p_aux)){
       //PID adaptation
         d = pid(p, 10, 180, 23, 25);
         if (dir == RotateDir.dir_right){
