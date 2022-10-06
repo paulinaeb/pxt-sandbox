@@ -361,7 +361,7 @@ namespace ucaBot {
             basic.showString('lost communication');
           }
         } 
-        basic.pause(40);
+        basic.pause(50);
       }
       return false;
     }
@@ -384,7 +384,7 @@ namespace ucaBot {
   /**
   * Keep agents safe and always on sand (avoid them to fall).
   */ 
-  //% block="Always on sand test"
+  //% block="Always on sand"
   //% weight=198 color=#ff9da5
   export function onSand() {
     control.inBackground(() => {
