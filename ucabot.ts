@@ -361,7 +361,7 @@ namespace ucaBot {
             basic.showString('lost communication');
           }
         } 
-        basic.pause(50);
+        basic.pause(60);
       }
       return false;
     }
@@ -523,15 +523,6 @@ namespace ucaBot {
               if (d_theta > 0)
                 motors(v + vc, v - vc);
             break;
-          }
-          else{
-            if (i == 0)
-              stopcar();
-            if (i == 9){
-              stopSearching();
-              basic.showString('Lost communication in move');
-              return;
-            }
           }
         }
       }
