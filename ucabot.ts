@@ -361,7 +361,7 @@ namespace ucaBot {
             basic.showString('lost communication');
           }
         } 
-        basic.pause(30);
+        basic.pause(40);
       }
       return false;
     }
