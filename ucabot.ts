@@ -509,21 +509,21 @@ namespace ucaBot {
         yv = y;
         v = pid(cm, 5, 100, 16, 22);
         motors(v, v);  
+        basic.pause(100);
         if (sendMsg('0', 'GP', [], true, 8)){
           console.log('cm '+cm+' d_theta'+ d_theta);
           cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
           d_theta = theta_o - theta;
           if (d_theta != 0){
-            vc = pid(Math.abs(d_theta), 1, 15, 1, 6);
+            vc = pid(Math.abs(d_theta), 1, 15, 1, 2);
             console.log('vc '+vc);
             if (d_theta < 0)
-              motors(v - vc, v + vc);
+              motors(v, v + vc);
             else{
               if (d_theta > 0)
-                motors(v + vc, v - vc);
+                motors(v + vc, v);
             }
           }
-          basic.pause(100);
         }
         else
           return;
