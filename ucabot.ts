@@ -520,6 +520,8 @@ namespace ucaBot {
             if (d_theta > 0)
               motors(v + vc, v - vc);
         }
+        else
+          return;
       }
       stopcar();
     }
