@@ -509,7 +509,7 @@ namespace ucaBot {
         yv = y;
         v = pid(cm, 5, 100, 16, 22);
         motors(v, v);  
-        basic.pause(100);
+        basic.pause(300);
         if (sendMsg('0', 'GP', [], true, 8)){
           console.log('cm '+cm+' d_theta'+ d_theta);
           cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
