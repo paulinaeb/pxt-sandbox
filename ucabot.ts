@@ -461,15 +461,15 @@ namespace ucaBot {
       let p_aux = p;
       while ((p > 5) && (p <= p_aux)){
       //PID adaptation
-        d = pid(p, 10, 180, 23, 25);
+        d = pid(p, 10, 180, 21, 23);
         if (dir == RotateDir.dir_right){
-          motors(35, -35);
-          basic.pause(100);
+          motors(45, -45);
+          basic.pause(40);
           motors(d, -d);
         }
         else{
-          motors(-35, 35);
-          basic.pause(100);
+          motors(-45, 45);
+          basic.pause(40);
           motors(-d, d);
         } 
         if (sendMsg('0', 'GP', [], true, 1)){
