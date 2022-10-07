@@ -516,18 +516,18 @@ namespace ucaBot {
           cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
           d_theta = theta_o - theta;
           console.log('cm '+cm+' d_theta'+ d_theta);
-          if (Math.abs(d_theta) > 12){
+          if (Math.abs(d_theta) > 10){
             d_theta = 360 - d_theta;
           }
           if ((d_theta != 0) && (Math.abs(d_theta) >=3)){
-            vc = pid(Math.abs(d_theta), 3, 12, 1, 2);
+            vc = pid(Math.abs(d_theta), 3, 10, 1, 2);
             console.log('vc '+vc);
             // got to left, adjust to right
             if (d_theta < 0)
-              motors(v + vc, v);
+              motors(v + vc, v - vc);
             else
               // got to right, adjust to left 
-                motors(v, v + vc);
+                motors(v - vc, v + vc);
           }
         }
         else
