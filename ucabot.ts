@@ -53,6 +53,8 @@ namespace ucaBot {
   let called = false;
   let d = 0;
   let r_angle = 0;
+  let waiting = false;
+  let repeat = false;
   /**
    * Unit of Ultrasound Module
    */
@@ -284,6 +286,9 @@ namespace ucaBot {
             r_angle = parseInt(obj_resp.p[1]);
             called = true;
           }
+          else if ((obj_resp.c == 'NF') && (waiting == true)){
+            repeat = true;
+          }
         }
         // if msg comes from other agent
         else{}
@@ -344,10 +349,12 @@ namespace ucaBot {
     if (req){
       // waits for answer from radio
       // 5000ms approx for waiting a response 
+      waiting = true;
       for (let i = 0; i < n_times; i++){
         if (act_value){
           console.log(i + ' value found');
           act_value = false;
+          waiting = false;
           return true;
         }
         else{
@@ -356,9 +363,15 @@ namespace ucaBot {
             stopcar();
             console.log('stop car and waiting resp');
           } 
+          if (repeat){
+            repeat = false;
+            let res = sendMsg(d, c, p, req, stop);
+            return res;
+          }
         } 
         basic.pause(60);
       }
+      waiting = false;
       stopSearching();
       console.log('lost communication');
       return false;
