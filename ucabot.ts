@@ -525,11 +525,9 @@ namespace ucaBot {
             // got to left, adjust to right
             if (d_theta < 0)
               motors(v + vc, v);
-            else{
-              // got to right, adjust to left
-              if (d_theta > 0)
+            else
+              // got to right, adjust to left 
                 motors(v, v + vc);
-            }
           }
         }
         else
