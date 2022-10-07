@@ -519,8 +519,8 @@ namespace ucaBot {
           if (Math.abs(d_theta) > 12){
             d_theta = 360 - d_theta;
           }
-          if ((d_theta != 0) && (Math.abs(d_theta) >=5)){
-            vc = pid(Math.abs(d_theta), 5, 12, 1, 2);
+          if ((d_theta != 0) && (Math.abs(d_theta) >=3)){
+            vc = pid(Math.abs(d_theta), 3, 12, 1, 2);
             console.log('vc '+vc);
             // got to left, adjust to right
             if (d_theta < 0)
