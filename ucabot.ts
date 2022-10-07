@@ -509,9 +509,9 @@ namespace ucaBot {
       while ((cm > 1) && (cm <= aux)){
         xv = x; 
         yv = y;
-        v = pid(cm, 5, 100, 16, 22);
+        v = pid(cm, 5, 100, 18, 22);
         motors(v, v);  
-        basic.pause(300);
+        basic.pause(500);
         if (sendMsg('0', 'GP', [], true, 8)){
           cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
           d_theta = theta_o - theta;
