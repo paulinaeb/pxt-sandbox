@@ -536,12 +536,12 @@ namespace ucaBot {
             console.log('vc '+vc);
             // got to left, adjust to right
             if (d_theta < 0){
-              motors(v + vc, v - vc);
+              motors(v - vc, v + vc);
               console.log('adjust to right');
             }
             else{
               // got to right, adjust to left 
-              motors(v - vc, v + vc);
+              motors(v + vc, v - vc);
               console.log('adjust to left');
             }
           }
