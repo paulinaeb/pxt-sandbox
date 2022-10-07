@@ -522,7 +522,7 @@ namespace ucaBot {
       while ((cm > 1) && (cm <= aux)){
         xv = x; 
         yv = y;
-        v = pid(cm, 5, 100, 18, 22);
+        v = pid(cm, 5, 100, 19, 22);
         motors(v, v);  
         basic.pause(800);
         if (sendMsg('0', 'GP', [], true, 8)){
