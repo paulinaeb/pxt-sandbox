@@ -524,7 +524,7 @@ namespace ucaBot {
         yv = y;
         v = pid(cm, 5, 100, 18, 22);
         motors(v, v);  
-        basic.pause(500);
+        basic.pause(800);
         if (sendMsg('0', 'GP', [], true, 8)){
           cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
           d_theta = theta_o - theta;
@@ -532,14 +532,18 @@ namespace ucaBot {
           if (Math.abs(d_theta) > 300)
             d_theta = 360 + d_theta;
           if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
-            vc = pid(Math.abs(d_theta), 2, 15, 2, 4);
+            vc = pid(Math.abs(d_theta), 2, 15, 3, 6);
             console.log('vc '+vc);
             // got to left, adjust to right
-            if (d_theta < 0)
-              motors(v - vc, v + vc);
-            else
-              // got to right, adjust to left 
+            if (d_theta < 0){
               motors(v + vc, v - vc);
+              console.log('adjust to right');
+            }
+            else{
+              // got to right, adjust to left 
+              motors(v - vc, v + vc);
+              console.log('adjust to left');
+            }
           }
         }
         else
