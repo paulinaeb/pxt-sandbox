@@ -501,8 +501,10 @@ namespace ucaBot {
       let xv = 0;    let yv = 0;
       let theta_o = theta; 
       let d_theta = 0;  let vc = 0;
-      let x_o = cm * Math.cos(theta) + x;
-      let y_o = cm * Math.sin(theta) + y;
+      let r_theta = degrees2radians(theta);
+      // translation
+      let x_o = cm * Math.cos(r_theta) + x;
+      let y_o = cm * Math.sin(r_theta) + y;
       console.log('pos obj '+x_o+' '+y_o);
       while ((cm > 1) && (cm <= aux)){
         xv = x; 
@@ -511,17 +513,22 @@ namespace ucaBot {
         motors(v, v);  
         basic.pause(300);
         if (sendMsg('0', 'GP', [], true, 8)){
-          console.log('cm '+cm+' d_theta'+ d_theta);
           cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
           d_theta = theta_o - theta;
+          console.log('cm '+cm+' d_theta'+ d_theta);
+          if (Math.abs(d_theta) > 12){
+            d_theta = 360 - d_theta;
+          }
           if ((d_theta != 0) && (Math.abs(d_theta) >=5)){
-            vc = pid(Math.abs(d_theta), 5, 10, 1, 2);
+            vc = pid(Math.abs(d_theta), 5, 12, 1, 2);
             console.log('vc '+vc);
+            // got to left, adjust to right
             if (d_theta < 0)
-              motors(v, v + vc);
+              motors(v + vc, v);
             else{
+              // got to right, adjust to left
               if (d_theta > 0)
-                motors(v + vc, v);
+                motors(v, v + vc);
             }
           }
         }
