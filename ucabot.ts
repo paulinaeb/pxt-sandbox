@@ -356,12 +356,11 @@ namespace ucaBot {
           return true;
         }
         else{
-          if ((i != 0) && (i == stop)){
+          if (i == stop)
             stopcar();
-          } 
           if (repeat){
             repeat = false;
-            if (stop != 0)
+            if (stop > 0)
               stopcar();
             let res = sendMsg(d, c, p, req, stop);
             return res;
@@ -421,7 +420,7 @@ namespace ucaBot {
   //% weight=190 color=#ff9da5
   export function myPosition(pos: Position): number { 
     // request pos
-    if (sendMsg('0', 'GP', [], true, 0)){
+    if (sendMsg('0', 'GP', [], true, -1)){
       if(pos == Position.x)
         return x;
       else
@@ -437,7 +436,7 @@ namespace ucaBot {
   //% weight=185 color=#ff9da5
   export function myDirection(): number { 
     // request direction
-    if (sendMsg('0', 'GP', [], true, 0))
+    if (sendMsg('0', 'GP', [], true, -1))
       return theta;
     else  
       return undefined;
@@ -452,7 +451,7 @@ namespace ucaBot {
   //% weight=180 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
-    if (sendMsg('0', 'GP', [], true, 0)){
+    if (sendMsg('0', 'GP', [], true, -1)){
       console.log('theta ' + theta);
       let theta_p = 0;    let d = 0;
       if (dir == RotateDir.dir_right){
@@ -481,7 +480,7 @@ namespace ucaBot {
           basic.pause(80);
           motors(-d-3, d);
         } 
-        if (sendMsg('0', 'GP', [], true, 1)){
+        if (sendMsg('0', 'GP', [], true, 0)){
           p_aux = p;
           p =  Math.abs(theta_p - theta); 
           if (p > 180)
@@ -506,7 +505,7 @@ namespace ucaBot {
   //% weight=175 color=#ff9da5
   export function moveCm(cm: number): void { 
     // request pos
-    if (sendMsg('0', 'GP', [], true, 0)){
+    if (sendMsg('0', 'GP', [], true, -1)){
       console.log('pos '+x+' '+y+' '+theta);
       let aux = cm;  let v = 0;
       let xv = 0;    let yv = 0;
@@ -589,7 +588,7 @@ namespace ucaBot {
   //% y.min = 5 y.max = 57
   //% weight=170 color=#ff9da5
   export function goToPoint(px: number, py: number) {
-    if (sendMsg('0', 'GP', [], true, 0)){
+    if (sendMsg('0', 'GP', [], true, -1)){
       let d = distance(px, x, py, y);
       let angle = rotationAngle(x, px, y, py, theta, d);
       console.log('d '+d+'angle '+angle);
@@ -641,7 +640,7 @@ namespace ucaBot {
   //% block="Who are at least %d cm near me?"
   //% d.min = 12 d.max = 100
   export function nearMe(d: number): string { 
-    if (sendMsg('0', 'WN', [d.toString()], true, 0))
+    if (sendMsg('0', 'WN', [d.toString()], true, -1))
       return near_me;
     else
       return '0'
@@ -659,14 +658,14 @@ namespace ucaBot {
     if (id_called == id_agent)
       basic.showString('I cannot call myself. Enter another ID');
     else{
-      if (sendMsg('0', 'AE', [id_called], true, 0)){ 
+      if (sendMsg('0', 'AE', [id_called], true, -1)){ 
         if (a_exists == 1){
           console.log('agent exists '+a_exists+' in '+x_c+' '+y_c+' '+a_c);
           // get my pos to get distance between agents
-          if (sendMsg('0', 'GP', [], true, 0)){
+          if (sendMsg('0', 'GP', [], true, -1)){
             let d = distance(x, x_c, y, y_c);
             let angle = rotationAngle(x_c, x, y_c, y, a_c, d);
-            sendMsg('0', 'CA', [id_called, d.toString(), angle.toString()], false, 0);
+            sendMsg('0', 'CA', [id_called, d.toString(), angle.toString()], false, -1);
           }
         }
         else
@@ -706,7 +705,7 @@ namespace ucaBot {
     if (id_followed == id_agent)
       basic.showString('I cannot follow myself. Enter another ID');
     else{
-      if (sendMsg('0', 'AE', [id_followed], true, 0)){ 
+      if (sendMsg('0', 'AE', [id_followed], true, -1)){ 
         console.log('agent exists '+a_exists);
         if (a_exists == 1){
           // ask for info here
