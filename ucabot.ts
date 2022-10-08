@@ -300,13 +300,13 @@ namespace ucaBot {
         break; 
       basic.pause(20); 
     }
-    basic.pause(40);
+    basic.pause(20);
     return;
   } 
   /**
   * serialize msg and send request to sandBox.
   */ 
-   function sendMsg(d: string, c: string, p: string[], req: boolean, stop: number): boolean {
+  function sendMsg(d: string, c: string, p: string[], req: boolean, stop: number): boolean {
     obj_req.set_values(id_agent, d, c, p);
     console.log('sending request');
     console.log(obj_req.f+' '+obj_req.d+' '+obj_req.c+' '+obj_req.p);
@@ -385,9 +385,9 @@ namespace ucaBot {
   /**
   * indicates to Sandbox to stop sending current values due to timeout 
   */ 
-     function stopSearching(){
-      radio.sendString('SS');
-    }
+  function stopSearching(){
+  radio.sendString('SS');
+  }
   /**
   * Adaptation of PID function
   */ 
@@ -525,17 +525,17 @@ namespace ucaBot {
       while ((cm > 1) && (cm <= aux)){
         xv = x; 
         yv = y;
-        v = pid(cm, 5, 100, 19, 22);
+        v = pid(cm, 5, 100, 20, 25);
         motors(v, v);  
         basic.pause(800);
-        if (sendMsg('0', 'GP', [], true, 8)){
+        if (sendMsg('0', 'GP', [], true, 6)){
           cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
           d_theta = theta_o - theta;
           console.log('cm '+cm+' d_theta'+ d_theta);
           if (Math.abs(d_theta) > 300)
             d_theta = 360 + d_theta;
           if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
-            vc = pid(Math.abs(d_theta), 2, 15, 3, 6);
+            vc = pid(Math.abs(d_theta), 2, 15, 4, 7);
             console.log('vc '+vc);
             // got to left, adjust to right
             if (d_theta < 0){
@@ -556,36 +556,36 @@ namespace ucaBot {
     }
     return;
   }
-    //function to get distance between 2 points
-    function distance(x1: number, x2: number, y1: number, y2: number): number{
-      let d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-      return Math.round(d);
+  //function to get distance between 2 points
+  function distance(x1: number, x2: number, y1: number, y2: number): number{
+    let d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    return Math.round(d);
+  }
+  // get degrees to radians
+  function degrees2radians(angle: number): number{
+    let radians = angle / 180 * Math.PI;
+    return radians;
+  }
+  // get radians to degrees
+  function radians2degrees(angle: number): number{
+    let degrees = angle * 180 / Math.PI;
+    return degrees;
+  }
+  // transform center to get rotation angle
+  function rotationAngle(xa: number, xb: number, ya: number, yb: number, angle_a: number, d: number): number{
+    let angle = -1 * degrees2radians(angle_a);
+    let xt = ((xb - xa) * Math.cos(angle)) - ((yb - ya) * Math.sin(angle));
+    let yt = ((xb - xa) * Math.sin(angle)) + ((yb - ya) * Math.cos(angle));
+    angle = Math.asin(yt / d);
+    angle = radians2degrees(angle);
+    if (xt < 0)
+      angle = 180 - angle;
+    else{
+      if (yt < 0)
+        angle = 360 + angle;
     }
-    // get degrees to radians
-    function degrees2radians(angle: number): number{
-      let radians = angle / 180 * Math.PI;
-      return radians;
-    }
-    // get radians to degrees
-    function radians2degrees(angle: number): number{
-      let degrees = angle * 180 / Math.PI;
-      return degrees;
-    }
-    // transform center to get rotation angle
-    function rotationAngle(xa: number, xb: number, ya: number, yb: number, angle_a: number, d: number): number{
-      let angle = -1 * degrees2radians(angle_a);
-      let xt = ((xb - xa) * Math.cos(angle)) - ((yb - ya) * Math.sin(angle));
-      let yt = ((xb - xa) * Math.sin(angle)) + ((yb - ya) * Math.cos(angle));
-      angle = Math.asin(yt / d);
-      angle = radians2degrees(angle);
-      if (xt < 0)
-        angle = 180 - angle;
-      else{
-        if (yt < 0)
-          angle = 360 + angle;
-      }
-      return Math.round(angle);
-    }
+    return Math.round(angle);
+  }
   /**
   * Go from a point to another.
   */ 
