@@ -299,7 +299,8 @@ namespace ucaBot {
       if ((n_agents != '0') && (id_agent != '0'))
         break; 
       basic.pause(20); 
-    } 
+    }
+    basic.pause(40);
     return;
   } 
   /**
