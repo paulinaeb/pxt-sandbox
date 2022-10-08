@@ -595,7 +595,7 @@ namespace ucaBot {
           if (Math.abs(d_theta) > 300)
             d_theta = 360 + d_theta;
           if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
-            vc = pid(Math.abs(d_theta), 2, 15, 6, 12);
+            vc = pid(Math.abs(d_theta), 2, 25, 6, 18);
             // got to left, adjust to right
             if (d_theta < 0)
               motors(v + vc, v - vc);
@@ -687,7 +687,7 @@ namespace ucaBot {
  * TODO: On an agent calling me
  */
   //% weight=165 color=#ff9da5
-  //% block="On all agents initialized"
+  //% block="On an agent calling me"
   export function calledByAgent(handler: () => void) {
     control.onEvent(100, 3502, handler);
     control.inBackground(() => {
@@ -695,7 +695,6 @@ namespace ucaBot {
         if (called){
           control.raiseEvent(100, 3502, EventCreationMode.CreateAndFire); 
           called = false;
-          
         }
         basic.pause(20); 
       }
