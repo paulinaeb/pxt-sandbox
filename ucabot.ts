@@ -367,7 +367,7 @@ namespace ucaBot {
             return res;
           }
         } 
-        basic.pause(60);
+        basic.pause(50);
       }
       // lost communication
       waiting = false;
@@ -530,16 +530,16 @@ namespace ucaBot {
           if (Math.abs(d_theta) > 300)
             d_theta = 360 + d_theta;
           if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
-            vc = pid(Math.abs(d_theta), 2, 15, 4, 7);
+            vc = pid(Math.abs(d_theta), 2, 15, 5, 10);
             console.log('vc '+vc);
             // got to left, adjust to right
             if (d_theta < 0){
-              motors(v + vc, v - vc);
+              motors(v, v - vc);
               console.log('adjust to right');
             }
             else{
               // got to right, adjust to left 
-              motors(v - vc, v + vc);
+              motors(v - vc, v);
               console.log('adjust to left');
             }
           }
