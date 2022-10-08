@@ -308,8 +308,6 @@ namespace ucaBot {
   */ 
   function sendMsg(d: string, c: string, p: string[], req: boolean, stop: number): boolean {
     obj_req.set_values(id_agent, d, c, p);
-    console.log('sending request');
-    console.log(obj_req.f+' '+obj_req.d+' '+obj_req.c+' '+obj_req.p);
     // header of msg
     let msg = obj_req.f + obj_req.d + obj_req.c;
     // num of params passed
@@ -353,16 +351,13 @@ namespace ucaBot {
       waiting = true;
       for (let i = 0; i < n_times; i++){
         if (act_value){
-          console.log(i + ' value found');
           act_value = false;
           waiting = false;
           return true;
         }
         else{
-          console.log(i + ' waiting resp');
           if ((i != 0) && (i == stop)){
             stopcar();
-            console.log('stop car and waiting resp');
           } 
           if (repeat){
             repeat = false;
@@ -374,9 +369,9 @@ namespace ucaBot {
         } 
         basic.pause(60);
       }
+      // lost communication
       waiting = false;
       stopSearching();
-      console.log('lost communication');
       return false;
     }
     else 
