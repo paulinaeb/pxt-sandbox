@@ -514,12 +514,10 @@ namespace ucaBot {
         if (sendMsg('0', 'GP', [], true, 6)){
           cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
           d_theta = theta_o - theta;
-          console.log('cm '+cm+' d_theta'+ d_theta);
           if (Math.abs(d_theta) > 300)
             d_theta = 360 + d_theta;
           if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
             vc = pid(Math.abs(d_theta), 2, 15, 6, 12);
-            console.log('vc '+vc);
             // got to left, adjust to right
             if (d_theta < 0)
               motors(v + vc, v - vc);
@@ -576,19 +574,44 @@ namespace ucaBot {
   export function goToPoint(px: number, py: number) {
     if (sendMsg('0', 'GP', [], true, -1)){
       let d = distance(px, x, py, y);
+      let d_theta = 0;
+      let v = 0;
+      let vc = 0;
       let angle = rotationAngle(x, px, y, py, theta, d);
       console.log('distance '+ d +' angle to rotate ' + angle);
       if (angle > 4){
         if (angle > 180){
-          angle = 360 - angle;
-          // right
+          angle = 360 - angle; 
           rotate(angle, RotateDir.dir_right);
         }
-        else
-          // left
+        else 
           rotate(angle, RotateDir.dir_left); 
       }
       console.log('result angle ' + result_angle);
+      while (d > 1){
+        if (sendMsg('0', 'GP', [], true, 6)){
+          d_theta = result_angle - theta;
+          d = distance(px, x, py, y);
+          if (Math.abs(d_theta) > 300)
+            d_theta = 360 + d_theta;
+          if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
+            vc = pid(Math.abs(d_theta), 2, 15, 6, 12);
+            // got to left, adjust to right
+            if (d_theta < 0)
+              motors(v + vc, v - vc);
+            else
+              // got to right, adjust to left 
+              motors(v - vc, v + vc);
+            basic.pause(50);
+          }
+          v = pid(d, 5, 100, 20, 25);
+          motors(v, v);  
+          basic.pause(800);
+        }
+        else
+          return;
+      }
+      stopcar();
     } 
     return;
   }
