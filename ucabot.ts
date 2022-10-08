@@ -542,6 +542,7 @@ namespace ucaBot {
               motors(v - vc, v + vc);
               console.log('adjust to left');
             }
+            basic.pause(50);
           }
         }
         else
