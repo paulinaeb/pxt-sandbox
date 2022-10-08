@@ -594,6 +594,7 @@ namespace ucaBot {
           aux = d;
           d_theta = result_angle - theta;
           d = distance(px, x, py, y);
+          console.log('distance in loop '+d+'d theta in loop'+d_theta);
           if (Math.abs(d_theta) > 300)
             d_theta = 360 + d_theta;
           if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
