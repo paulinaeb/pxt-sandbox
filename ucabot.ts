@@ -41,7 +41,7 @@ namespace ucaBot {
   let obj_req = new Resp();
   let id_agent = '0';
   let n_agents = '0';
-  let near_me = '0'
+  let near_me = '0';
   let x = 0;
   let y = 0;
   let act_value = false;
@@ -51,8 +51,7 @@ namespace ucaBot {
   let y_c = 0;
   let a_c = 0;
   let called = false;
-  let d = 0;
-  let r_angle = 0;
+  let result_angle = 0;
   let waiting = false;
   let repeat = false;
   /**
@@ -282,8 +281,6 @@ namespace ucaBot {
             act_value = true;
           }
           else if (obj_resp.c == 'CA'){
-            d = parseInt(obj_resp.p[0]);
-            r_angle = parseInt(obj_resp.p[1]);
             called = true;
           }
           else if ((obj_resp.c == 'NF') && (waiting == true)){
@@ -448,7 +445,7 @@ namespace ucaBot {
   */ 
   //% block="Rotate agent %p ° to %dir"
   //% p.shadow="protractorPicker"
-  //% p.min=20 p.max=180
+  //% p.min = 5 p.max = 180
   //% weight=180 color=#ff9da5
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
@@ -466,9 +463,9 @@ namespace ucaBot {
         if (theta_p > 360)
           theta_p = theta_p - 360;
       }
-      console.log('desired angle ' + theta_p); 
+      result_angle = theta_p;
       let p_aux = p;
-      while ((p > 8) && (p <= p_aux)){
+      while ((p > 4) && (p <= p_aux)){
       //PID adaptation
         d = pid(p, 10, 180, 17, 18);
         if (dir == RotateDir.dir_right){
@@ -486,14 +483,11 @@ namespace ucaBot {
           p =  Math.abs(theta_p - theta); 
           if (p > 180)
             p = 360 - p;
-          console.log('theta in loop '+theta); 
-          console.log('p (delta) in loop '+p);
         }
         else
           return;   
       } 
       stopcar();
-      console.log('end');
     }
     return;
   }
@@ -507,16 +501,10 @@ namespace ucaBot {
   export function moveCm(cm: number): void { 
     // request pos
     if (sendMsg('0', 'GP', [], true, -1)){
-      console.log('pos '+x+' '+y+' '+theta);
       let aux = cm;  let v = 0;
       let xv = 0;    let yv = 0;
       let theta_o = theta; 
       let d_theta = 0;  let vc = 0;
-      let r_theta = degrees2radians(theta);
-      // translation
-      let x_o = cm * Math.cos(r_theta) + x;
-      let y_o = cm * Math.sin(r_theta) + y;
-      console.log('pos obj '+x_o+' '+y_o);
       while ((cm > 1) && (cm <= aux)){
         xv = x; 
         yv = y;
@@ -533,15 +521,11 @@ namespace ucaBot {
             vc = pid(Math.abs(d_theta), 2, 15, 6, 12);
             console.log('vc '+vc);
             // got to left, adjust to right
-            if (d_theta < 0){
+            if (d_theta < 0)
               motors(v + vc, v - vc);
-              console.log('adjust to right');
-            }
-            else{
+            else
               // got to right, adjust to left 
               motors(v - vc, v + vc);
-              console.log('adjust to left');
-            }
             basic.pause(50);
           }
         }
@@ -593,7 +577,7 @@ namespace ucaBot {
     if (sendMsg('0', 'GP', [], true, -1)){
       let d = distance(px, x, py, y);
       let angle = rotationAngle(x, px, y, py, theta, d);
-      console.log('d '+d+'angle '+angle);
+      console.log('distance '+d+' angle to rotate '+angle);
       if (angle > 180){
         angle = 360 - angle;
         // right
@@ -604,7 +588,11 @@ namespace ucaBot {
           // left
           rotate(angle, RotateDir.dir_left);
       }
-      moveCm(d); 
+
+      let r_theta = degrees2radians(theta);
+      // translation
+      let x_o = d * Math.cos(r_theta) + x;
+      let y_o = d * Math.sin(r_theta) + y; 
     } 
     return;
   }
