@@ -574,6 +574,7 @@ namespace ucaBot {
   export function goToPoint(px: number, py: number) {
     if (sendMsg('0', 'GP', [], true, -1)){
       let d = distance(px, x, py, y);
+      let aux = d;
       let d_theta = 0;
       let v = 0;
       let vc = 0;
@@ -588,8 +589,9 @@ namespace ucaBot {
           rotate(angle, RotateDir.dir_left); 
       }
       console.log('result angle ' + result_angle);
-      while (d > 1){
+      while ((d > 1) && (d <= aux)){
         if (sendMsg('0', 'GP', [], true, 6)){
+          aux = d;
           d_theta = result_angle - theta;
           d = distance(px, x, py, y);
           if (Math.abs(d_theta) > 300)
