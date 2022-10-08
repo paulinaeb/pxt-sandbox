@@ -365,6 +365,8 @@ namespace ucaBot {
           } 
           if (repeat){
             repeat = false;
+            if (stop != 0)
+              stopcar();
             let res = sendMsg(d, c, p, req, stop);
             return res;
           }
