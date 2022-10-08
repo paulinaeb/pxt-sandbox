@@ -577,22 +577,18 @@ namespace ucaBot {
     if (sendMsg('0', 'GP', [], true, -1)){
       let d = distance(px, x, py, y);
       let angle = rotationAngle(x, px, y, py, theta, d);
-      console.log('distance '+d+' angle to rotate '+angle);
-      if (angle > 180){
-        angle = 360 - angle;
-        // right
-        rotate(angle, RotateDir.dir_right);
-      }
-      else{
-        if (angle < 180)
+      console.log('distance '+ d +' angle to rotate ' + angle);
+      if (angle > 4){
+        if (angle > 180){
+          angle = 360 - angle;
+          // right
+          rotate(angle, RotateDir.dir_right);
+        }
+        else
           // left
-          rotate(angle, RotateDir.dir_left);
+          rotate(angle, RotateDir.dir_left); 
       }
-
-      let r_theta = degrees2radians(theta);
-      // translation
-      let x_o = d * Math.cos(r_theta) + x;
-      let y_o = d * Math.sin(r_theta) + y; 
+      console.log('result angle ' + result_angle);
     } 
     return;
   }
