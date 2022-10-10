@@ -591,15 +591,15 @@ namespace ucaBot {
       if (sendMsg('0', 'GP', [], true, -1)){
         d = distance(px, x, py, y);
         let aux = d;
-        while ((d > 3) && (d <= aux)){
-          if (sendMsg('0', 'GP', [], true, 2)){
+        while ((d > 1) && (d <= aux)){
+          if (sendMsg('0', 'GP', [], true, 3)){
             aux = d;
             d_theta = result_angle - theta;
             console.log('distance in loop '+d+'d theta in loop'+d_theta);
             if (Math.abs(d_theta) > 300)
               d_theta = 360 + d_theta;
             if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
-              vc = pid(Math.abs(d_theta), 2, 25, 6, 18);
+              vc = pid(Math.abs(d_theta), 2, 30, 6, 20);
               // got to left, adjust to right
               if (d_theta < 0)
                 motors(v + vc, v - vc);
@@ -611,10 +611,12 @@ namespace ucaBot {
             v = pid(d, 5, 100, 20, 25);
             motors(v, v);  
             d = distance(px, x, py, y);
-            basic.pause(800);
+            basic.pause(200);
           }
-          else
+          else{
+            console.log('lost comm');
             return;
+          }
         }
         stopcar();
       }
