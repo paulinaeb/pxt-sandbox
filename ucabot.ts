@@ -360,6 +360,7 @@ namespace ucaBot {
             repeat = false;
             if (stop > 0)
               stopcar();
+            basic.pause(30);
             let res = sendMsg(d, c, p, req, stop);
             return res;
           }
@@ -589,8 +590,8 @@ namespace ucaBot {
           rotate(angle, RotateDir.dir_left); 
       }
       console.log('result angle ' + result_angle);
-        while ((d > 1) && (d <= aux)){
-          if (sendMsg('0', 'GP', [], true, 3)){
+        while ((d > 6) && (d <= aux)){
+          if (sendMsg('0', 'GP', [], true, 4)){
             aux = d;
             d_theta = result_angle - theta;
             console.log('distance in loop '+d+'d theta in loop'+d_theta);
@@ -611,10 +612,8 @@ namespace ucaBot {
             d = distance(px, x, py, y);
             basic.pause(200);
           }
-          else{
-            console.log('lost comm');
+          else
             return;
-          }
         }
         stopcar();
     } 
