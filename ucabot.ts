@@ -590,7 +590,7 @@ namespace ucaBot {
           rotate(angle, RotateDir.dir_left); 
       }
       console.log('result angle ' + result_angle);
-        while ((d > 6) && (d <= aux)){
+        while ((d > 5) && (d <= aux)){
           if (sendMsg('0', 'GP', [], true, 4)){
             aux = d;
             d_theta = result_angle - theta;
