@@ -511,7 +511,7 @@ namespace ucaBot {
         v = pid(cm, 5, 100, 20, 25);
         motors(v, v);  
         basic.pause(800);
-        if (sendMsg('0', 'GP', [], true, 6)){
+        if (sendMsg('0', 'GP', [], true, 5)){
           cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
           d_theta = theta_o - theta;
           if (Math.abs(d_theta) > 300)
@@ -592,7 +592,7 @@ namespace ucaBot {
         d = distance(px, x, py, y);
         let aux = d;
         while ((d > 3) && (d <= aux)){
-          if (sendMsg('0', 'GP', [], true, 6)){
+          if (sendMsg('0', 'GP', [], true, 2)){
             aux = d;
             d_theta = result_angle - theta;
             console.log('distance in loop '+d+'d theta in loop'+d_theta);
@@ -679,11 +679,7 @@ namespace ucaBot {
         if (a_exists == 1){
           console.log('agent exists '+a_exists+' in '+x_c+' '+y_c+' '+a_c);
           // get my pos to get distance between agents
-          if (sendMsg('0', 'GP', [], true, -1)){
-            let d = distance(x, x_c, y, y_c);
-            let angle = rotationAngle(x_c, x, y_c, y, a_c, d);
-            sendMsg('0', 'CA', [id_called, d.toString(), angle.toString()], false, -1);
-          }
+          sendMsg('0', 'CA', [id_called], false, -1);
         }
         else
           basic.showString('ID in call agent does not exist on SandBox'); 
