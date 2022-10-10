@@ -577,6 +577,7 @@ namespace ucaBot {
       let d_theta = 0;
       let v = 0;
       let vc = 0;
+      let aux = 999;
       let angle = rotationAngle(x, px, y, py, theta, d);
       console.log('distance '+ d +' angle to rotate ' + angle);
       if (angle > 4){
@@ -588,10 +589,7 @@ namespace ucaBot {
           rotate(angle, RotateDir.dir_left); 
       }
       console.log('result angle ' + result_angle);
-      if (sendMsg('0', 'GP', [], true, -1)){
-        d = distance(px, x, py, y);
-        let aux = d;
-        while ((d > 1) && (d <= aux)){
+        while ((d > 1) && (d < aux)){
           if (sendMsg('0', 'GP', [], true, 3)){
             aux = d;
             d_theta = result_angle - theta;
@@ -619,9 +617,6 @@ namespace ucaBot {
           }
         }
         stopcar();
-      }
-      else
-        return;
     } 
     return;
   }
