@@ -360,7 +360,6 @@ namespace ucaBot {
             repeat = false;
             if (stop > 0)
               stopcar();
-            basic.pause(30);
             let res = sendMsg(d, c, p, req, stop);
             return res;
           }
@@ -610,7 +609,7 @@ namespace ucaBot {
             v = pid(d, 5, 100, 20, 25);
             motors(v, v);  
             d = distance(px, x, py, y);
-            basic.pause(200);
+            basic.pause(250);
           }
           else
             return;
