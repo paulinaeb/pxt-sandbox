@@ -580,7 +580,7 @@ namespace ucaBot {
       let aux = 999;
       let angle = rotationAngle(x, px, y, py, theta, d);
       console.log('distance '+ d +' angle to rotate ' + angle);
-      if (angle > 4){
+      if (angle > 7){
         if (angle > 180){
           angle = 360 - angle; 
           rotate(angle, RotateDir.dir_right);
@@ -588,33 +588,35 @@ namespace ucaBot {
         else 
           rotate(angle, RotateDir.dir_left); 
       }
-      console.log('result angle ' + result_angle);
-        while ((d > 5) && (d <= aux)){
-          if (sendMsg('0', 'GP', [], true, 4)){
-            aux = d;
-            d_theta = result_angle - theta;
-            console.log('distance in loop '+d+'d theta in loop'+d_theta);
-            if (Math.abs(d_theta) > 300)
-              d_theta = 360 + d_theta;
-            if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
-              vc = pid(Math.abs(d_theta), 2, 30, 6, 15);
-              // got to left, adjust to right
-              if (d_theta < 0)
-                motors(v + vc, v - vc);
-              else
-                // got to right, adjust to left 
-                motors(v - vc, v + vc);
-              basic.pause(50);
-            }
-            v = pid(d, 5, 100, 20, 25);
-            motors(v, v);  
-            d = distance(px, x, py, y);
-            basic.pause(250);
+      else
+        result_angle = theta;
+      console.log('result angle ' + result_angle); 
+      while ((d > 4) && (d <= aux)){
+        if (sendMsg('0', 'GP', [], true, 4)){
+          aux = d;
+          d_theta = result_angle - theta;
+          console.log('distance in loop '+d+'d theta in loop'+d_theta);
+          if (Math.abs(d_theta) > 300)
+            d_theta = 360 + d_theta;
+          if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
+            vc = pid(Math.abs(d_theta), 2, 30, 6, 15);
+            // got to left, adjust to right
+            if (d_theta < 0)
+              motors(v + vc, v - vc);
+            else
+              // got to right, adjust to left 
+              motors(v - vc, v + vc);
+            basic.pause(50);
           }
-          else
-            return;
+          v = pid(d, 5, 100, 20, 25);
+          motors(v, v);  
+          d = distance(px, x, py, y);
+          basic.pause(250);
         }
-        stopcar();
+        else
+          return;
+      }
+      stopcar();
     } 
     return;
   }
