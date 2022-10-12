@@ -47,9 +47,6 @@ namespace ucaBot {
   let act_value = false;
   let theta = 0;
   let a_exists = 0;
-  let x_c = 0;
-  let y_c = 0;
-  let a_c = 0;
   let called = false;
   let result_angle = 0;
   /**
@@ -267,11 +264,6 @@ namespace ucaBot {
           }
           else if (obj_resp.c == 'AE'){
             a_exists = parseInt(obj_resp.p[0]);
-            if (a_exists == 1){
-              x_c = parseInt(obj_resp.p[1]);
-              y_c = parseInt(obj_resp.p[2]);
-              a_c = parseInt(obj_resp.p[3]);
-            }
             act_value = true;
           }
           else if (obj_resp.c == 'WN'){
@@ -659,8 +651,7 @@ namespace ucaBot {
     else{
       if (sendMsg('0', 'AE', [id_called], true, -1)){ 
         if (a_exists == 1){
-          console.log('agent exists '+a_exists+' in '+x_c+' '+y_c+' '+a_c);
-          // get my pos to get distance between agents
+          console.log('agent exists');
           sendMsg('0', 'CA', [id_called], false, -1);
         }
         else
