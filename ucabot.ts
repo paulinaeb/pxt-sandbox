@@ -569,7 +569,7 @@ namespace ucaBot {
   //% x.min = 5 x.max = 100
   //% y.min = 5 y.max = 57
   //% weight=170 color=#ff9da5
-  export function goToPoint(px: number, py: number) {
+  export function goToPoint(px: number, py: number, space = 0) {
     if (sendMsg('0', 'GP', [], true, -1)){
       let d = distance(px, x, py, y);
       let d_theta = 0;
@@ -589,7 +589,7 @@ namespace ucaBot {
       else
         result_angle = theta;
       console.log('result angle ' + result_angle); 
-      while ((d > 4) && (d <= aux)){
+      while ((d > (4 + space)) && (d <= aux)){
         if (sendMsg('0', 'GP', [], true, 4)){
           aux = d;
           d_theta = result_angle - theta;
@@ -710,11 +710,27 @@ namespace ucaBot {
     });
     return;
   }
+/**
+ * TODO: Go where the leader is
+ */
+  //% weight=135 color=#ff9da5
+  //% block="Go to the leader"
+  export function goToLeader() {
+    if (calls != ''){
+      if (sendMsg('0', 'GP', [calls], true, -1)){
+        goToPoint(x, y, 14);
+        sendMsg('0', 'AR', [calls], true, -1);
+      }
+      else 
+        return;
+    }
+    return;
+  }
   /**
  * TODO: Follow other agent on sandbox.
  * @param id id of agent to follow, eg: 1
  */
-  //% weight=135 color=#ff9da5
+  //% weight=130 color=#ff9da5
   //% block="Follow agent ID %id"
   //% id.min = 1 id.max = 3
   export function followAgent(id: number) {
