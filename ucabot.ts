@@ -289,7 +289,7 @@ namespace ucaBot {
   // the block does not end until agents are initialized
     while (true) { 
       if ((n_agents != '0') && (id_agent != '0')){
-        basic.pause(30);
+        basic.pause(50);
         break; 
       }
       basic.pause(20); 
