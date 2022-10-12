@@ -51,7 +51,7 @@ namespace ucaBot {
   let result_angle = 0;
   let waiting = false;
   let repeat = false;
-
+  let calls = 0;
   /**
    * Unit of Ultrasound Module
    */
@@ -274,7 +274,12 @@ namespace ucaBot {
             act_value = true;
           }
           else if (obj_resp.c == 'CA'){
-            called = true;
+            if (obj_resp.p.length > 0){
+              if (obj_resp.p[0] != id_agent){
+                called = true;
+                calls = obj_resp.p[0];
+              }
+            }
           }
           else if ((obj_resp.c == 'NF') && (waiting == true)){
             repeat = true;
@@ -696,6 +701,7 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (called){
+          console.log(calls+'calling me');
           control.raiseEvent(100, 3502, EventCreationMode.CreateAndFire); 
           called = false;
         }
