@@ -51,7 +51,7 @@ namespace ucaBot {
   let result_angle = 0;
   let waiting = false;
   let repeat = false;
-  let calls = 0;
+  let calls = '';
   /**
    * Unit of Ultrasound Module
    */
