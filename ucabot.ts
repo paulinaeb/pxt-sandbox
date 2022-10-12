@@ -252,7 +252,7 @@ namespace ucaBot {
           if ((id_agent == '0') && (obj_resp.c == 'II')){
             id_agent = obj_resp.p[0];
             basic.showString(id_agent);
-            basic.pause(1800);
+            basic.pause(1000);
             basic.clearScreen();
           }
           else if ((n_agents == '0') && (obj_resp.c == 'AI')){
