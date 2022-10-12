@@ -51,6 +51,7 @@ namespace ucaBot {
   let result_angle = 0;
   let waiting = false;
   let repeat = false;
+
   /**
    * Unit of Ultrasound Module
    */
@@ -651,7 +652,6 @@ namespace ucaBot {
     else
       return '0'
   }
-
   /**
  * TODO: Call other agent on sandbox.
  * @param id id of agent to call, eg: 1
@@ -663,7 +663,7 @@ namespace ucaBot {
     let id_called = id.toString();
     if (id_called == id_agent)
       basic.showString('I cannot call myself. Enter another ID');
-    else{
+    else if (parseInt(n_agents) > 1){
       if (sendMsg('0', 'AE', [id_called], true, -1)){ 
         if (a_exists == 1){
           console.log('agent exists');
@@ -675,10 +675,21 @@ namespace ucaBot {
     }
     return;
   }
+/**
+ * TODO: An agent can aks for other agent's help when needed
+ */
+  //% weight=145 color=#ff9da5
+  //% block="Ask for other agent's help "
+  //% id.min = 1 id.max = 3
+  export function askHelp() {
+    if (parseInt(n_agents) > 1)
+      sendMsg('0', 'CA', ['F'], false, -1);
+    return;
+  }
   /**
  * TODO: On an agent calling me
  */
-  //% weight=165 color=#ff9da5
+  //% weight=140 color=#ff9da5
   //% block="On an agent calling me"
   export function calledByAgent(handler: () => void) {
     control.onEvent(100, 3502, handler);
@@ -697,7 +708,7 @@ namespace ucaBot {
  * TODO: Follow other agent on sandbox.
  * @param id id of agent to follow, eg: 1
  */
-  //% weight=145 color=#ff9da5
+  //% weight=135 color=#ff9da5
   //% block="Follow agent ID %id"
   //% id.min = 1 id.max = 3
   export function followAgent(id: number) {
