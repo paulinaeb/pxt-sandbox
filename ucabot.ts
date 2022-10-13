@@ -52,6 +52,7 @@ namespace ucaBot {
   let waiting = false;
   let repeat = false;
   let calls = '';
+  let arrived = false;
   /**
    * Unit of Ultrasound Module
    */
@@ -283,6 +284,9 @@ namespace ucaBot {
           }
           else if ((obj_resp.c == 'NF') && (waiting == true)){
             repeat = true;
+          }
+          else if (obj_resp.c == 'AR'){
+            arrived = true;
           }
         }
         // if msg comes from other agent
@@ -718,7 +722,7 @@ namespace ucaBot {
   export function goToLeader() {
     if (calls != ''){
       if (sendMsg('0', 'GP', [calls], true, -1)){
-        goToPoint(x, y, 14);
+        goToPoint(x, y, 20);
         sendMsg('0', 'AR', [calls], true, -1);
       }
       else 
@@ -727,10 +731,18 @@ namespace ucaBot {
     return;
   }
   /**
+ * TODO: Indicates to an agent previously called to follow it.
+ */
+  //% weight=130 color=#ff9da5
+  //% block="Go to the leader"
+  export function followMe() {
+    return;
+  }
+  /**
  * TODO: Follow other agent on sandbox.
  * @param id id of agent to follow, eg: 1
  */
-  //% weight=130 color=#ff9da5
+  //% weight=125 color=#ff9da5
   //% block="Follow agent ID %id"
   //% id.min = 1 id.max = 3
   export function followAgent(id: number) {
