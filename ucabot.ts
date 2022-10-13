@@ -52,7 +52,9 @@ namespace ucaBot {
   let waiting = false;
   let repeat = false;
   let calls = '';
-  let arrived = false;
+  let arrived = '';
+  let id2follow = '';
+  let follow_req = false;
   /**
    * Unit of Ultrasound Module
    */
@@ -206,13 +208,14 @@ namespace ucaBot {
     radio.onReceivedString(function (receivedString) {
       // msg in fixed format
       let msg = receivedString;
-      console.log('received '+msg);  
+      
       if (msg == 'ping')
         radio.sendString('ping received');
       // assign header of msg to public object
       obj_resp.set_header(msg[0], msg[1], msg[2] + msg[3]);
       // if the msg is for me or for all, search the params
       if ((obj_resp.d == 'F') || (obj_resp.d == id_agent)){
+        console.log('received '+msg);  
         // if there are params
         if (msg.length > 4){
           // assign str for params (excludes header) 
@@ -277,8 +280,8 @@ namespace ucaBot {
           else if (obj_resp.c == 'CA'){
             if (obj_resp.p.length > 0){
               if (obj_resp.p[0] != id_agent){
-                called = true;
                 calls = obj_resp.p[0];
+                called = true;
               }
             }
           }
@@ -286,7 +289,11 @@ namespace ucaBot {
             repeat = true;
           }
           else if (obj_resp.c == 'AR'){
-            arrived = true;
+            arrived = obj_resp.p[0];
+          }
+          else if (obj_resp.c == 'FM'){
+            id2follow = obj_resp.p[0];
+            follow_req = true;
           }
         }
         // if msg comes from other agent
@@ -691,8 +698,16 @@ namespace ucaBot {
   //% block="Ask for other agent's help "
   //% id.min = 1 id.max = 3
   export function askHelp() {
-    if (parseInt(n_agents) > 1)
+    if (parseInt(n_agents) > 1){
       sendMsg('0', 'CA', ['F'], false, -1);
+      while (true){
+        if (arrived != '')
+          break
+        basic.pause(20);
+      }
+    }
+    else 
+      basic.showString('No agents for asking help');
     return;
   }
   /**
@@ -723,7 +738,7 @@ namespace ucaBot {
     if (calls != ''){
       if (sendMsg('0', 'GP', [calls], true, -1)){
         goToPoint(x, y, 20);
-        sendMsg('0', 'AR', [calls], true, -1);
+        sendMsg('0', 'AR', [calls], false, -1);
       }
       else 
         return;
@@ -731,18 +746,64 @@ namespace ucaBot {
     return;
   }
   /**
+ * TODO: On 'follow me' received, previously called.
+ */
+  //% weight=140 color=#ff9da5
+  //% block="On 'follow me' received"
+  export function askedToFollow(handler: () => void) {
+    control.onEvent(101, 3503, handler);
+    control.inBackground(() => {
+      while (true) { 
+        if (follow_req){
+          console.log(id2follow+' asked to follow');
+          control.raiseEvent(101, 3503, EventCreationMode.CreateAndFire); 
+          follow_req = false;
+        }
+        basic.pause(20); 
+      }
+    });
+    return;
+  }
+  /**
  * TODO: Indicates to an agent previously called to follow it.
  */
   //% weight=130 color=#ff9da5
-  //% block="Go to the leader"
+  //% block="Follow me"
   export function followMe() {
+    if (arrived != ''){
+      sendMsg('0', 'FM', [arrived], false, -1);
+      basic.pause(3000);
+    }
+    else
+      basic.showString('Ask for help first');
+    return;
+  }
+  /**
+ * TODO: Follow the leader who called it.
+ */
+  //% weight=130 color=#ff9da5
+  //% block="Follow leader"
+  export function followLeader() {
+    if (id2follow != ''){
+      if (sendMsg('0', 'GP', [id2follow], true, -1)){
+        let af = theta;
+        if (sendMsg('0', 'GP', [], true, -1)){
+          // get same angle than leader
+           
+        }
+      }
+      else
+        return
+    }
+    else
+      basic.showString('Not asked to follow yet');
     return;
   }
   /**
  * TODO: Follow other agent on sandbox.
  * @param id id of agent to follow, eg: 1
  */
-  //% weight=125 color=#ff9da5
+  //% weight=120 color=#ff9da5
   //% block="Follow agent ID %id"
   //% id.min = 1 id.max = 3
   export function followAgent(id: number) {
