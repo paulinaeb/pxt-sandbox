@@ -479,12 +479,12 @@ namespace ucaBot {
         d = pid(p, 10, 180, 17, 18);
         if (dir == RotateDir.dir_right){
           motors(30, -35);
-          basic.pause(80);
+          basic.pause(70);
           motors(d, -d-3);
         }
         else{
           motors(-35, 30);
-          basic.pause(80);
+          basic.pause(70);
           motors(-d-3, d);
         } 
         if (sendMsg('0', 'GP', [], true, 0)){
@@ -788,9 +788,28 @@ namespace ucaBot {
       if (sendMsg('0', 'GP', [id2follow], true, -1)){
         let af = theta;
         if (sendMsg('0', 'GP', [], true, -1)){
-          // get same angle than leader
-           
+          // get same angle than leader and rotate
+          let aa = theta;
+          let angle = Math.abs(af - aa);
+          if (af > aa){
+            if(angle > 180){
+              angle = 360 - angle;
+              rotate(angle, RotateDir.dir_right);
+            }
+            else
+              rotate(angle, RotateDir.dir_left);
+          }
+          else if (aa > af){
+            if (angle > 180){
+              angle = 360 - angle;
+              rotate(angle, RotateDir.dir_left);
+            }
+            else
+              rotate(angle, RotateDir.dir_right);
+          }
         }
+        else
+          return
       }
       else
         return
