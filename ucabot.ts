@@ -206,22 +206,14 @@ namespace ucaBot {
   export function initAgent(): void {
     radio.setGroup(ID_GROUP);
     radio.onReceivedString(function (receivedString) {
-      // msg in fixed format
       let msg = receivedString;
-      // assign header of msg to public object
       obj_resp.set_header(msg[0], msg[1], msg[2] + msg[3]);
-      // if the msg is for me or for all, search the params
       if ((obj_resp.d == 'F') || (obj_resp.d == id_agent)){
         console.log(msg);  
-        // if there are params
         if (msg.length > 4){
-          // assign str for params (excludes header) 
           let str_p = msg.slice(4);
-          // occurrences of '/' in str
           let limit = (str_p.split("/").length - 1); 
-          // has params
           if (limit > 0){
-            // insert params into array
             let index = 0;
             let aux = 0;
             for (let i = 0; i < limit; i++){ 
@@ -236,18 +228,14 @@ namespace ucaBot {
               aux = index;
               let flag = 0;
               for (let char = 0; char < obj_resp.p[i].length; char++){  
-                // checks if num or str for every char 
                 if (!(((obj_resp.p[i][char] >= '0') && (obj_resp.p[i][char] <= '9')) || (obj_resp.p[i][char]=='.')))
-                    // increments str flag
                   flag+=1; 
               }
-              // if the param is a str - remove 0
               if (flag > 0)
                 obj_resp.p[i] = obj_resp.p[i].replace('0',''); 
             }
           }
         }
-        // if msg comes from sand
         if ((obj_resp.f == '0')){
           if ((id_agent == '0') && (obj_resp.c == 'II')){
             id_agent = obj_resp.p[0];
@@ -264,10 +252,6 @@ namespace ucaBot {
             theta = parseInt(obj_resp.p[2]);
             act_value = true;
           }
-          else if (obj_resp.c == 'AE'){
-            a_exists = parseInt(obj_resp.p[0]);
-            act_value = true;
-          }
           else if (obj_resp.c == 'WN'){
             near_me = obj_resp.p[0];
             act_value = true;
@@ -280,22 +264,17 @@ namespace ucaBot {
               }
             }
           }
-          else if ((obj_resp.c == 'NF') && (waiting == true)){
+          else if ((obj_resp.c == 'NF') && (waiting == true))
             repeat = true;
-          }
-          else if (obj_resp.c == 'AR'){
+          else if (obj_resp.c == 'AR')
             arrived = obj_resp.p[0];
-          }
           else if (obj_resp.c == 'FM'){
             id2follow = obj_resp.p[0];
             follow_req = true;
           }
         }
-        // if msg comes from other agent
-        else{}
       }
     });
-  // the block does not end until agents are initialized
     while (true) { 
       if ((n_agents != '0') && (id_agent != '0')){
         basic.pause(50);
@@ -310,20 +289,13 @@ namespace ucaBot {
   */ 
   function sendMsg(d: string, c: string, p: string[], req: boolean, stop: number): boolean {
     obj_req.set_values(id_agent, d, c, p);
-    // header of msg
     let msg = obj_req.f + obj_req.d + obj_req.c;
-    // num of params passed
     let n_param = obj_req.p.length;
-    // size of params str with delimiter (/)
     let size = n_param;
-    // if there are params
     if (size > 0){ 
-      // adds the size of each param
       for (let i = 0; i < n_param; i++)
         size += obj_req.p[i].length; 
-      // define the number of spaces to be filled with '0'
       let num_fill = 14 - size;
-      // number of spaces that every param will have added to (if>0)
       let n_each = num_fill / n_param;
       if (num_fill >= 0){
         if (n_param >= 1){
@@ -333,7 +305,6 @@ namespace ucaBot {
                 msg += '0';
             }
         } 
-        // if num to add is odd or there are less spaces to be filled than params 
         if ((n_each != Math.floor(n_each)) || (num_fill < n_param)){
           let ex = 18 - msg.length; 
           for (let i = 0; i < ex; i++)
@@ -644,27 +615,6 @@ namespace ucaBot {
     else
       return '0'
   }
-  /**
- * TODO: Call other agent on sandbox.
- * @param id id of agent to call, eg: 1
- */
-  //% weight=150 color=#ff9da5
-  //% block="Call agent ID %id"
-  //% id.min = 1 id.max = 3
-  export function callAgent(id: number) {
-    let id_called = id.toString();
-    if (id_called == id_agent)
-      basic.showString('ID error');
-    else if (parseInt(n_agents) > 1){
-      if (sendMsg('0', 'AE', [id_called], true, -1)){ 
-        if (a_exists == 1)
-          sendMsg('0', 'CA', [id_called], false, -1);
-        else
-          basic.showString('ID error'); 
-      }
-    }
-    return;
-  }
 /**
  * TODO: An agent can aks for other agent's help when needed
  */
@@ -787,29 +737,6 @@ namespace ucaBot {
     }
     else
       basic.showString('Not asked to follow yet');
-    return;
-  }
-  /**
- * TODO: Follow other agent on sandbox.
- * @param id id of agent to follow, eg: 1
- */
-  //% weight=120 color=#ff9da5
-  //% block="Follow agent ID %id"
-  //% id.min = 1 id.max = 3
-  export function followAgent(id: number) {
-    let id_followed = id.toString();
-    if (id_followed == id_agent)
-      basic.showString('I cannot follow myself. Enter another ID');
-    else{
-      if (sendMsg('0', 'AE', [id_followed], true, -1)){ 
-        console.log('agent exists '+a_exists);
-        if (a_exists == 1){
-          // ask for info here
-        }
-        else
-          basic.showString('ID in follow agent does not exist on SandBox');
-      } 
-    }
     return;
   }
   /**
