@@ -288,6 +288,7 @@ namespace ucaBot {
   * serialize msg and send request to sandBox.
   */ 
   function sendMsg(d: string, c: string, p: string[], req: boolean, stop: number): boolean {
+    obj_req = new Resp();
     obj_req.set_values(id_agent, d, c, p);
     let msg = obj_req.f + obj_req.d + obj_req.c;
     let n_param = obj_req.p.length;
@@ -314,9 +315,8 @@ namespace ucaBot {
     }
     console.log('sent '+msg);
     radio.sendString(msg);
-    obj_req = new Resp();
-    let n_times = 180;
     if (req){
+      let n_times = 250;
       waiting = true;
       for (let i = 0; i < n_times; i++){
         if (act_value){
@@ -337,7 +337,6 @@ namespace ucaBot {
         } 
         basic.pause(50);
       }
-      // lost communication
       waiting = false;
       stopSearching();
       return false;
@@ -350,16 +349,17 @@ namespace ucaBot {
   */ 
   function stopSearching(){
     radio.sendString('SS');
+    basic.pause(20);
   }
   /**
-  * Adaptation of PID function
+  * Adaptation of PID
   */ 
   function pid(p: number, min_prev: number, max_prev: number, min_new: number, max_new: number): number{
     let num = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
     return num;
   }
   /**
-  * Keep agents safe and always on sand (avoid them to fall).
+  * Keep agents always on sand (avoid them to fall).
   */ 
   //% block="Always on sand"
   //% weight=198 color=#ff9da5
