@@ -208,14 +208,11 @@ namespace ucaBot {
     radio.onReceivedString(function (receivedString) {
       // msg in fixed format
       let msg = receivedString;
-      
-      if (msg == 'ping')
-        radio.sendString('ping received');
       // assign header of msg to public object
       obj_resp.set_header(msg[0], msg[1], msg[2] + msg[3]);
       // if the msg is for me or for all, search the params
       if ((obj_resp.d == 'F') || (obj_resp.d == id_agent)){
-        console.log('received '+msg);  
+        console.log(msg);  
         // if there are params
         if (msg.length > 4){
           // assign str for params (excludes header) 
@@ -250,8 +247,6 @@ namespace ucaBot {
             }
           }
         }
-        console.log(obj_resp.f+' '+obj_resp.d+' '+obj_resp.c);
-        console.log(obj_resp.p);
         // if msg comes from sand
         if ((obj_resp.f == '0')){
           if ((id_agent == '0') && (obj_resp.c == 'II')){
@@ -345,16 +340,12 @@ namespace ucaBot {
             msg += '0';
         }
       } 
-      else
-        console.log('The number of chars you tried to pass in parameters overload the allowed (14). Verify and try again.'); 
     }
-    console.log('serialized: '+msg);
+    console.log('sent '+msg);
     radio.sendString(msg);
     obj_req = new Resp();
-    let n_times = 170;
+    let n_times = 180;
     if (req){
-      // waits for answer from radio
-      // 5000ms approx for waiting a response 
       waiting = true;
       for (let i = 0; i < n_times; i++){
         if (act_value){
@@ -416,7 +407,6 @@ namespace ucaBot {
   //% block="My number (ID)"
   //% weight=195 color=#ff9da5
   export function myNumber(): number {
-    // parse result - only valid if agent was initialized correctly
     let num = parseInt(id_agent);
     return num;
   }
@@ -426,7 +416,6 @@ namespace ucaBot {
   //% block="My position %pos (cm)"
   //% weight=190 color=#ff9da5
   export function myPosition(pos: Position): number { 
-    // request pos
     if (sendMsg('0', 'GP', [], true, -1)){
       if(pos == Position.x)
         return x;
@@ -442,7 +431,6 @@ namespace ucaBot {
   //% block="My direction"
   //% weight=185 color=#ff9da5
   export function myDirection(): number { 
-    // request direction
     if (sendMsg('0', 'GP', [], true, -1))
       return theta;
     else  
@@ -459,14 +447,12 @@ namespace ucaBot {
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
     if (sendMsg('0', 'GP', [], true, -1)){
-      console.log('theta ' + theta);
       let theta_p = 0;    let d = 0;
       if (dir == RotateDir.dir_right){
         theta_p = theta - p;
         if (theta_p < 0)
           theta_p = 360 + theta_p;
       }
-      // left
       else{
         theta_p = theta + p;
         if (theta_p > 360)
@@ -475,7 +461,6 @@ namespace ucaBot {
       result_angle = theta_p;
       let p_aux = p;
       while ((p > 4) && (p <= p_aux)){
-      //PID adaptation
         d = pid(p, 10, 180, 17, 18);
         if (dir == RotateDir.dir_right){
           motors(30, -35);
@@ -508,7 +493,6 @@ namespace ucaBot {
   //% cm.min = 5 cm.max = 90
   //% weight=175 color=#ff9da5
   export function moveCm(cm: number): void { 
-    // request pos
     if (sendMsg('0', 'GP', [], true, -1)){
       let aux = cm;  let v = 0;
       let xv = 0;    let yv = 0;
@@ -527,11 +511,9 @@ namespace ucaBot {
             d_theta = 360 + d_theta;
           if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
             vc = pid(Math.abs(d_theta), 2, 15, 6, 12);
-            // got to left, adjust to right
             if (d_theta < 0)
               motors(v + vc, v - vc);
             else
-              // got to right, adjust to left 
               motors(v - vc, v + vc);
             basic.pause(50);
           }
@@ -588,7 +570,6 @@ namespace ucaBot {
       let vc = 0;
       let aux = 999;
       let angle = rotationAngle(x, px, y, py, theta, d);
-      console.log('distance '+ d +' angle to rotate ' + angle);
       if (angle > 7){
         if (angle > 180){
           angle = 360 - angle; 
@@ -599,21 +580,17 @@ namespace ucaBot {
       }
       else
         result_angle = theta;
-      console.log('result angle ' + result_angle); 
       while ((d > (4 + space)) && (d <= aux)){
         if (sendMsg('0', 'GP', [], true, 4)){
           aux = d;
           d_theta = result_angle - theta;
-          console.log('distance in loop '+d+'d theta in loop'+d_theta);
           if (Math.abs(d_theta) > 300)
             d_theta = 360 + d_theta;
           if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
             vc = pid(Math.abs(d_theta), 2, 30, 6, 15);
-            // got to left, adjust to right
             if (d_theta < 0)
               motors(v + vc, v - vc);
             else
-              // got to right, adjust to left 
               motors(v - vc, v + vc);
             basic.pause(50);
           }
@@ -635,7 +612,6 @@ namespace ucaBot {
   //% block="Number of agents on SandBox"
   //% weight=170 color=#ff9da5
   export function numberOfAgents(): number {
-    // parse result - only valid if agents were initialized correctly
     let num = parseInt(n_agents);
     return num;
   }
@@ -678,15 +654,13 @@ namespace ucaBot {
   export function callAgent(id: number) {
     let id_called = id.toString();
     if (id_called == id_agent)
-      basic.showString('I cannot call myself. Enter another ID');
+      basic.showString('ID error');
     else if (parseInt(n_agents) > 1){
       if (sendMsg('0', 'AE', [id_called], true, -1)){ 
-        if (a_exists == 1){
-          console.log('agent exists');
+        if (a_exists == 1)
           sendMsg('0', 'CA', [id_called], false, -1);
-        }
         else
-          basic.showString('ID in call agent does not exist on SandBox'); 
+          basic.showString('ID error'); 
       }
     }
     return;
@@ -707,7 +681,7 @@ namespace ucaBot {
       }
     }
     else 
-      basic.showString('No agents for asking help');
+      basic.showString('Could not ask 4 help');
     return;
   }
   /**
@@ -720,7 +694,6 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (called){
-          console.log(calls+'calling me');
           control.raiseEvent(100, 3502, EventCreationMode.CreateAndFire); 
           called = false;
         }
@@ -755,7 +728,6 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (follow_req){
-          console.log(id2follow+' asked to follow');
           control.raiseEvent(101, 3503, EventCreationMode.CreateAndFire); 
           follow_req = false;
         }
@@ -772,7 +744,7 @@ namespace ucaBot {
   export function followMe() {
     if (arrived != ''){
       sendMsg('0', 'FM', [arrived], false, -1);
-      basic.pause(3000);
+      basic.pause(5000);
     }
     else
       basic.showString('Ask for help first');
@@ -788,7 +760,6 @@ namespace ucaBot {
       if (sendMsg('0', 'GP', [id2follow], true, -1)){
         let af = theta;
         if (sendMsg('0', 'GP', [], true, -1)){
-          // get same angle than leader and rotate
           let aa = theta;
           let angle = Math.abs(af - aa);
           if (af > aa){
