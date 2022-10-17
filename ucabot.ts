@@ -1,25 +1,22 @@
 /**
- * Functions to ucaBot by ELECFREAKS Co.,Ltd.
+ * Functions for ucaBot
  */
 //% weight=5 color=#0fbc11  icon="\uf207"
 namespace ucaBot {
   const STM8_ADDRESSS = 0x10;
   const ID_GROUP = 23;
 
-  // class for responses received by radio
   class Resp { 
-    f: string; // f = source
-    d: string; // d = destiny
-    c: string; // c = command 
-    p: string[]; // p = list of params or variable with one param
-    // init constructor
+    f: string; 
+    d: string; 
+    c: string; 
+    p: string[];
     constructor(){
       this.f = null;
       this.d = null;
       this.c = null;
       this.p = [];
     }
-    // methods
     set_header(f: string, d: string, c:  string): void{
       this.f = f;
       this.d = d;
@@ -34,23 +31,22 @@ namespace ucaBot {
       this.p.push(p);
     }
   }
-  // empty object for storage response 
-  let obj_resp = new Resp();
-  let id_agent = '0';
+  let resp = new Resp();
+  let id = '0';
   let n_agents = '0';
-  let near_me = '0';
+  let near = '0';
   let x = 0;
   let y = 0;
   let act_pos = false;
-  let theta = 0;
+  let tt = 0;
   let called = false;
-  let result_angle = 0;
-  let waiting = false;
+  let r_angle = 0;
+  let wait = false;
   let repeat = false;
   let calls = '';
   let arrived = '';
-  let id2follow = '';
-  let follow_req = false;
+  let id2fw = '';
+  let fw_req = false;
   let busy = false;
   let home: number[] = [];
   let x_o: number = null;
@@ -84,23 +80,6 @@ namespace ucaBot {
     M2 = 1,
   }
   /**
-   * Status List of Tracking Modules
-   */
-  export enum TrackingState {
-    //% block="● ●" enumval=0
-    L_R_line,
-
-    //% block="◌ ●" enumval=1
-    L_unline_R_line,
-
-    //% block="● ◌" enumval=2
-    L_line_R_unline,
-
-    //% block="◌ ◌" enumval=3
-    L_R_unline,
-  }
-
-  /**
    * TODO: Initialize agent with an ID on Sandbox.
    */
   //% block="Initialize agent on Sandbox"
@@ -109,8 +88,8 @@ namespace ucaBot {
     radio.setGroup(ID_GROUP);
     radio.onReceivedString(function (receivedString) {
       let msg = receivedString;
-      obj_resp.set_header(msg[0], msg[1], msg[2] + msg[3]);
-      if (obj_resp.d == 'F' || obj_resp.d == id_agent){
+      resp.set_header(msg[0], msg[1], msg[2] + msg[3]);
+      if (resp.d == 'F' || resp.d == id){
         console.log(msg);  
         if (msg.length > 4){
           let str_p = msg.slice(4);
@@ -121,74 +100,74 @@ namespace ucaBot {
             for (let i = 0; i < limit; i++){ 
               if (i == 0){
                 index = str_p.indexOf('/');
-                obj_resp.add_p(str_p.slice(0, index));
+                resp.add_p(str_p.slice(0, index));
               }
               else{
                 index = str_p.indexOf('/', index + 1);
-                obj_resp.add_p(str_p.slice(aux + 1, index));
+                resp.add_p(str_p.slice(aux + 1, index));
               } 
               aux = index;
               let flag = 0;
-              for (let char = 0; char < obj_resp.p[i].length; char++){  
-                if (!((obj_resp.p[i][char] >= '0' && obj_resp.p[i][char] <= '9') || obj_resp.p[i][char]=='.'))
+              for (let char = 0; char < resp.p[i].length; char++){  
+                if (!((resp.p[i][char] >= '0' && resp.p[i][char] <= '9') || resp.p[i][char]=='.'))
                   flag+=1; 
               }
               if (flag > 0)
-                obj_resp.p[i] = obj_resp.p[i].replace('0',''); 
+                resp.p[i] = resp.p[i].replace('0',''); 
             }
           }
         }
-        if (obj_resp.f == '0'){
-          if (id_agent == '0' && obj_resp.c == 'II'){
-            id_agent = obj_resp.p[0];
-            basic.showString(id_agent);
+        if (resp.f == '0'){
+          if (id == '0' && resp.c == 'II'){
+            id = resp.p[0];
+            basic.showString(id);
             basic.pause(1000);
             basic.clearScreen();
           }
-          else if (n_agents == '0' && obj_resp.c == 'AI')
-            n_agents = obj_resp.p[0];
-          else if (obj_resp.c == 'GP'){
-            x = parseFloat(obj_resp.p[0]);
-            y = parseFloat(obj_resp.p[1]);
-            theta = parseInt(obj_resp.p[2]);
+          else if (n_agents == '0' && resp.c == 'AI')
+            n_agents = resp.p[0];
+          else if (resp.c == 'GP'){
+            x = parseFloat(resp.p[0]);
+            y = parseFloat(resp.p[1]);
+            tt = parseInt(resp.p[2]);
             act_pos = true;
           }
-          else if (obj_resp.c == 'WN'){
-            near_me = obj_resp.p[0];
+          else if (resp.c == 'WN'){
+            near = resp.p[0];
             act_pos = true;
           }
-          else if (obj_resp.c == 'CA'){
-            if (obj_resp.p.length > 0){
-              if (obj_resp.p[0] != id_agent){
-                calls = obj_resp.p[0];
+          else if (resp.c == 'CA'){
+            if (resp.p.length > 0){
+              if (resp.p[0] != id){
+                calls = resp.p[0];
                 called = true;
               }
             }
           }
-          else if (obj_resp.c == 'NF' && waiting == true)
+          else if (resp.c == 'NF' && wait == true)
             repeat = true;
-          else if (obj_resp.c == 'AR')
-            arrived = obj_resp.p[0];
-          else if (obj_resp.c == 'FM'){
-            id2follow = obj_resp.p[0];
-            follow_req = true;
+          else if (resp.c == 'AR')
+            arrived = resp.p[0];
+          else if (resp.c == 'FM'){
+            id2fw = resp.p[0];
+            fw_req = true;
           }
-          else if (obj_resp.c == 'HO' && home.length == 0){
-            home.push(parseFloat(obj_resp.p[0]));
-            home.push(parseFloat(obj_resp.p[1]));
+          else if (resp.c == 'HO' && home.length == 0){
+            home.push(parseFloat(resp.p[0]));
+            home.push(parseFloat(resp.p[1]));
             console.log('home');
             console.log(home);
           }
-          else if ((obj_resp.c == 'BO' || obj_resp.c == 'SO') && busy == false){
-            x_o = parseFloat(obj_resp.p[0]);
-            y_o = parseFloat(obj_resp.p[1]);
-            id_ob = obj_resp.p[2];
+          else if ((resp.c == 'BO' || resp.c == 'SO') && busy == false){
+            x_o = parseFloat(resp.p[0]);
+            y_o = parseFloat(resp.p[1]);
+            id_ob = resp.p[2];
           }
         }
       }
     });
     while (true) { 
-      if ((n_agents != '0') && (id_agent != '0')){
+      if ((n_agents != '0') && (id != '0')){
         basic.pause(50);
         break; 
       }
@@ -201,7 +180,7 @@ namespace ucaBot {
   */ 
   function sendMsg(d: string, c: string, p: string[], req: boolean, stop: number): boolean {
     let obj_req = new Resp();
-    obj_req.set_values(id_agent, d, c, p);
+    obj_req.set_values(id, d, c, p);
     let msg = obj_req.f + obj_req.d + obj_req.c;
     let n_param = obj_req.p.length;
     let size = n_param;
@@ -229,11 +208,11 @@ namespace ucaBot {
     radio.sendString(msg);
     if (req){
       let n_times = 250;
-      waiting = true;
+      wait = true;
       for (let i = 0; i < n_times; i++){
         if (act_pos){
           act_pos = false;
-          waiting = false;
+          wait = false;
           return true;
         }
         else{
@@ -249,7 +228,7 @@ namespace ucaBot {
         } 
         basic.pause(50);
       }
-      waiting = false;
+      wait = false;
       stopSearching();
       return false;
     }
@@ -278,7 +257,7 @@ namespace ucaBot {
   export function onSand() {
     control.inBackground(() => {
       while (true) {
-        if (tracking(TrackingState.L_R_line))
+        if (tracking())
           stopcar();
         basic.pause(200); 
       }
@@ -290,7 +269,7 @@ namespace ucaBot {
   //% block="My number (ID)"
   //% weight=195 color=#ff9da5
   export function myNumber(): number {
-    let num = parseInt(id_agent);
+    let num = parseInt(id);
     return num;
   }
   /**
@@ -315,7 +294,7 @@ namespace ucaBot {
   //% weight=185 color=#ff9da5
   export function myDirection(): number { 
     if (sendMsg('0', 'GP', [], true, -1))
-      return theta;
+      return tt;
     else  
       return undefined;
   }
@@ -330,18 +309,18 @@ namespace ucaBot {
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
     if (sendMsg('0', 'GP', [], true, -1)){
-      let theta_p = 0;    let d = 0;
+      let tt_p = 0;    let d = 0;
       if (dir == RotateDir.dir_right){
-        theta_p = theta - p;
-        if (theta_p < 0)
-          theta_p = 360 + theta_p;
+        tt_p = tt - p;
+        if (tt_p < 0)
+          tt_p = 360 + tt_p;
       }
       else{
-        theta_p = theta + p;
-        if (theta_p > 360)
-          theta_p = theta_p - 360;
+        tt_p = tt + p;
+        if (tt_p > 360)
+          tt_p = tt_p - 360;
       }
-      result_angle = theta_p;
+      r_angle = tt_p;
       let p_aux = p;
       while (p > 4 && p <= p_aux){
         d = pid(p, 10, 180, 17, 18);
@@ -357,7 +336,7 @@ namespace ucaBot {
         } 
         if (sendMsg('0', 'GP', [], true, 0)){
           p_aux = p;
-          p =  Math.abs(theta_p - theta); 
+          p =  Math.abs(tt_p - tt); 
           if (p > 180)
             p = 360 - p;
         }
@@ -379,8 +358,8 @@ namespace ucaBot {
     if (sendMsg('0', 'GP', [], true, -1)){
       let aux = cm;  let v = 0;
       let xv = 0;    let yv = 0;
-      let theta_o = theta; 
-      let d_theta = 0;  let vc = 0;
+      let tt_o = tt; 
+      let d_tt = 0;  let vc = 0;
       while ((cm > 1) && (cm <= aux)){
         xv = x; 
         yv = y;
@@ -389,12 +368,12 @@ namespace ucaBot {
         basic.pause(800);
         if (sendMsg('0', 'GP', [], true, 5)){
           cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
-          d_theta = theta_o - theta;
-          if (Math.abs(d_theta) > 300)
-            d_theta = 360 + d_theta;
-          if (d_theta != 0 && Math.abs(d_theta) > 1){
-            vc = pid(Math.abs(d_theta), 2, 15, 6, 12);
-            if (d_theta < 0)
+          d_tt = tt_o - tt;
+          if (Math.abs(d_tt) > 300)
+            d_tt = 360 + d_tt;
+          if (d_tt != 0 && Math.abs(d_tt) > 1){
+            vc = pid(Math.abs(d_tt), 2, 15, 6, 12);
+            if (d_tt < 0)
               motors(v + vc, v - vc);
             else
               motors(v - vc, v + vc);
@@ -448,11 +427,11 @@ namespace ucaBot {
   export function goToPoint(px: number, py: number, space = 0) {
     if (sendMsg('0', 'GP', [], true, -1)){
       let d = distance(px, x, py, y);
-      let d_theta = 0;
+      let d_tt = 0;
       let v = 0;
       let vc = 0;
       let aux = 999;
-      let angle = rotationAngle(x, px, y, py, theta, d);
+      let angle = rotationAngle(x, px, y, py, tt, d);
       if (angle > 7){
         if (angle > 180){
           angle = 360 - angle; 
@@ -462,16 +441,16 @@ namespace ucaBot {
           rotate(angle, RotateDir.dir_left); 
       }
       else
-        result_angle = theta;
+        r_angle = tt;
       while (d > (4 + space) && d <= aux){
         if (sendMsg('0', 'GP', [], true, 4)){
           aux = d;
-          d_theta = result_angle - theta;
-          if (Math.abs(d_theta) > 300)
-            d_theta = 360 + d_theta;
-          if (d_theta != 0 && Math.abs(d_theta) > 1){
-            vc = pid(Math.abs(d_theta), 2, 30, 6, 15);
-            if (d_theta < 0)
+          d_tt = r_angle - tt;
+          if (Math.abs(d_tt) > 300)
+            d_tt = 360 + d_tt;
+          if (d_tt != 0 && Math.abs(d_tt) > 1){
+            vc = pid(Math.abs(d_tt), 2, 30, 6, 15);
+            if (d_tt < 0)
               motors(v + vc, v - vc);
             else
               motors(v - vc, v + vc);
@@ -539,7 +518,7 @@ namespace ucaBot {
   //% d.min = 12 d.max = 100
   export function nearMe(d: number): string { 
     if (sendMsg('0', 'WN', [d.toString()], true, -1))
-      return near_me;
+      return near;
     else
       return '0'
   }
@@ -605,9 +584,9 @@ namespace ucaBot {
     control.onEvent(101, 3503, handler);
     control.inBackground(() => {
       while (true) { 
-        if (follow_req){
+        if (fw_req){
           control.raiseEvent(101, 3503, EventCreationMode.CreateAndFire); 
-          follow_req = false;
+          fw_req = false;
         }
         basic.pause(20); 
       }
@@ -634,11 +613,11 @@ namespace ucaBot {
   //% weight=130 color=#ff9da5
   //% block="Follow leader"
   export function followLeader() {
-    if (id2follow != ''){
-      if (sendMsg('0', 'GP', [id2follow], true, -1)){
-        let af = theta;
+    if (id2fw != ''){
+      if (sendMsg('0', 'GP', [id2fw], true, -1)){
+        let af = tt;
         if (sendMsg('0', 'GP', [], true, -1)){
-          let aa = theta;
+          let aa = tt;
           let angle = Math.abs(af - aa);
           if (af > aa){
             if(angle > 180){
@@ -667,52 +646,42 @@ namespace ucaBot {
       basic.showString('Not asked to follow yet');
     return;
   }
-  /**
-   * TODO: Set the speed of left and right wheels.
-   * @param lspeed Left wheel speed , eg: 100
-   * @param rspeed Right wheel speed, eg: -100
-   */
-  //% blockId=MotorRun block="Set left wheel speed %lspeed\\% |right wheel speed %rspeed\\%"
-  //% lspeed.min=-100 lspeed.max=100
-  //% rspeed.min=-100 rspeed.max=100
-  //% weight=100
-  export function motors(lspeed: number = 50, rspeed: number = 50): void {
+
+  function motors(lspeed: number, rspeed: number): void {
     let buf = pins.createBuffer(4);
-    if (lspeed > 100) {
+    if (lspeed > 100)
       lspeed = 100;
-    } else if (lspeed < -100) {
+    else if (lspeed < -100) 
       lspeed = -100;
-    }
-    if (rspeed > 100) {
+    if (rspeed > 100)
       rspeed = 100;
-    } else if (rspeed < -100) {
+    else if (rspeed < -100)
       rspeed = -100;
-    }
     if (lspeed > 0) {
-      buf[0] = 0x01; //左右轮 0x01左轮  0x02右轮
-      buf[1] = 0x02; //正反转0x02前进  0x01后退
-      buf[2] = lspeed; //速度
-      buf[3] = 0; //补位
-      pins.i2cWriteBuffer(STM8_ADDRESSS, buf); //写入左轮
+      buf[0] = 0x01; 
+      buf[1] = 0x02; 
+      buf[2] = lspeed; 
+      buf[3] = 0; 
+      pins.i2cWriteBuffer(STM8_ADDRESSS, buf); 
     } else {
       buf[0] = 0x01;
       buf[1] = 0x01;
       buf[2] = lspeed * -1;
-      buf[3] = 0; //补位
-      pins.i2cWriteBuffer(STM8_ADDRESSS, buf); //写入左轮
+      buf[3] = 0;
+      pins.i2cWriteBuffer(STM8_ADDRESSS, buf); 
     }
     if (rspeed > 0) {
       buf[0] = 0x02;
       buf[1] = 0x02;
       buf[2] = rspeed;
-      buf[3] = 0; //补位
-      pins.i2cWriteBuffer(STM8_ADDRESSS, buf); //写入左轮
+      buf[3] = 0;
+      pins.i2cWriteBuffer(STM8_ADDRESSS, buf); 
     } else {
       buf[0] = 0x02;
       buf[1] = 0x01;
       buf[2] = rspeed * -1;
-      buf[3] = 0; //补位
-      pins.i2cWriteBuffer(STM8_ADDRESSS, buf); //写入左轮
+      buf[3] = 0;
+      pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
     }
   }
   /**
@@ -723,27 +692,15 @@ namespace ucaBot {
   export function stopcar(): void {
     motors(0, 0);
   }
-  /**
-   * Judging the Current Status of Tracking Module.
-   * @param state Four states of tracking module, eg: TrackingState.L_R_line
-   */
-  //% blockId=ringbitcar_tracking block="Tracking state is %state"
-  //% weight=50
-  export function tracking(state: TrackingState): boolean {
+
+  function tracking(): boolean {
     pins.setPull(DigitalPin.P13, PinPullMode.PullNone);
     pins.setPull(DigitalPin.P14, PinPullMode.PullNone);
     let left_tracking = pins.digitalReadPin(DigitalPin.P13);
     let right_tracking = pins.digitalReadPin(DigitalPin.P14);
-    if (left_tracking == 0 && right_tracking == 0 && state == 0) {
+    if (left_tracking == 0 && right_tracking == 0)
       return true;
-    } else if (left_tracking == 1 && right_tracking == 0 && state == 1) {
-      return true;
-    } else if (left_tracking == 0 && right_tracking == 1 && state == 2) {
-      return true;
-    } else if (left_tracking == 1 && right_tracking == 1 && state == 3) {
-      return true;
-    } else {
+    else
       return false;
-    }
   }
 }
