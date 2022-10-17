@@ -38,15 +38,13 @@ namespace ucaBot {
   }
   // empty object for storage response 
   let obj_resp = new Resp();
-  let obj_req = new Resp();
   let id_agent = '0';
   let n_agents = '0';
   let near_me = '0';
   let x = 0;
   let y = 0;
-  let act_value = false;
+  let act_pos = false;
   let theta = 0;
-  let a_exists = 0;
   let called = false;
   let result_angle = 0;
   let waiting = false;
@@ -250,11 +248,11 @@ namespace ucaBot {
             x = parseFloat(obj_resp.p[0]);
             y = parseFloat(obj_resp.p[1]);
             theta = parseInt(obj_resp.p[2]);
-            act_value = true;
+            act_pos = true;
           }
           else if (obj_resp.c == 'WN'){
             near_me = obj_resp.p[0];
-            act_value = true;
+            act_pos = true;
           }
           else if (obj_resp.c == 'CA'){
             if (obj_resp.p.length > 0){
@@ -288,7 +286,7 @@ namespace ucaBot {
   * serialize msg and send request to sandBox.
   */ 
   function sendMsg(d: string, c: string, p: string[], req: boolean, stop: number): boolean {
-    obj_req = new Resp();
+    let obj_req = new Resp();
     obj_req.set_values(id_agent, d, c, p);
     let msg = obj_req.f + obj_req.d + obj_req.c;
     let n_param = obj_req.p.length;
@@ -319,8 +317,8 @@ namespace ucaBot {
       let n_times = 250;
       waiting = true;
       for (let i = 0; i < n_times; i++){
-        if (act_value){
-          act_value = false;
+        if (act_pos){
+          act_pos = false;
           waiting = false;
           return true;
         }
