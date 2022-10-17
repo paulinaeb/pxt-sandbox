@@ -53,6 +53,11 @@ namespace ucaBot {
   let arrived = '';
   let id2follow = '';
   let follow_req = false;
+  let busy = false;
+  let home = [];
+  let x_o: number = null;
+  let y_o: number = null;
+  let id_ob = '';
   /**
    * Unit of Ultrasound Module
    */
@@ -206,7 +211,7 @@ namespace ucaBot {
     radio.onReceivedString(function (receivedString) {
       let msg = receivedString;
       obj_resp.set_header(msg[0], msg[1], msg[2] + msg[3]);
-      if ((obj_resp.d == 'F') || (obj_resp.d == id_agent)){
+      if (obj_resp.d == 'F' || obj_resp.d == id_agent){
         console.log(msg);  
         if (msg.length > 4){
           let str_p = msg.slice(4);
@@ -226,7 +231,7 @@ namespace ucaBot {
               aux = index;
               let flag = 0;
               for (let char = 0; char < obj_resp.p[i].length; char++){  
-                if (!(((obj_resp.p[i][char] >= '0') && (obj_resp.p[i][char] <= '9')) || (obj_resp.p[i][char]=='.')))
+                if (!((obj_resp.p[i][char] >= '0' && obj_resp.p[i][char] <= '9') || obj_resp.p[i][char]=='.'))
                   flag+=1; 
               }
               if (flag > 0)
@@ -234,16 +239,15 @@ namespace ucaBot {
             }
           }
         }
-        if ((obj_resp.f == '0')){
-          if ((id_agent == '0') && (obj_resp.c == 'II')){
+        if (obj_resp.f == '0'){
+          if (id_agent == '0' && obj_resp.c == 'II'){
             id_agent = obj_resp.p[0];
             basic.showString(id_agent);
             basic.pause(1000);
             basic.clearScreen();
           }
-          else if ((n_agents == '0') && (obj_resp.c == 'AI')){
+          else if (n_agents == '0' && obj_resp.c == 'AI')
             n_agents = obj_resp.p[0];
-          }
           else if (obj_resp.c == 'GP'){
             x = parseFloat(obj_resp.p[0]);
             y = parseFloat(obj_resp.p[1]);
@@ -262,13 +266,20 @@ namespace ucaBot {
               }
             }
           }
-          else if ((obj_resp.c == 'NF') && (waiting == true))
+          else if (obj_resp.c == 'NF' && waiting == true)
             repeat = true;
           else if (obj_resp.c == 'AR')
             arrived = obj_resp.p[0];
           else if (obj_resp.c == 'FM'){
             id2follow = obj_resp.p[0];
             follow_req = true;
+          }
+          else if (obj_resp.c == 'HO' && home.length == 0)
+            home.push(obj_resp.p[0], obj_resp.p[1])
+          else if ((obj_resp.c == 'BO' || obj_resp.c == 'SO') && busy == false){
+            x_o = parseFloat(obj_resp.p[0]);
+            y_o = parseFloat(obj_resp.p[1]);
+            id_ob = obj_resp.p[2];
           }
         }
       }
@@ -429,7 +440,7 @@ namespace ucaBot {
       }
       result_angle = theta_p;
       let p_aux = p;
-      while ((p > 4) && (p <= p_aux)){
+      while (p > 4 && p <= p_aux){
         d = pid(p, 10, 180, 17, 18);
         if (dir == RotateDir.dir_right){
           motors(30, -35);
@@ -478,7 +489,7 @@ namespace ucaBot {
           d_theta = theta_o - theta;
           if (Math.abs(d_theta) > 300)
             d_theta = 360 + d_theta;
-          if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
+          if (d_theta != 0 && Math.abs(d_theta) > 1){
             vc = pid(Math.abs(d_theta), 2, 15, 6, 12);
             if (d_theta < 0)
               motors(v + vc, v - vc);
@@ -549,13 +560,13 @@ namespace ucaBot {
       }
       else
         result_angle = theta;
-      while ((d > (4 + space)) && (d <= aux)){
+      while (d > (4 + space) && d <= aux){
         if (sendMsg('0', 'GP', [], true, 4)){
           aux = d;
           d_theta = result_angle - theta;
           if (Math.abs(d_theta) > 300)
             d_theta = 360 + d_theta;
-          if ((d_theta != 0) && (Math.abs(d_theta) > 1)){
+          if (d_theta != 0 && Math.abs(d_theta) > 1){
             vc = pid(Math.abs(d_theta), 2, 30, 6, 15);
             if (d_theta < 0)
               motors(v + vc, v - vc);
