@@ -590,6 +590,22 @@ namespace ucaBot {
     } 
     return;
   }
+    /**
+  * Agents can wander sandbox
+  */ 
+  //% block="Wander Sandbox"
+  //% weight=188 color=#ff9da5
+  export function wander(){
+
+  }
+  /**
+  * Agents can look for objects and take them home
+  */ 
+  //% block="Look for objects"
+  //% weight=188 color=#ff9da5
+  export function lookForSth(){
+
+  }
   /**
   * Agents can know how many agents are initialized on SandBox.
   */ 
