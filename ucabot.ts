@@ -277,6 +277,8 @@ namespace ucaBot {
           else if (obj_resp.c == 'HO' && home.length == 0){
             home.push(parseFloat(obj_resp.p[0]));
             home.push(parseFloat(obj_resp.p[1]));
+            console.log('home');
+            console.log(home);
           }
           else if ((obj_resp.c == 'BO' || obj_resp.c == 'SO') && busy == false){
             x_o = parseFloat(obj_resp.p[0]);
