@@ -364,7 +364,7 @@ namespace ucaBot {
       let xv = 0;    let yv = 0;
       let tt_o = tt; 
       let d_tt = 0;  let vc = 0;
-      while ((cm > 1) && (cm <= aux)){
+      while ((cm > 0) && (cm <= aux)){
         xv = x; 
         yv = y;
         v = pid(cm, 5, 100, 20, 25);
@@ -487,6 +487,7 @@ namespace ucaBot {
         let giro = Math.floor(Math.random() * 180) + 100;
         rotate(giro, dir);
         al = false
+        basic.pause(100);
       }
       basic.pause(20);
     }

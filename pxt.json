@@ -5,7 +5,6 @@
     "license": "MIT",
     "dependencies": {
         "core": "*",
-        "neopixel": "github:elecfreaks/pxt-neopixel#v0.6.18",
         "radio": "*",
         "radio-broadcast": "*"
     },
