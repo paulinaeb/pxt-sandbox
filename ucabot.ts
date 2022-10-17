@@ -1,7 +1,7 @@
 /**
  * Functions for ucaBot
  */
-//% weight=5 color=#0fbc11  icon="\uf207"
+//% weight=5 color=#ff9da5  icon="\uf207"
 namespace ucaBot {
   const STM8_ADDRESSS = 0x10;
   const ID_GROUP = 23;
@@ -83,7 +83,7 @@ namespace ucaBot {
    * TODO: Initialize agent with an ID on Sandbox.
    */
   //% block="Initialize agent on Sandbox"
-  //% weight=200 color=#ff9da5
+  //% weight=200
   export function initAgent(): void {
     radio.setGroup(ID_GROUP);
     radio.onReceivedString(function (receivedString) {
@@ -253,7 +253,7 @@ namespace ucaBot {
   * Keep agents always on sand (avoid them to fall).
   */ 
   //% block="Always on sand"
-  //% weight=198 color=#ff9da5
+  //% weight=198
   export function onSand() {
     control.inBackground(() => {
       while (true) {
@@ -267,7 +267,7 @@ namespace ucaBot {
   * Agents can know their number when initialized on SandBox.
   */ 
   //% block="My number (ID)"
-  //% weight=195 color=#ff9da5
+  //% weight=195
   export function myNumber(): number {
     let num = parseInt(id);
     return num;
@@ -276,7 +276,7 @@ namespace ucaBot {
   * Agents can know their position in cm on SandBox.
   */ 
   //% block="My position %pos (cm)"
-  //% weight=190 color=#ff9da5
+  //% weight=190
   export function myPosition(pos: Position): number { 
     if (sendMsg('0', 'GP', [], true, -1)){
       if(pos == Position.x)
@@ -291,7 +291,7 @@ namespace ucaBot {
   * Agents can know their direction in degrees on SandBox.
   */ 
   //% block="My direction"
-  //% weight=185 color=#ff9da5
+  //% weight=185
   export function myDirection(): number { 
     if (sendMsg('0', 'GP', [], true, -1))
       return tt;
@@ -305,7 +305,7 @@ namespace ucaBot {
   //% block="Rotate agent %p ° to %dir"
   //% p.shadow="protractorPicker"
   //% p.min = 5 p.max = 180
-  //% weight=180 color=#ff9da5
+  //% weight=180 
   export function rotate(p: number, dir: RotateDir) { 
     // request direction
     if (sendMsg('0', 'GP', [], true, -1)){
@@ -353,7 +353,7 @@ namespace ucaBot {
   */ 
   //% block="Move forward %cm centimeters"
   //% cm.min = 5 cm.max = 90
-  //% weight=175 color=#ff9da5
+  //% weight=175 
   export function moveCm(cm: number): void { 
     if (sendMsg('0', 'GP', [], true, -1)){
       let aux = cm;  let v = 0;
@@ -423,7 +423,7 @@ namespace ucaBot {
   //% block="Go to point x:%px y:%py"
   //% x.min = 5 x.max = 100
   //% y.min = 5 y.max = 57
-  //% weight=170 color=#ff9da5
+  //% weight=170 
   export function goToPoint(px: number, py: number, space = 0) {
     if (sendMsg('0', 'GP', [], true, -1)){
       let d = distance(px, x, py, y);
@@ -472,7 +472,7 @@ namespace ucaBot {
   * Agents can wander sandbox
   */ 
   //% block="Wander Sandbox"
-  //% weight=188 color=#ff9da5
+  //% weight=188 
   export function wander(){
 
   }
@@ -480,7 +480,7 @@ namespace ucaBot {
   * Agents can look for objects and take them home
   */ 
   //% block="Look for objects"
-  //% weight=188 color=#ff9da5
+  //% weight=188 
   export function lookForSth(){
 
   }
@@ -488,7 +488,7 @@ namespace ucaBot {
   * Agents can know how many agents are initialized on SandBox.
   */ 
   //% block="Number of agents on SandBox"
-  //% weight=170 color=#ff9da5
+  //% weight=170 
   export function numberOfAgents(): number {
     let num = parseInt(n_agents);
     return num;
@@ -496,7 +496,7 @@ namespace ucaBot {
 /**
  * TODO: On all agents initialized on SandBox.
  */
-  //% weight=165 color=#ff9da5
+  //% weight=165 
   //% block="On all agents initialized"
   export function Init_callback(handler: () => void) {
     control.onEvent(99, 3501, handler);
@@ -513,7 +513,7 @@ namespace ucaBot {
  * Agent is able to know which agent(s) are around or near itself.
  * @param d distance between agents, eg: 45
  */
-  //% weight=160 color=#ff9da5
+  //% weight=160 
   //% block="Who are at least %d cm near me?"
   //% d.min = 12 d.max = 100
   export function nearMe(d: number): string { 
@@ -525,7 +525,7 @@ namespace ucaBot {
 /**
  * TODO: An agent can aks for other agent's help when needed
  */
-  //% weight=145 color=#ff9da5
+  //% weight=145 
   //% block="Ask for other agent's help "
   //% id.min = 1 id.max = 3
   export function askHelp() {
@@ -544,7 +544,7 @@ namespace ucaBot {
   /**
  * TODO: On an agent calling me
  */
-  //% weight=140 color=#ff9da5
+  //% weight=140 
   //% block="On an agent calling me"
   export function calledByAgent(handler: () => void) {
     control.onEvent(100, 3502, handler);
@@ -562,7 +562,7 @@ namespace ucaBot {
 /**
  * TODO: Go where the leader is
  */
-  //% weight=135 color=#ff9da5
+  //% weight=135 
   //% block="Go to the leader"
   export function goToLeader() {
     if (calls != ''){
@@ -578,7 +578,7 @@ namespace ucaBot {
   /**
  * TODO: On 'follow me' received, previously called.
  */
-  //% weight=140 color=#ff9da5
+  //% weight=140 
   //% block="On 'follow me' received"
   export function askedToFollow(handler: () => void) {
     control.onEvent(101, 3503, handler);
@@ -596,7 +596,7 @@ namespace ucaBot {
   /**
  * TODO: Indicates to an agent previously called to follow it.
  */
-  //% weight=130 color=#ff9da5
+  //% weight=130 
   //% block="Follow me"
   export function followMe() {
     if (arrived != ''){
@@ -610,7 +610,7 @@ namespace ucaBot {
   /**
  * TODO: Follow the leader who called it.
  */
-  //% weight=130 color=#ff9da5
+  //% weight=130 
   //% block="Follow leader"
   export function followLeader() {
     if (id2fw != ''){
