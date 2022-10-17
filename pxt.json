@@ -15,12 +15,6 @@
         "IR.cpp",
         "shims.d.ts",
         "enums.d.ts",
-        "_locales/zh-CN/ucabot-strings.json",
-        "_locales/zh-CN/ucabot-jsdoc-strings.json",
-        "_locales/ja/ucabot-strings.json",
-        "_locales/ja/ucabot-jsdoc-strings.json",
-        "_locales/fr/ucabot-strings.json",
-        "_locales/fr/ucabot-jsdoc-strings.json",
         "_locales/es/ucabot-strings.json",
         "_locales/es/ucabot-jsdoc-strings.json"
     ],
