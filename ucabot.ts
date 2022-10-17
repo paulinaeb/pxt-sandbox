@@ -274,8 +274,10 @@ namespace ucaBot {
             id2follow = obj_resp.p[0];
             follow_req = true;
           }
-          else if (obj_resp.c == 'HO' && home.length == 0)
-            home.push(parseFloat(obj_resp.p[0]), parseFloat(obj_resp.p[1]))
+          else if (obj_resp.c == 'HO' && home.length == 0){
+            home.push(parseFloat(obj_resp.p[0]))
+            home.push(parseFloat(obj_resp.p[1]))
+          }
           else if ((obj_resp.c == 'BO' || obj_resp.c == 'SO') && busy == false){
             x_o = parseFloat(obj_resp.p[0]);
             y_o = parseFloat(obj_resp.p[1]);
