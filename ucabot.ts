@@ -48,6 +48,8 @@ namespace ucaBot {
   let id2fw = '';
   let fw_req = false;
   let busy = false;
+  let cl = false;
+  let al = false;
   let home: number[] = [];
   let x_o: number = null;
   let y_o: number = null;
@@ -152,6 +154,8 @@ namespace ucaBot {
             id2fw = resp.p[0];
             fw_req = true;
           }
+          else if (resp.c == 'CL' && al == false)
+            cl = true;
           else if (resp.c == 'HO' && home.length == 0){
             home.push(parseFloat(resp.p[0]));
             home.push(parseFloat(resp.p[1]));
@@ -352,7 +356,7 @@ namespace ucaBot {
   * @param cm distance to move, eg: 30 
   */ 
   //% block="Move forward %cm centimeters"
-  //% cm.min = 5 cm.max = 90
+  //% cm.min = 1 cm.max = 90
   //% weight=175 
   export function moveCm(cm: number): void { 
     if (sendMsg('0', 'GP', [], true, -1)){
@@ -468,13 +472,24 @@ namespace ucaBot {
     } 
     return;
   }
-    /**
+  /**
   * Agents can wander sandbox
   */ 
   //% block="Wander Sandbox"
   //% weight=188 
   export function wander(){
-
+    while (true){
+      moveCm(1);
+      if (cl){
+        cl = false;
+        al = true;
+        let dir = Math.floor(Math.random() * 2);
+        let giro = Math.floor(Math.random() * 180) + 100;
+        rotate(giro, dir);
+        al = false
+      }
+      basic.pause(20);
+    }
   }
   /**
   * Agents can look for objects and take them home
