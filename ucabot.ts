@@ -638,12 +638,12 @@ namespace ucaBot {
   //% weight=160 color=#ff9da5
   //% block="Who are at least %d cm near me?"
   //% d.min = 12 d.max = 100
-  export function nearMe(d: number): string { 
-    if (sendMsg('0', 'WN', [d.toString()], true, -1))
-      return near_me;
-    else
-      return '0'
-  }
+  // export function nearMe(d: number): string { 
+  //   if (sendMsg('0', 'WN', [d.toString()], true, -1))
+  //     return near_me;
+  //   else
+  //     return '0'
+  // }
 /**
  * TODO: An agent can aks for other agent's help when needed
  */
