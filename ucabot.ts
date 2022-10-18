@@ -327,18 +327,19 @@ namespace ucaBot {
       r_angle = tt_p;
       let p_aux = p;
       while (p > 4 && p <= p_aux){
-        d = pid(p, 10, 180, 17, 18);
+        d = pid(p, 10, 180, 18, 20);
         if (dir == RotateDir.dir_right){
-          motors(30, -35);
-          basic.pause(70);
-          motors(d, -d-3);
+          // motors(30, -35);
+          // basic.pause(70);
+          motors(d, -d-8);
         }
         else{
-          motors(-35, 30);
-          basic.pause(70);
-          motors(-d-3, d);
+          // motors(-35, 30);
+          // basic.pause(70);
+          motors(-d-8, d);
         } 
-        if (sendMsg('0', 'GP', [], true, 0)){
+        basic.pause(100);
+        if (sendMsg('0', 'GP', [], true, 1)){
           p_aux = p;
           p =  Math.abs(tt_p - tt); 
           if (p > 180)
@@ -486,8 +487,9 @@ namespace ucaBot {
         let dir = Math.floor(Math.random() * 2);
         let giro = Math.floor(Math.random() * 180) + 100;
         rotate(giro, dir);
-        al = false
         basic.pause(100);
+        moveCm(2);
+        al = false;
       }
       basic.pause(20);
     }
