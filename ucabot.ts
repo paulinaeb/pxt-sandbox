@@ -476,8 +476,8 @@ namespace ucaBot {
     while (true){
       if (al == false)
         moveCm(1);
+      basic.pause(20);
     }
-    basic.pause(20);
   }
   /**
   * Agents can look for objects and take them home
