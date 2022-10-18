@@ -362,7 +362,7 @@ namespace ucaBot {
       while ((cm > 0) && (cm <= aux)){
         xv = x; 
         yv = y;
-        v = pid(cm, 5, 100, 15, 25);
+        v = pid(cm, 5, 100, 18, 25);
         motors(v, v);  
         basic.pause(250);
         if (sendMsg('0', 'GP', [], true, 4)){
@@ -474,7 +474,8 @@ namespace ucaBot {
   //% weight=168 
   export function wander(){
     while (true){
-      moveCm(1);
+      if (al != false)
+        moveCm(1);
     }
   }
   /**
@@ -509,6 +510,7 @@ namespace ucaBot {
   //% weight=167 
   export function avoidCollision(){
     al = true;
+    stopcar();
     let dir = Math.floor(Math.random() * 2);
     let giro = Math.floor(Math.random() * 180) + 100;
     rotate(giro, dir);
