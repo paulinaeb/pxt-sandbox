@@ -329,14 +329,10 @@ namespace ucaBot {
       while (p > 4 && p <= p_aux){
         d = pid(p, 10, 180, 18, 20);
         if (dir == RotateDir.dir_right){
-          // motors(30, -35);
-          // basic.pause(70);
-          motors(d, -d-8);
+          motors(d, -d-9);
         }
         else{
-          // motors(-35, 30);
-          // basic.pause(70);
-          motors(-d-8, d);
+          motors(-d-9, d);
         } 
         basic.pause(100);
         if (sendMsg('0', 'GP', [], true, 1)){
