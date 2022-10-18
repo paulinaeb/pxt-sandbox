@@ -477,6 +477,7 @@ namespace ucaBot {
       if (al == false)
         moveCm(1);
     }
+    basic.pause(20);
   }
   /**
   * Agents can look for objects and take them home
@@ -497,7 +498,7 @@ namespace ucaBot {
       while (true) { 
         if (cl){
           cl = false;
-          control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire); 
+          control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
         }
         basic.pause(20); 
       }
