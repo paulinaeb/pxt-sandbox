@@ -368,9 +368,9 @@ namespace ucaBot {
       while ((cm > 0) && (cm <= aux)){
         xv = x; 
         yv = y;
-        v = pid(cm, 5, 100, 20, 25);
+        v = pid(cm, 5, 100, 15, 25);
         motors(v, v);  
-        basic.pause(200);
+        basic.pause(250);
         if (sendMsg('0', 'GP', [], true, 4)){
           cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
           d_tt = tt_o - tt;
