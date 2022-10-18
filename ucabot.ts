@@ -339,7 +339,7 @@ namespace ucaBot {
           motors(-d-8, d);
         } 
         basic.pause(100);
-        if (sendMsg('0', 'GP', [], true, 0)){
+        if (sendMsg('0', 'GP', [], true, 1)){
           p_aux = p;
           p =  Math.abs(tt_p - tt); 
           if (p > 180)
