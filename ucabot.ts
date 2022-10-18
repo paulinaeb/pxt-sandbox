@@ -84,7 +84,7 @@ namespace ucaBot {
   /**
    * TODO: Initialize agent with an ID on Sandbox.
    */
-  //% block="Initialize agent on Sandbox"
+  //% block="Init agent on Sandbox"
   //% weight=200
   export function initAgent(): void {
     radio.setGroup(ID_GROUP);
@@ -513,10 +513,9 @@ namespace ucaBot {
     al = true;
     stopcar();
     let dir = Math.floor(Math.random() * 2);
-    let giro = Math.floor(Math.random() * 180) + 100;
+    let giro = Math.floor(Math.random() * 180) + 120;
     rotate(giro, dir);
-    basic.pause(20);
-    moveCm(2);
+    moveCm(1);
     al = false;
     return
   }
@@ -562,7 +561,7 @@ namespace ucaBot {
  * TODO: An agent can aks for other agent's help when needed
  */
   //% weight=145 
-  //% block="Ask for other agent's help "
+  //% block="Ask for help "
   //% id.min = 1 id.max = 3
   export function askHelp() {
     if (parseInt(n_agents) > 1){
