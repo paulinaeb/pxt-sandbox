@@ -328,12 +328,10 @@ namespace ucaBot {
       let p_aux = p;
       while (p > 4 && p <= p_aux){
         d = pid(p, 10, 180, 18, 20);
-        if (dir == RotateDir.dir_right){
+        if (dir == RotateDir.dir_right)
           motors(d, -d-9);
-        }
-        else{
+        else
           motors(-d-9, d);
-        } 
         basic.pause(100);
         if (sendMsg('0', 'GP', [], true, 1)){
           p_aux = p;
@@ -473,30 +471,51 @@ namespace ucaBot {
   * Agents can wander sandbox
   */ 
   //% block="Wander Sandbox"
-  //% weight=188 
+  //% weight=168 
   export function wander(){
     while (true){
       moveCm(1);
-      if (cl){
-        cl = false;
-        al = true;
-        let dir = Math.floor(Math.random() * 2);
-        let giro = Math.floor(Math.random() * 180) + 100;
-        rotate(giro, dir);
-        basic.pause(100);
-        moveCm(2);
-        al = false;
-      }
-      basic.pause(20);
     }
   }
   /**
   * Agents can look for objects and take them home
   */ 
   //% block="Look for objects"
-  //% weight=188 
+  //% weight=167 
   export function lookForSth(){
 
+  }
+  /**
+  * Do something on collision received
+  */ 
+  //% block="On collision received"
+  //% weight=167 
+  export function onCollision(handler: () => void){
+    control.onEvent(102, 3504, handler);
+    control.inBackground(() => {
+      while (true) { 
+        if (cl){
+          cl = false;
+          control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire); 
+        }
+        basic.pause(20); 
+      }
+    });
+  }
+  /**
+  * Avoid collision when received
+  */ 
+  //% block="Avoid collision"
+  //% weight=167 
+  export function avoidCollision(){
+    al = true;
+    let dir = Math.floor(Math.random() * 2);
+    let giro = Math.floor(Math.random() * 180) + 100;
+    rotate(giro, dir);
+    basic.pause(20);
+    moveCm(2);
+    al = false;
+    return
   }
   /**
   * Agents can know how many agents are initialized on SandBox.
