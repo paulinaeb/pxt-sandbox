@@ -474,7 +474,7 @@ namespace ucaBot {
   //% weight=168 
   export function wander(){
     while (true){
-      if (al != false)
+      if (al == false)
         moveCm(1);
     }
   }
