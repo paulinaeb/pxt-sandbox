@@ -83,6 +83,19 @@ namespace ucaBot {
     //% blockId="M2" block="M2"
     M2 = 1,
   }
+  export enum TrackingState {
+    //% block="● ●" enumval=0
+    L_R_line,
+
+    //% block="◌ ●" enumval=1
+    L_unline_R_line,
+
+    //% block="● ◌" enumval=2
+    L_line_R_unline,
+
+    //% block="◌ ◌" enumval=3
+    L_R_unline,
+  }
   /**
    * TODO: Initialize agent with an ID on Sandbox.
    */
@@ -264,7 +277,7 @@ namespace ucaBot {
   export function onSand() {
     control.inBackground(() => {
       while (true) {
-        if (tracking())
+        if (tracking(TrackingState.L_R_line))
           stopcar();
         basic.pause(200); 
       }
@@ -478,7 +491,9 @@ namespace ucaBot {
   export function wander(){
     while (true){
       if (cl == false && al == false)
-        motors(17, 17)
+        motors(16, 16)
+      else
+        stopcar();
       basic.pause(25);
     }
   }
@@ -517,9 +532,8 @@ namespace ucaBot {
   //% weight=167 
   export function avoidCollision(){
     al = true;
-    stopcar();
     let dir = Math.floor(Math.random() * 2);
-    let giro = Math.floor(Math.random() * 180) + 150;
+    let giro = Math.floor(Math.random() * 180) + 160;
     rotate(giro, dir);
     moveCm(1);
     basic.pause(20);
@@ -737,14 +751,27 @@ namespace ucaBot {
     motors(0, 0);
   }
 
-  function tracking(): boolean {
+  /**
+   * Judging the Current Status of Tracking Module.
+   * @param state Four states of tracking module, eg: TrackingState.L_R_line
+   */
+  //% blockId=ringbitcar_tracking block="Tracking state is %state"
+  //% weight=50
+  export function tracking(state: TrackingState): boolean {
     pins.setPull(DigitalPin.P13, PinPullMode.PullNone);
     pins.setPull(DigitalPin.P14, PinPullMode.PullNone);
     let left_tracking = pins.digitalReadPin(DigitalPin.P13);
     let right_tracking = pins.digitalReadPin(DigitalPin.P14);
-    if (left_tracking == 0 && right_tracking == 0)
+    if (left_tracking == 0 && right_tracking == 0 && state == 0) {
       return true;
-    else
+    } else if (left_tracking == 1 && right_tracking == 0 && state == 1) {
+      return true;
+    } else if (left_tracking == 0 && right_tracking == 1 && state == 2) {
+      return true;
+    } else if (left_tracking == 1 && right_tracking == 1 && state == 3) {
+      return true;
+    } else {
       return false;
+    }
   }
 }
