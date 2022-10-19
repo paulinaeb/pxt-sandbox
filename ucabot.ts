@@ -211,7 +211,7 @@ namespace ucaBot {
     console.log('sent '+msg);
     radio.sendString(msg);
     if (req){
-      let n_times = 100;
+      let n_times = 220;
       wait = true;
       for (let i = 0; i < n_times; i++){
         if (act_pos){
