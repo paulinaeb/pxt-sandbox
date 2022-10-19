@@ -497,10 +497,10 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (cl){
-          cl = false;
-          basic.pause(20);
+          basic.pause(25);
           sendMsg('0', 'CL', [], false, -1);
-          basic.pause(20);
+          basic.pause(25);
+          cl = false;
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
         }
         basic.pause(20); 
