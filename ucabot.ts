@@ -498,6 +498,7 @@ namespace ucaBot {
       while (true) { 
         if (cl){
           cl = false;
+          basic.pause(20);
           sendMsg('0', 'CL', [], false, -1);
           basic.pause(20);
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
@@ -518,6 +519,7 @@ namespace ucaBot {
     let giro = Math.floor(Math.random() * 180) + 150;
     rotate(giro, dir);
     moveCm(1);
+    basic.pause(20);
     sendMsg('0', 'FC', [], false, -1);
     basic.pause(20);
     al = false;
