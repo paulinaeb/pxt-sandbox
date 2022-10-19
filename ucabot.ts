@@ -498,6 +498,7 @@ namespace ucaBot {
         if (cl){
           cl = false;
           sendMsg('0', 'CL', [], false, -1);
+          basic.pause(20);
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
         }
         basic.pause(20); 
@@ -517,6 +518,7 @@ namespace ucaBot {
     rotate(giro, dir);
     moveCm(1);
     sendMsg('0', 'FC', [], false, -1);
+    basic.pause(20);
     al = false;
     return
   }
