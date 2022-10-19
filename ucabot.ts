@@ -513,7 +513,7 @@ namespace ucaBot {
     al = true;
     stopcar();
     let dir = Math.floor(Math.random() * 2);
-    let giro = Math.floor(Math.random() * 180) + 120;
+    let giro = Math.floor(Math.random() * 180) + 150;
     rotate(giro, dir);
     moveCm(1);
     sendMsg('0', 'FC', [], false, -1);
