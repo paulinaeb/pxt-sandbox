@@ -481,7 +481,7 @@ namespace ucaBot {
     while (true){
       if (cl == false && al == false && tracking() == false)
         motors(15, 15)
-      else
+      if (tracking())
         stopcar();
       basic.pause(25);
     }
