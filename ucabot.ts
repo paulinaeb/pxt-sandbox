@@ -159,8 +159,7 @@ namespace ucaBot {
           else if (resp.c == 'HO' && home.length == 0){
             home.push(parseFloat(resp.p[0]));
             home.push(parseFloat(resp.p[1]));
-            console.log('home');
-            console.log(home);
+            sendMsg('0', 'HO', [], false, -1);
           }
           else if ((resp.c == 'BO' || resp.c == 'SO') && busy == false){
             x_o = parseFloat(resp.p[0]);
@@ -243,7 +242,7 @@ namespace ucaBot {
   * indicates to Sandbox to stop sending current values due to timeout 
   */ 
   function stopSearching(){
-    radio.sendString('SS');
+    sendMsg('0', 'SS', [], false, -1);
     basic.pause(20);
   }
   /**
@@ -498,6 +497,7 @@ namespace ucaBot {
       while (true) { 
         if (cl){
           cl = false;
+          sendMsg('0', 'CL', [], false, -1);
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
         }
         basic.pause(20); 
