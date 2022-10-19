@@ -504,9 +504,9 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (cl){
-          basic.pause(30);
+          basic.pause(50);
           sendMsg('0', 'CL', [], false, -1);
-          basic.pause(30);
+          basic.pause(50);
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
           cl = false;
         }
@@ -526,9 +526,9 @@ namespace ucaBot {
     let giro = Math.floor(Math.random() * 180) + 160;
     rotate(giro, dir);
     moveCm(1);
-    basic.pause(30);
+    basic.pause(50);
     sendMsg('0', 'FC', [], false, -1);
-    basic.pause(30);
+    basic.pause(50);
     al = false;
     return
   }
