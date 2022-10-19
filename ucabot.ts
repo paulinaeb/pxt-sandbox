@@ -479,8 +479,10 @@ namespace ucaBot {
   //% weight=168 
   export function wander(){
     while (true){
-      if (cl == false && al == false)
-        motors(16, 16)
+      if (cl == false && al == false && tracking() == false)
+        motors(15, 15)
+      else
+        stopcar();
       basic.pause(25);
     }
   }
