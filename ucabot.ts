@@ -160,6 +160,7 @@ namespace ucaBot {
             home.push(parseFloat(resp.p[0]));
             home.push(parseFloat(resp.p[1]));
             sendMsg('0', 'HO', [], false, -1);
+            basic.pause(20);
           }
           else if ((resp.c == 'BO' || resp.c == 'SO') && busy == false){
             x_o = parseFloat(resp.p[0]);
