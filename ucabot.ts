@@ -5,7 +5,7 @@
 namespace ucaBot {
   const STM8_ADDRESSS = 0x10;
   const ID_GROUP = 23;
-
+  let _initEvents = true;
   class Resp { 
     f: string; 
     d: string; 
@@ -95,6 +95,24 @@ namespace ucaBot {
 
     //% block="◌ ◌" enumval=3
     L_R_unline,
+  }
+  /**
+ * Line Sensor events    MICROBIT_PIN_EVT_RISE
+ */
+    export enum MbEvents {
+    //% block="Found"
+    FindLine = DAL.MICROBIT_PIN_EVT_FALL,
+    //% block="Lost"
+    LoseLine = DAL.MICROBIT_PIN_EVT_RISE,
+  }
+  /**
+   * Pins used to generate events
+   */
+  export enum MbPins {
+    //% block="Left"
+    Left = DAL.MICROBIT_ID_IO_P13,
+    //% block="Right"
+    Right = DAL.MICROBIT_ID_IO_P14,
   }
   /**
    * TODO: Initialize agent with an ID on Sandbox.
@@ -771,6 +789,24 @@ namespace ucaBot {
       return true;
     } else {
       return false;
+    }
+  }
+    /**
+   * TODO: Runs when line sensor finds or loses.
+   */
+  //% block="On %sensor| line %event"
+  //% sensor.fieldEditor="gridpicker" sensor.fieldOptions.columns=2
+  //% event.fieldEditor="gridpicker" event.fieldOptions.columns=2
+  //% weight=40
+  export function trackEvent(sensor: MbPins, event: MbEvents, handler: Action) {
+    initEvents();
+    control.onEvent(<number>sensor, <number>event, handler);
+  }
+  function initEvents(): void {
+    if (_initEvents) {
+      pins.setEvents(DigitalPin.P13, PinEventType.Edge);
+      pins.setEvents(DigitalPin.P14, PinEventType.Edge);
+      _initEvents = false;
     }
   }
 }
