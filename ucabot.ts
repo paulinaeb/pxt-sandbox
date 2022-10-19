@@ -83,37 +83,6 @@ namespace ucaBot {
     //% blockId="M2" block="M2"
     M2 = 1,
   }
-  export enum TrackingState {
-    //% block="● ●" enumval=0
-    L_R_line,
-
-    //% block="◌ ●" enumval=1
-    L_unline_R_line,
-
-    //% block="● ◌" enumval=2
-    L_line_R_unline,
-
-    //% block="◌ ◌" enumval=3
-    L_R_unline,
-  }
-  /**
- * Line Sensor events    MICROBIT_PIN_EVT_RISE
- */
-    export enum MbEvents {
-    //% block="Found"
-    FindLine = DAL.MICROBIT_PIN_EVT_FALL,
-    //% block="Lost"
-    LoseLine = DAL.MICROBIT_PIN_EVT_RISE,
-  }
-  /**
-   * Pins used to generate events
-   */
-  export enum MbPins {
-    //% block="Left"
-    Left = DAL.MICROBIT_ID_IO_P13,
-    //% block="Right"
-    Right = DAL.MICROBIT_ID_IO_P14,
-  }
   /**
    * TODO: Initialize agent with an ID on Sandbox.
    */
@@ -295,9 +264,11 @@ namespace ucaBot {
   export function onSand() {
     control.inBackground(() => {
       while (true) {
-        if (tracking(TrackingState.L_R_line))
+        if (tracking()){
+          console.log('in tracking stop')
           stopcar();
-        basic.pause(200); 
+        }
+        basic.pause(20); 
       }
     });
   }
@@ -768,45 +739,14 @@ namespace ucaBot {
     motors(0, 0);
   }
 
-  /**
-   * Judging the Current Status of Tracking Module.
-   * @param state Four states of tracking module, eg: TrackingState.L_R_line
-   */
-  //% blockId=ringbitcar_tracking block="Tracking state is %state"
-  //% weight=50
-  export function tracking(state: TrackingState): boolean {
+  function tracking(): boolean {
     pins.setPull(DigitalPin.P13, PinPullMode.PullNone);
     pins.setPull(DigitalPin.P14, PinPullMode.PullNone);
     let left_tracking = pins.digitalReadPin(DigitalPin.P13);
     let right_tracking = pins.digitalReadPin(DigitalPin.P14);
-    if (left_tracking == 0 && right_tracking == 0 && state == 0) {
+    if (left_tracking == 0 && right_tracking == 0) 
       return true;
-    } else if (left_tracking == 1 && right_tracking == 0 && state == 1) {
-      return true;
-    } else if (left_tracking == 0 && right_tracking == 1 && state == 2) {
-      return true;
-    } else if (left_tracking == 1 && right_tracking == 1 && state == 3) {
-      return true;
-    } else {
+    else
       return false;
-    }
-  }
-    /**
-   * TODO: Runs when line sensor finds or loses.
-   */
-  //% block="On %sensor| line %event"
-  //% sensor.fieldEditor="gridpicker" sensor.fieldOptions.columns=2
-  //% event.fieldEditor="gridpicker" event.fieldOptions.columns=2
-  //% weight=40
-  export function trackEvent(sensor: MbPins, event: MbEvents, handler: Action) {
-    initEvents();
-    control.onEvent(<number>sensor, <number>event, handler);
-  }
-  function initEvents(): void {
-    if (_initEvents) {
-      pins.setEvents(DigitalPin.P13, PinEventType.Edge);
-      pins.setEvents(DigitalPin.P14, PinEventType.Edge);
-      _initEvents = false;
-    }
   }
 }
