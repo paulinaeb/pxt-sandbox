@@ -492,8 +492,6 @@ namespace ucaBot {
     while (true){
       if (cl == false && al == false)
         motors(16, 16)
-      else
-        stopcar();
       basic.pause(25);
     }
   }
@@ -531,6 +529,7 @@ namespace ucaBot {
   //% block="Avoid collision"
   //% weight=167 
   export function avoidCollision(){
+    stopcar();
     al = true;
     let dir = Math.floor(Math.random() * 2);
     let giro = Math.floor(Math.random() * 180) + 160;
