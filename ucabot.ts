@@ -474,9 +474,9 @@ namespace ucaBot {
   //% weight=168 
   export function wander(){
     while (true){
-      if (al == false)
+      if (cl == false && al == false)
         moveCm(1);
-      basic.pause(20);
+      basic.pause(25);
     }
   }
   /**
@@ -497,11 +497,11 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (cl){
-          basic.pause(25);
+          basic.pause(20);
           sendMsg('0', 'CL', [], false, -1);
-          basic.pause(25);
-          cl = false;
+          basic.pause(20);
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
+          cl = false;
         }
         basic.pause(20); 
       }
