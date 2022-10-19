@@ -51,6 +51,8 @@ namespace ucaBot {
   let cl = false;
   let al = false;
   let home: number[] = [];
+  let searching = false;
+  let type = '';
   let x_o: number = null;
   let y_o: number = null;
   let id_ob = '';
@@ -162,7 +164,8 @@ namespace ucaBot {
             sendMsg('0', 'HO', [], false, -1);
             basic.pause(20);
           }
-          else if ((resp.c == 'BO' || resp.c == 'SO') && busy == false){
+          else if ((resp.c == 'BO' || resp.c == 'SO') && busy == false && searching == true){
+            type = resp.c;
             x_o = parseFloat(resp.p[0]);
             y_o = parseFloat(resp.p[1]);
             id_ob = resp.p[2];
@@ -475,7 +478,7 @@ namespace ucaBot {
   export function wander(){
     while (true){
       if (cl == false && al == false)
-        moveCm(1);
+        motors(17, 17)
       basic.pause(25);
     }
   }
@@ -499,7 +502,7 @@ namespace ucaBot {
         if (cl){
           basic.pause(20);
           sendMsg('0', 'CL', [], false, -1);
-          basic.pause(20);
+          basic.pause(30);
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
           cl = false;
         }
