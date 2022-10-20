@@ -38,7 +38,7 @@ namespace ucaBot {
   let name = '';
   let x = 0;
   let y = 0;
-  let act_pos = false;
+  let act_val = false;
   let tt = 0;
   let called = false;
   let r_angle = 0;
@@ -135,12 +135,14 @@ namespace ucaBot {
             x = parseFloat(resp.p[0]);
             y = parseFloat(resp.p[1]);
             tt = parseInt(resp.p[2]);
-            act_pos = true;
+            act_val = true;
           }
           else if (resp.c == 'WN'){
             near = resp.p[0];
-            act_pos = true;
+            act_val = true;
           }
+          else if (resp.c == 'IC' || resp.c == 'FC')
+            act_val = true;
           else if (resp.c == 'CA'){
             if (resp.p.length > 0){
               if (resp.p[0] != id){
@@ -218,8 +220,8 @@ namespace ucaBot {
       let n_times = 220;
       wait = true;
       for (let i = 0; i < n_times; i++){
-        if (act_pos){
-          act_pos = false;
+        if (act_val){
+          act_val = false;
           wait = false;
           return true;
         }
@@ -525,19 +527,7 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (cl){
-          wait = true;
-          basic.pause(20);
-          while (true){
-            console.log('repeat');
-            console.log(repeat);
-            sendMsg('0', 'CL', [], false, -1);
-            basic.pause(50);
-            if (repeat == false)
-              break;
-            else
-              repeat = false;
-          }
-          wait = false;
+          sendMsg('0', 'CL', [], true, -1);
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
           cl = false;
         }
@@ -557,11 +547,9 @@ namespace ucaBot {
     basic.pause(300);
     stopcar();
     let dir = Math.floor(Math.random() * 2);
-    let giro = Math.floor(Math.random() * 180) + 160;
+    let giro = Math.floor(Math.random() * 150) + 110;
     rotate(giro, dir);
-    basic.pause(50);
-    sendMsg('0', 'FC', [], false, -1);
-    basic.pause(50);
+    sendMsg('0', 'FC', [], true, -1);
     al = false;
     return
   }
