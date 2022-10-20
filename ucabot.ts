@@ -525,6 +525,7 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (cl){
+          basic.pause(20);
           wait = true;
           while (true){
             sendMsg('0', 'CL', [], false, -1);
@@ -535,7 +536,6 @@ namespace ucaBot {
               repeat = false;
           }
           wait = false;
-          basic.pause(50);
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
           cl = false;
         }
