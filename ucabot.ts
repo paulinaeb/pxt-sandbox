@@ -35,6 +35,7 @@ namespace ucaBot {
   let id = '0';
   let n_agents = '0';
   let near = '0';
+  let name = '';
   let x = 0;
   let y = 0;
   let act_pos = false;
@@ -272,6 +273,26 @@ namespace ucaBot {
   //     }
   //   });
   // }
+  /**
+  * Agents can set their name when initialized on SandBox.
+  */ 
+  //% block="Set name %inName"
+  //% weight=196
+  export function setName(inName: string): void {
+    name = inName;
+    sendMsg('0', 'NM', [name], false, -1);
+  }
+  /**
+  * Agents can know their name when initialized on SandBox.
+  */ 
+  //% block="My name"
+  //% weight=196
+  export function myName(): string {
+    if (name == '')
+      return 'Name not set';
+    else
+      return name;
+  }
   /**
   * Agents can know their number when initialized on SandBox.
   */ 
@@ -528,6 +549,7 @@ namespace ucaBot {
     let dir = Math.floor(Math.random() * 2);
     let giro = Math.floor(Math.random() * 170) + 150;
     rotate(giro, dir);
+    moveCm(1);
     basic.pause(50);
     sendMsg('0', 'FC', [], false, -1);
     basic.pause(50);
