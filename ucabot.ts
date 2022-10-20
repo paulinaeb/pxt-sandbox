@@ -256,22 +256,22 @@ namespace ucaBot {
     let num = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
     return num;
   }
-  /**
-  * Keep agents always on sand (avoid them to fall).
-  */ 
-  //% block="Always on sand"
-  //% weight=198
-  export function onSand() {
-    control.inBackground(() => {
-      while (true) {
-        if (tracking()){
-          console.log('in tracking stop')
-          stopcar();
-        }
-        basic.pause(20); 
-      }
-    });
-  }
+  // /**
+  // * Keep agents always on sand (avoid them to fall).
+  // */ 
+  // //% block="Always on sand"
+  // //% weight=198
+  // export function onSand() {
+  //   control.inBackground(() => {
+  //     while (true) {
+  //       if (tracking()){
+  //         console.log('in tracking stop')
+  //         stopcar();
+  //       }
+  //       basic.pause(20); 
+  //     }
+  //   });
+  // }
   /**
   * Agents can know their number when initialized on SandBox.
   */ 
@@ -522,10 +522,12 @@ namespace ucaBot {
   export function avoidCollision(){
     stopcar();
     al = true;
+    motors(-31,-31);
+    basic.pause(200);
+    stopcar();
     let dir = Math.floor(Math.random() * 2);
-    let giro = Math.floor(Math.random() * 180) + 160;
+    let giro = Math.floor(Math.random() * 170) + 150;
     rotate(giro, dir);
-    moveCm(1);
     basic.pause(50);
     sendMsg('0', 'FC', [], false, -1);
     basic.pause(50);
