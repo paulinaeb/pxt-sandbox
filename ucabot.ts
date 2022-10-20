@@ -550,6 +550,7 @@ namespace ucaBot {
     let giro = Math.floor(Math.random() * 150) + 110;
     rotate(giro, dir);
     sendMsg('0', 'FC', [], true, -1);
+    moveCm(1);
     al = false;
     return
   }
