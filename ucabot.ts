@@ -525,9 +525,11 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (cl){
-          basic.pause(20);
           wait = true;
+          basic.pause(20);
           while (true){
+            console.log('repeat');
+            console.log(repeat);
             sendMsg('0', 'CL', [], false, -1);
             basic.pause(50);
             if (repeat == false)
