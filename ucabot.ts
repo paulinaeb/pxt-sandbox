@@ -57,6 +57,7 @@ namespace ucaBot {
   let type = '';
   let x_o: number = null;
   let y_o: number = null;
+  let r_o: number = null;
   let id_ob = '';
   /**
    * Select the position desired
@@ -142,7 +143,7 @@ namespace ucaBot {
             near = resp.p[0];
             act_val = true;
           }
-          else if (resp.c == 'IC' || resp.c == 'FC')
+          else if (resp.c == 'IC' || resp.c == 'FC' || resp.c == 'SC' || resp.c == 'TO')
             act_val = true;
           else if (resp.c == 'CA'){
             if (resp.p.length > 0){
@@ -173,6 +174,7 @@ namespace ucaBot {
             x_o = parseFloat(resp.p[0]);
             y_o = parseFloat(resp.p[1]);
             id_ob = resp.p[2];
+            r_o = parseFloat(resp.p[3]);
             found = true;
           }
         }
@@ -514,15 +516,19 @@ namespace ucaBot {
     });
   }
   /**
-  * Agents can look for objects and take them home
+  * Agents can detect objects and take them home
   */ 
-  //% block="Look for objects"
+  //% block="Detect objects"
   //% weight=167 
   export function lookForSth(){
     searching = true;
-    basic.showString('looking for obj');
-
-    searching = false;
+    sendMsg('0', 'SC', [], true, -1);
+    while (true){
+      if (found)
+        break
+      basic.pause(20); 
+    }
+    basic.showString('found');
   }
   /**
   * Do something on object detected.
@@ -538,6 +544,26 @@ namespace ucaBot {
         basic.pause(20); 
       }
     });
+  }
+  /**
+  * Agents can go to objects and take them home
+  */ 
+  //% block="Go to object"
+  //% weight=167 
+  export function goForObj(){
+    if (x_o && searching){
+      if (type == 'SO'){
+        goToPoint(x_o, y_o, r_o);
+        sendMsg('0', 'SO', [id_ob], true, -1);
+      }
+      else{
+        if (parseInt(n_agents) > 1){
+          goToPoint(x_o, y_o, r_o);
+          askHelp();
+        }
+      }
+      searching = false;
+    }
   }
   /**
   * Do something on collision received
