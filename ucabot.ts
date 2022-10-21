@@ -241,21 +241,6 @@ namespace ucaBot {
     let num = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
     return num;
   }
-  // /**
-  // * Keep agents always on sand (avoid them to fall).
-  // */ 
-  // //% block="Always on sand"
-  // //% weight=198
-  // export function onSand() {
-  //   control.inBackground(() => {
-  //     while (true) {
-  //       if (ir()){
-  //         stopcar();
-  //       }
-  //       basic.pause(20); 
-  //     }
-  //   });
-  // }
   /**
   * Agents can set their name when initialized on SandBox.
   */ 
@@ -495,6 +480,7 @@ namespace ucaBot {
   //% weight=167 
   export function detect(){
     search = true;
+    basic.pause(30);
     send('0', 'SC', [], true, -1);
     while (true){
       if (found)
