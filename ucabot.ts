@@ -47,7 +47,6 @@ namespace ucaBot {
   let arrived = '';
   let id2fw = '';
   let fw_req = false;
-  let busy = false;
   let cl = false;
   let al = false;
   let home: number[] = [];
@@ -58,6 +57,7 @@ namespace ucaBot {
   let y_o: number = null;
   let r_o: number = null;
   let id_ob = '';
+  let gto = false;
   
   export enum Pos {
     //% block="x"
@@ -155,7 +155,7 @@ namespace ucaBot {
             home.push(parseFloat(resp.p[2]))
             send('0', 'HO', [], false, -1);
           }
-          else if ((resp.c == 'BO' || resp.c == 'SO') && busy == false && search == true){
+          else if ((resp.c == 'BO' || resp.c == 'SO') && search == true){
             type = resp.c;
             x_o = parseInt(resp.p[0]);
             y_o = parseInt(resp.p[1]);
@@ -171,7 +171,7 @@ namespace ucaBot {
         basic.pause(50);
         break; 
       }
-      basic.pause(20); 
+      delay(); 
     }
     return;
   } 
@@ -230,7 +230,7 @@ namespace ucaBot {
       }
       wait = false;
       send('0', 'SS', [], false, -1);
-      basic.pause(20);
+      delay();
       return false;
     }
     else 
@@ -465,7 +465,7 @@ namespace ucaBot {
   export function wander(){
     control.inBackground(() => {
       while (true){
-        if (cl == false && al == false && ir() == false)
+        if (cl == false && al == false && ir() == false && gto == false)
           motors(15, 15)
         if (ir())
           stopcar();
@@ -485,9 +485,8 @@ namespace ucaBot {
     while (true){
       if (found)
         break
-      basic.pause(20); 
+      delay(); 
     }
-    basic.showString('found');
   }
   /**
   * Do something on object detected.
@@ -500,7 +499,7 @@ namespace ucaBot {
       while (true) { 
         if (found)
           found = false;
-        basic.pause(20); 
+        delay(); 
       }
     });
   }
@@ -510,6 +509,8 @@ namespace ucaBot {
   //% block="Go to object"
   //% weight=167 
   export function goForObj(){
+    gto = true;
+    stopcar();
     if (x_o && search){
       if (type == 'SO'){
         toPoint(x_o, y_o, r_o);
@@ -523,6 +524,7 @@ namespace ucaBot {
       }
       search = false;
     }
+    gto = false;
   }
   /**
   * Do something on collision received
@@ -538,7 +540,7 @@ namespace ucaBot {
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
           cl = false;
         }
-        basic.pause(20); 
+        delay(); 
       }
     });
   }
@@ -581,7 +583,7 @@ namespace ucaBot {
       while (true) { 
         if (n_agents != '0')
           control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire); 
-        basic.pause(20); 
+        delay(); 
       }
     });
     return;
@@ -611,7 +613,7 @@ namespace ucaBot {
       while (true){
         if (arrived != '')
           break
-        basic.pause(20);
+        delay();
       }
     }
     else 
@@ -631,7 +633,7 @@ namespace ucaBot {
           control.raiseEvent(100, 3502, EventCreationMode.CreateAndFire); 
           called = false;
         }
-        basic.pause(20); 
+        delay(); 
       }
     });
     return;
@@ -665,7 +667,7 @@ namespace ucaBot {
           control.raiseEvent(101, 3503, EventCreationMode.CreateAndFire); 
           fw_req = false;
         }
-        basic.pause(20); 
+        delay(); 
       }
     });
     return;
@@ -724,7 +726,7 @@ namespace ucaBot {
     return;
   }
 
-  function motors(lspeed: number, rspeed: number): void {
+  function motors(lspeed: number, rspeed: number) {
     let buf = pins.createBuffer(4);
     if (lspeed > 0) {
       buf[0] = 0x01; 
@@ -758,7 +760,7 @@ namespace ucaBot {
    */
   //% block="Stop car now"
   //% weight=70
-  export function stopcar(): void {
+  export function stopcar() {
     motors(0, 0);
   }
 
@@ -773,3 +775,7 @@ namespace ucaBot {
       return false;
   }
 }
+
+  function delay(){
+    basic.pause(20);
+  }
