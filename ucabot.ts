@@ -4,7 +4,7 @@
 //% weight=5 color=#ff9da5  icon="\uf207"
 namespace ucaBot {
   const STM8_ADDRESSS = 0x10;
-  const ID_GROUP = 23;
+  const GROUP = 23;
   class Resp { 
     f: string; 
     d: string; 
@@ -22,7 +22,7 @@ namespace ucaBot {
       this.c = c; 
       this.p = [];
     }
-    set_values(f: string, d: string, c:  string, p: string[]): void {
+    set(f: string, d: string, c:  string, p: string[]): void {
       this.set_header(f, d, c);
       this.p = p;
     }
@@ -58,31 +58,27 @@ namespace ucaBot {
   let y_o: number = null;
   let r_o: number = null;
   let id_ob = '';
-  /**
-   * Select the position desired
-   */
+  
   export enum Pos {
     //% block="x"
     x,
     //% block="y"
     y,
   }
-  /**
- * Select the position desired
- */
+  
   export enum Dir {
     //% block="Right"
-    dir_right,
+    right,
     //% block="Left"
-    dir_left,
+    left,
   }
   /**
-   * TODO: Initialize agent with an ID on Sandbox.
+   * TODO: Init agent with an ID on Sandbox.
    */
   //% block="Init agent on Sandbox"
   //% weight=200
   export function initAgent(): void {
-    radio.setGroup(ID_GROUP);
+    radio.setGroup(GROUP);
     radio.onReceivedString(function (receivedString) {
       let msg = receivedString;
       resp.set_header(msg[0], msg[1], msg[2] + msg[3]);
@@ -183,25 +179,25 @@ namespace ucaBot {
   * serialize msg and send request to sandBox.
   */ 
   function send(d: string, c: string, p: string[], req: boolean, stop: number): boolean {
-    let obj_req = new Resp();
-    obj_req.set_values(id, d, c, p);
-    let msg = obj_req.f + obj_req.d + obj_req.c;
-    let n_param = obj_req.p.length;
-    let size = n_param;
+    let o_req = new Resp();
+    o_req.set(id, d, c, p);
+    let msg = o_req.f + o_req.d + o_req.c;
+    let n_p = o_req.p.length;
+    let size = n_p;
     if (size > 0){ 
-      for (let i = 0; i < n_param; i++)
-        size += obj_req.p[i].length; 
-      let num_fill = 14 - size;
-      let n_each = num_fill / n_param;
-      if (num_fill >= 0){
-        if (n_param >= 1){
-            for (let i = 0; i < n_param; i++){
-              msg += obj_req.p[i] + '/';
+      for (let i = 0; i < n_p; i++)
+        size += o_req.p[i].length; 
+      let n_fill = 14 - size;
+      let n_each = n_fill / n_p;
+      if (n_fill >= 0){
+        if (n_p >= 1){
+            for (let i = 0; i < n_p; i++){
+              msg += o_req.p[i] + '/';
               for(let j = 0; j < Math.floor(n_each); j++)
                 msg += '0';
             }
         } 
-        if ((n_each != Math.floor(n_each)) || (num_fill < n_param)){
+        if ((n_each != Math.floor(n_each)) || (n_fill < n_p)){
           let ex = 18 - msg.length; 
           for (let i = 0; i < ex; i++)
             msg += '0';
@@ -233,22 +229,14 @@ namespace ucaBot {
         basic.pause(50);
       }
       wait = false;
-      stopsearch();
+      send('0', 'SS', [], false, -1);
+      basic.pause(20);
       return false;
     }
     else 
       return true;
   }
-  /**
-  * indicates to Sandbox to stop sending current values due to timeout 
-  */ 
-  function stopsearch(){
-    send('0', 'SS', [], false, -1);
-    basic.pause(20);
-  }
-  /**
-  * Adaptation of PID
-  */ 
+  
   function pid(p: number, min_prev: number, max_prev: number, min_new: number, max_new: number): number{
     let num = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
     return num;
@@ -293,7 +281,7 @@ namespace ucaBot {
   */ 
   //% block="My number (ID)"
   //% weight=195
-  export function myNumber(): number {
+  export function myNum(): number {
     let num = parseInt(id);
     return num;
   }
@@ -302,7 +290,7 @@ namespace ucaBot {
   */ 
   //% block="My position %pos (cm)"
   //% weight=190
-  export function myPosition(pos: Pos): number { 
+  export function myPos(pos: Pos): number { 
     if (send('0', 'GP', [], true, -1)){
       if(pos == Pos.x)
         return x;
@@ -317,7 +305,7 @@ namespace ucaBot {
   */ 
   //% block="My direction"
   //% weight=185
-  export function myDirection(): number { 
+  export function myDir(): number { 
     if (send('0', 'GP', [], true, -1))
       return tt;
     else  
@@ -335,7 +323,7 @@ namespace ucaBot {
     // request direction
     if (send('0', 'GP', [], true, -1)){
       let tt_p = 0;    let d = 0;
-      if (dir == Dir.dir_right){
+      if (dir == Dir.right){
         tt_p = tt - p;
         if (tt_p < 0)
           tt_p = 360 + tt_p;
@@ -349,7 +337,7 @@ namespace ucaBot {
       let p_aux = p;
       while (p > 4 && p <= p_aux){
         d = pid(p, 10, 180, 18, 20);
-        if (dir == Dir.dir_right)
+        if (dir == Dir.right)
           motors(d, -d-9);
         else
           motors(-d-9, d);
@@ -451,10 +439,10 @@ namespace ucaBot {
       if (angle > 7){
         if (angle > 180){
           angle = 360 - angle; 
-          rotate(angle, Dir.dir_right);
+          rotate(angle, Dir.right);
         }
         else 
-          rotate(angle, Dir.dir_left); 
+          rotate(angle, Dir.left); 
       }
       else
         r_angle = tt;
@@ -725,18 +713,18 @@ namespace ucaBot {
           if (af > aa){
             if(angle > 180){
               angle = 360 - angle;
-              rotate(angle, Dir.dir_right);
+              rotate(angle, Dir.right);
             }
             else
-              rotate(angle, Dir.dir_left);
+              rotate(angle, Dir.left);
           }
           else if (aa > af){
             if (angle > 180){
               angle = 360 - angle;
-              rotate(angle, Dir.dir_left);
+              rotate(angle, Dir.left);
             }
             else
-              rotate(angle, Dir.dir_right);
+              rotate(angle, Dir.right);
           }
         }
         else
