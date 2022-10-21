@@ -499,8 +499,10 @@ namespace ucaBot {
     control.onEvent(103, 3505, handler);
     control.inBackground(() => {
       while (true) { 
-        if (found)
+        if (found){
           found = false;
+          control.raiseEvent(103, 3505, EventCreationMode.CreateAndFire); 
+        }
         delay(); 
       }
     });
