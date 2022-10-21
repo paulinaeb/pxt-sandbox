@@ -129,7 +129,7 @@ namespace ucaBot {
             near = resp.p[0];
             act_val = true;
           }
-          else if (resp.c == 'IC' || resp.c == 'FC' || resp.c == 'SC' || resp.c == 'TO')
+          else if (resp.c == 'IC' || resp.c == 'FC' || resp.c == 'SC' || resp.c == 'TO' || resp.c == 'FS')
             act_val = true;
           else if (resp.c == 'CA'){
             if (resp.p.length > 0){
@@ -483,8 +483,10 @@ namespace ucaBot {
     basic.pause(30);
     send('0', 'SC', [], true, -1);
     while (true){
-      if (found)
+      if (found){
+        send('0', 'FS', [], true, -1);
         break
+      }
       delay(); 
     }
   }
@@ -493,7 +495,7 @@ namespace ucaBot {
   */ 
   //% block="On object detected"
   //% weight=166
-  export function onObjDetected(handler: () => void){
+  export function onDetect(handler: () => void){
     control.onEvent(103, 3505, handler);
     control.inBackground(() => {
       while (true) { 
@@ -506,7 +508,7 @@ namespace ucaBot {
   /**
   * Agents can go to objects and take them home
   */ 
-  //% block="Go to object"
+  //% block="Go to object v2"
   //% weight=167 
   export function goForObj(){
     gto = true;
