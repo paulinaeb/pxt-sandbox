@@ -53,6 +53,7 @@ namespace ucaBot {
   let al = false;
   let home: number[] = [];
   let searching = false;
+  let found = false;
   let type = '';
   let x_o: number = null;
   let y_o: number = null;
@@ -172,6 +173,7 @@ namespace ucaBot {
             x_o = parseFloat(resp.p[0]);
             y_o = parseFloat(resp.p[1]);
             id_ob = resp.p[2];
+            found = true;
           }
         }
       }
@@ -501,13 +503,15 @@ namespace ucaBot {
   //% block="Wander Sandbox"
   //% weight=168 
   export function wander(){
-    while (true){
-      if (cl == false && al == false && tracking() == false)
-        motors(15, 15)
-      if (tracking())
-        stopcar();
-      basic.pause(25);
-    }
+    control.inBackground(() => {
+      while (true){
+        if (cl == false && al == false && tracking() == false)
+          motors(15, 15)
+        if (tracking())
+          stopcar();
+        basic.pause(25);
+      }
+    });
   }
   /**
   * Agents can look for objects and take them home
@@ -515,7 +519,25 @@ namespace ucaBot {
   //% block="Look for objects"
   //% weight=167 
   export function lookForSth(){
+    searching = true;
+    basic.showString('looking for obj');
 
+    searching = false;
+  }
+  /**
+  * Do something on object detected.
+  */ 
+  //% block="On object detected"
+  //% weight=166
+  export function onObjDetected(handler: () => void){
+    control.onEvent(103, 3505, handler);
+    control.inBackground(() => {
+      while (true) { 
+        if (found)
+          found = false;
+        basic.pause(20); 
+      }
+    });
   }
   /**
   * Do something on collision received
