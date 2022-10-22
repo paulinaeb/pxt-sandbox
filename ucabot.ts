@@ -139,7 +139,7 @@ namespace ucaBot {
               }
             }
           }
-          else if (resp.c == 'NF' && wait == true)
+          else if (resp.c == 'NF' && wait)
             repeat = true;
           else if (resp.c == 'AR')
             arrived = resp.p[0];
@@ -147,15 +147,15 @@ namespace ucaBot {
             id2fw = resp.p[0];
             fw_req = true;
           }
-          else if (resp.c == 'CL' && al == false)
+          else if (resp.c == 'CL' && !al)
             cl = true;
-          else if (resp.c == 'HO' && home.length == 0){
+          else if (resp.c == 'HO' && !home.length){
             home.push(parseInt(resp.p[0]));
             home.push(parseInt(resp.p[1]));
             home.push(parseFloat(resp.p[2]))
             send('0', 'HO', [], false, -1);
           }
-          else if ((resp.c == 'BO' || resp.c == 'SO') && search == true){
+          else if ((resp.c == 'BO' || resp.c == 'SO') && search){
             type = resp.c;
             x_o = parseInt(resp.p[0]);
             y_o = parseInt(resp.p[1]);
@@ -465,7 +465,7 @@ namespace ucaBot {
   export function wander(){
     control.inBackground(() => {
       while (true){
-        if (cl == false && al == false && ir() == false && busy == false)
+        if (!cl && !al && !ir() && !busy)
           motors(15, 15)
         if (ir())
           stopcar();
