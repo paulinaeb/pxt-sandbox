@@ -5,59 +5,38 @@
 namespace ucaBot {
   const STM8_ADDRESSS = 0x10;
   const GROUP = 23;
-  class Resp { 
-    f: string; 
-    d: string; 
-    c: string; 
-    p: string[];
-    constructor(){
-      this.f = null;
-      this.d = null;
-      this.c = null;
-      this.p = [];
-    }
-    set_header(f: string, d: string, c:  string): void{
-      this.f = f;
-      this.d = d;
-      this.c = c; 
-      this.p = [];
-    }
-    set(f: string, d: string, c:  string, p: string[]): void {
-      this.set_header(f, d, c);
-      this.p = p;
-    }
-    add_p(p: string): void{
-      this.p.push(p);
-    }
-  }
-  let resp = new Resp();
+  let f: string= null;
+  let d: string= null;
+  let c: string= null;
+  let p: string[]= null;
+  let resp: string=null;
   let id = '0';
   let n_agents = '0';
   let near = '0';
-  let name: string = null;
-  let x = 0;
-  let y = 0;
-  let act_val = false;
-  let tt = 0;
-  let called = false;
-  let r_angle = 0;
-  let wait = false;
-  let repeat = false;
-  let calls = '';
-  let arrived = '';
-  let id2fw = '';
-  let fw_req = false;
-  let cl = false;
-  let al = false;
-  let home: number[] = [];
-  let search = false;
-  let found = false;
-  let type = '';
-  let x_o: number = null;
-  let y_o: number = null;
-  let r_o: number = null;
-  let id_ob = '';
-  let busy = false;
+  let name: string= null;
+  let x= 0;
+  let y= 0;
+  let act_val= false;
+  let tt= 0;
+  let called= false;
+  let r_angle= 0;
+  let wait= false;
+  let repeat= false;
+  let calls= '';
+  let arrived= '';
+  let id2fw= '';
+  let fw_req= false;
+  let cl= false;
+  let al= false;
+  let home: number[]= [];
+  let search= false;
+  let found= false;
+  let type= '';
+  let x_o: number= null;
+  let y_o: number= null;
+  let r_o: number= null;
+  let id_ob= '';
+  let busy= false;
   
   export enum Pos {
     //% block="x"
@@ -65,7 +44,7 @@ namespace ucaBot {
     //% block="y"
     y,
   }
-  
+
   export enum Dir {
     //% block="Right"
     right,
@@ -80,12 +59,14 @@ namespace ucaBot {
   export function initAgent(): void {
     radio.setGroup(GROUP);
     radio.onReceivedString(function (receivedString) {
-      let msg = receivedString;
-      resp.set_header(msg[0], msg[1], msg[2] + msg[3]);
-      if (resp.d == 'F' || resp.d == id){
-        console.log(msg);  
-        if (msg.length > 4){
-          let str_p = msg.slice(4);
+      f = receivedString[0];
+      d = receivedString[1];
+      c = receivedString[2] + receivedString[3];
+      p = []
+      if (d == 'F' || d == id){
+        console.log(receivedString);  
+        if (receivedString.length > 4){
+          let str_p = receivedString.slice(4);
           let limit = (str_p.split("/").length-1); 
           if (limit > 0){
             let index = 0;
@@ -93,81 +74,81 @@ namespace ucaBot {
             for (let i = 0; i < limit; i++){ 
               if (i == 0){
                 index = str_p.indexOf('/');
-                resp.add_p(str_p.slice(0, index));
+                p.push(str_p.slice(0, index));
               }
               else{
                 index = str_p.indexOf('/', index + 1);
-                resp.add_p(str_p.slice(aux + 1, index));
+                p.push(str_p.slice(aux + 1, index));
               } 
               aux = index;
               let flag = 0;
-              for (let char = 0; char < resp.p[i].length; char++){  
-                if (!((resp.p[i][char] >= '0' && resp.p[i][char] <= '9') || resp.p[i][char]=='.'))
+              for (let char = 0; char < p[i].length; char++){  
+                if (!((p[i][char] >= '0' && p[i][char] <= '9') || p[i][char]=='.'))
                   flag+=1; 
               }
               if (flag > 0)
-                resp.p[i] = resp.p[i].replace('0',''); 
+                p[i] = p[i].replace('0',''); 
             }
           }
         }
-        if (resp.f == '0'){
-          if (id == '0' && resp.c == 'II'){
-            id = resp.p[0];
+        if (f == '0'){
+          if (id == '0' && c == 'II'){
+            id = p[0];
             basic.showString(id);
             basic.pause(1000);
             basic.clearScreen();
           }
-          else if (n_agents == '0' && resp.c == 'AI')
-            n_agents = resp.p[0];
-          else if (resp.c == 'GP'){
-            x = parseFloat(resp.p[0]);
-            y = parseFloat(resp.p[1]);
-            tt = parseInt(resp.p[2]);
+          else if (n_agents == '0' && c == 'AI')
+            n_agents = p[0];
+          else if (c == 'GP'){
+            x = parseFloat(p[0]);
+            y = parseFloat(p[1]);
+            tt = parseInt(p[2]);
             act_val = true;
           }
-          else if (resp.c == 'WN'){
-            near = resp.p[0];
+          else if (c == 'WN'){
+            near = p[0];
             act_val = true;
           }
-          else if (resp.c == 'IC' || resp.c == 'FC' || resp.c == 'SC' || resp.c == 'TO' || resp.c == 'FS' || resp.c == 'BU')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU')
             act_val = true;
-          else if (resp.c == 'CA'){
-            if (resp.p.length > 0){
-              if (resp.p[0] != id){
-                calls = resp.p[0];
+          else if (c == 'CA'){
+            if (p.length > 0){
+              if (p[0] != id){
+                calls = p[0];
                 called = true;
               }
             }
           }
-          else if (resp.c == 'NF' && wait)
+          else if (c == 'NF' && wait)
             repeat = true;
-          else if (resp.c == 'AR')
-            arrived = resp.p[0];
-          else if (resp.c == 'FM'){
-            id2fw = resp.p[0];
+          else if (c == 'AR')
+            arrived = p[0];
+          else if (c == 'FM'){
+            id2fw = p[0];
             fw_req = true;
           }
-          else if (resp.c == 'CL' && !al)
+          else if (c == 'CL' && !al)
             cl = true;
-          else if (resp.c == 'HO' && !home.length){
-            home.push(parseInt(resp.p[0]));
-            home.push(parseInt(resp.p[1]));
-            home.push(parseFloat(resp.p[2]))
+          else if (c == 'HO' && !home.length){
+            home.push(parseInt(p[0]));
+            home.push(parseInt(p[1]));
+            home.push(parseFloat(p[2]));
             send('0', 'HO', [], false, -1);
           }
-          else if ((resp.c == 'BO' || resp.c == 'SO') && search){
-            type = resp.c;
-            x_o = parseInt(resp.p[0]);
-            y_o = parseInt(resp.p[1]);
-            id_ob = resp.p[2];
-            r_o = parseFloat(resp.p[3]);
+          else if ((c == 'BO' || c == 'SO') && search){
+            type = c;
+            x_o = parseInt(p[0]);
+            y_o = parseInt(p[1]);
+            id_ob = p[2];
+            r_o = parseFloat(p[3]);
             found = true;
           }
         }
       }
     });
     while (true) { 
-      if ((n_agents != '0') && (id != '0')){
+      if (n_agents != '0' && id != '0'){
         basic.pause(50);
         break; 
       }
@@ -179,33 +160,31 @@ namespace ucaBot {
   * serialize msg and send request to sandBox.
   */ 
   function send(d: string, c: string, p: string[], req: boolean, stop: number): boolean {
-    let o_req = new Resp();
-    o_req.set(id, d, c, p);
-    let msg = o_req.f + o_req.d + o_req.c;
-    let n_p = o_req.p.length;
+    resp = id + d + c;
+    let n_p = p.length;
     let size = n_p;
     if (size > 0){ 
       for (let i = 0; i < n_p; i++)
-        size += o_req.p[i].length; 
+        size += p[i].length; 
       let n_fill = 14 - size;
       let n_each = n_fill / n_p;
       if (n_fill >= 0){
         if (n_p >= 1){
             for (let i = 0; i < n_p; i++){
-              msg += o_req.p[i] + '/';
+              resp += p[i] + '/';
               for(let j = 0; j < Math.floor(n_each); j++)
-                msg += '0';
+                resp += '0';
             }
         } 
         if ((n_each != Math.floor(n_each)) || (n_fill < n_p)){
-          let ex = 18 - msg.length; 
+          let ex = 18 - resp.length; 
           for (let i = 0; i < ex; i++)
-            msg += '0';
+            resp += '0';
         }
       } 
     }
-    console.log('sent '+msg);
-    radio.sendString(msg);
+    console.log('sent '+resp);
+    radio.sendString(resp);
     if (req){
       let n_times = 220;
       wait = true;
@@ -486,7 +465,7 @@ namespace ucaBot {
     while (true){
       if (found){
         send('0', 'FS', [], true, -1);
-        basic.pause(30);
+        basic.pause(50);
         break
       }
       delay(); 
@@ -512,7 +491,7 @@ namespace ucaBot {
   /**
   * Agents can go to objects and take them home
   */ 
-  //% block="Go to object v2"
+  //% block="Go to object"
   //% weight=167 
   export function goForObj(){
     busy = true;
