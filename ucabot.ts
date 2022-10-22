@@ -61,7 +61,7 @@ namespace ucaBot {
       f = receivedString[0];
       d = receivedString[1];
       c = receivedString[2] + receivedString[3];
-      p = []
+      p = [];
       if (d == 'F' || d == id){
         console.log(receivedString);  
         if (receivedString.length > 4){
