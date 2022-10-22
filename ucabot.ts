@@ -57,7 +57,7 @@ namespace ucaBot {
   let y_o: number = null;
   let r_o: number = null;
   let id_ob = '';
-  let gto = false;
+  let busy = false;
   
   export enum Pos {
     //% block="x"
@@ -129,7 +129,7 @@ namespace ucaBot {
             near = resp.p[0];
             act_val = true;
           }
-          else if (resp.c == 'IC' || resp.c == 'FC' || resp.c == 'SC' || resp.c == 'TO' || resp.c == 'FS')
+          else if (resp.c == 'IC' || resp.c == 'FC' || resp.c == 'SC' || resp.c == 'TO' || resp.c == 'FS' || resp.c == 'BU')
             act_val = true;
           else if (resp.c == 'CA'){
             if (resp.p.length > 0){
@@ -465,7 +465,7 @@ namespace ucaBot {
   export function wander(){
     control.inBackground(() => {
       while (true){
-        if (cl == false && al == false && ir() == false && gto == false)
+        if (cl == false && al == false && ir() == false && busy == false)
           motors(15, 15)
         if (ir())
           stopcar();
@@ -513,7 +513,9 @@ namespace ucaBot {
   //% block="Go to object v2"
   //% weight=167 
   export function goForObj(){
-    gto = true;
+    busy = true;
+    send('0', 'BU', [id_ob], true, -1);
+    delay();
     stopcar();
     if (x_o && search){
       if (type == 'SO'){
@@ -528,7 +530,7 @@ namespace ucaBot {
       }
       search = false;
     }
-    gto = false;
+    busy = false;
   }
   /**
   * Do something on collision received
