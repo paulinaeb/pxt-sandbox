@@ -4,7 +4,6 @@
 //% weight=5 color=#ff9da5  icon="\uf207"
 namespace ucaBot {
   const STM8_ADDRESSS = 0x10;
-  const GROUP = 23;
   let f: string= null;
   let d: string= null;
   let c: string= null;
@@ -54,10 +53,10 @@ namespace ucaBot {
   /**
    * TODO: Init agent with an ID on Sandbox.
    */
-  //% block="Init agent on Sandbox"
+  //% block="Init agent on Sandbox 2"
   //% weight=200
   export function initAgent(): void {
-    radio.setGroup(GROUP);
+    radio.setGroup(23);
     radio.onReceivedString(function (receivedString) {
       f = receivedString[0];
       d = receivedString[1];
@@ -745,7 +744,7 @@ namespace ucaBot {
   /**
    * TODO: stopcar
    */
-  //% block="Stop car now 2"
+  //% block="Stop car now"
   //% weight=70
   export function stopcar() {
     motors(0, 0);
