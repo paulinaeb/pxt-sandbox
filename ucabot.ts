@@ -514,9 +514,9 @@ namespace ucaBot {
   //% weight=167 
   export function goForObj(){
     busy = true;
+    stopcar();
     send('0', 'BU', [id_ob], true, -1);
     delay();
-    stopcar();
     if (x_o && search){
       if (type == 'SO'){
         toPoint(x_o, y_o, r_o);
