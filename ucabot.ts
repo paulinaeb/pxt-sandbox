@@ -249,6 +249,7 @@ namespace ucaBot {
   export function setName(inName: string): void {
     name = inName;
     send('0', 'NM', [name], false, -1);
+    delay();
   }
   /**
   * Agents can know their name on SandBox.
