@@ -745,7 +745,7 @@ namespace ucaBot {
   /**
    * TODO: stopcar
    */
-  //% block="Stop car now"
+  //% block="Stop car now 2"
   //% weight=70
   export function stopcar() {
     motors(0, 0);
@@ -756,7 +756,7 @@ namespace ucaBot {
     pins.setPull(DigitalPin.P14, PinPullMode.PullNone);
     let left = pins.digitalReadPin(DigitalPin.P13);
     let right = pins.digitalReadPin(DigitalPin.P14);
-    if (left == 0 && right == 0) 
+    if (!left && !right) 
       return true;
     else
       return false;
