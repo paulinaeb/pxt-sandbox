@@ -9,8 +9,8 @@ namespace ucaBot {
   let c: string= null;
   let p: string[]= null;
   let resp: string=null;
-  let id = 0;
-  let n_agents = 0;
+  let id = '0';
+  let n_agents = '0';
   let near = '0';
   let name: string= null;
   let x= 0;
@@ -53,7 +53,7 @@ namespace ucaBot {
   /**
    * TODO: Init agent with an ID on Sandbox.
    */
-  //% block="Init agent on Sandbox 2"
+  //% block="Init agent on Sandbox"
   //% weight=200
   export function initAgent(): void {
     radio.setGroup(23);
@@ -62,7 +62,7 @@ namespace ucaBot {
       d = receivedString[1];
       c = receivedString[2] + receivedString[3];
       p = []
-      if (d == 'F' || d == id.toString()){
+      if (d == 'F' || d == id){
         console.log(receivedString);  
         if (receivedString.length > 4){
           let str_p = receivedString.slice(4);
@@ -91,14 +91,14 @@ namespace ucaBot {
           }
         }
         if (f == '0'){
-          if (!id && c == 'II'){
-            id = parseInt(p[0]);
-            basic.showNumber(id);
+          if (id == '0' && c == 'II'){
+            id = p[0];
+            basic.showString(id);
             basic.pause(1000);
             basic.clearScreen();
           }
-          else if (!n_agents && c == 'AI')
-            n_agents = parseInt(p[0]);
+          else if (n_agents == '0' && c == 'AI')
+            n_agents = p[0];
           else if (c == 'GP'){
             x = parseFloat(p[0]);
             y = parseFloat(p[1]);
@@ -113,7 +113,7 @@ namespace ucaBot {
             act_val = true;
           else if (c == 'CA'){
             if (p.length > 0){
-              if (p[0] != id.toString()){
+              if (p[0] != id){
                 calls = p[0];
                 called = true;
               }
@@ -147,7 +147,7 @@ namespace ucaBot {
       }
     });
     while (true) { 
-      if (n_agents && id){
+      if (n_agents != '0' && id != '0'){
         basic.pause(50);
         break; 
       }
@@ -246,7 +246,7 @@ namespace ucaBot {
   //% block="My number (ID)"
   //% weight=195
   export function myNum(): number {
-    let num = id;
+    let num = parseInt(id);
     return num;
   }
   /**
@@ -400,7 +400,7 @@ namespace ucaBot {
       let vc = 0;
       let aux = 999;
       let angle = rt_angle(x, px, y, py, tt, d);
-      if (angle > 5){
+      if (angle > 7){
         if (angle > 180){
           angle = 360 - angle; 
           rotate(angle, Dir.right);
@@ -410,7 +410,7 @@ namespace ucaBot {
       }
       else
         r_angle = tt;
-      while (d > (1 + space) && d <= aux){
+      while (d > (4 + space) && d <= aux){
         if (send('0', 'GP', [], true, 4)){
           aux = d;
           d_tt = r_angle - tt;
@@ -503,7 +503,7 @@ namespace ucaBot {
         send('0', 'SO', [id_ob], true, -1);
       }
       else{
-        if (n_agents > 1){
+        if (parseInt(n_agents) > 1){
           toPoint(x_o, y_o, r_o);
           askHelp();
         }
@@ -542,8 +542,8 @@ namespace ucaBot {
     basic.pause(300);
     stopcar();
     let dir = Math.floor(Math.random() * 2);
-    let giro = Math.floor(Math.random() * 100) + 90;
-    rotate(giro, dir);
+    let a = Math.floor(Math.random() * 110) + 90;
+    rotate(a, dir);
     send('0', 'FC', [], true, -1);
     move(1);
     al = false;
@@ -555,7 +555,7 @@ namespace ucaBot {
   //% block="Number of agents on SandBox"
   //% weight=170 
   export function numberOfAgents(): number {
-    let num = n_agents;
+    let num = parseInt(n_agents);
     return num;
   }
 /**
@@ -567,7 +567,7 @@ namespace ucaBot {
     control.onEvent(99, 3501, handler);
     control.inBackground(() => {
       while (true) { 
-        if (n_agents)
+        if (n_agents != '0')
           control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire); 
         delay(); 
       }
@@ -594,7 +594,7 @@ namespace ucaBot {
   //% block="Ask for help "
   //% id.min = 1 id.max = 3
   export function askHelp() {
-    if (n_agents > 1){
+    if (parseInt(n_agents) > 1){
       send('0', 'CA', ['F'], false, -1);
       while (true){
         if (arrived != '')
