@@ -485,6 +485,7 @@ namespace ucaBot {
     while (true){
       if (found){
         send('0', 'FS', [], true, -1);
+        delay();
         break
       }
       delay(); 
@@ -515,7 +516,7 @@ namespace ucaBot {
   export function goForObj(){
     busy = true;
     stopcar();
-    send('0', 'BU', [id_ob], true, -1);
+    send('0', 'BU', [], true, -1);
     delay();
     if (x_o && search){
       if (type == 'SO'){
