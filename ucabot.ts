@@ -133,7 +133,7 @@ namespace ucaBot {
             home.push(parseInt(p[0]));
             home.push(parseInt(p[1]));
             home.push(parseFloat(p[2]));
-            send('0', 'HO', [], false, -1);
+            send('0', 'HO', null, false);
           }
           else if ((c == 'BO' || c == 'SO') && search){
             type = c;
@@ -158,30 +158,10 @@ namespace ucaBot {
   /**
   * serialize msg and send request to sandBox.
   */ 
-  function send(d: string, c: string, p: string[], req: boolean, stop: number): boolean {
+  function send(d: string, c: string, p: string, req: boolean, stop = -1): boolean {
     resp = id + d + c;
-    let n_p = p.length;
-    let size = n_p;
-    if (size > 0){ 
-      for (let i = 0; i < n_p; i++)
-        size += p[i].length; 
-      let n_fill = 14 - size;
-      let n_each = n_fill / n_p;
-      if (n_fill >= 0){
-        if (n_p >= 1){
-            for (let i = 0; i < n_p; i++){
-              resp += p[i] + '/';
-              for(let j = 0; j < Math.floor(n_each); j++)
-                resp += '0';
-            }
-        } 
-        if ((n_each != Math.floor(n_each)) || (n_fill < n_p)){
-          let ex = 18 - resp.length; 
-          for (let i = 0; i < ex; i++)
-            resp += '0';
-        }
-      } 
-    }
+    if (p)
+      resp = resp + p + '/';
     console.log('sent '+resp);
     radio.sendString(resp);
     if (req){
@@ -207,7 +187,7 @@ namespace ucaBot {
         basic.pause(50);
       }
       wait = false;
-      send('0', 'SS', [], false, -1);
+      send('0', 'SS', null, false);
       delay();
       return false;
     }
@@ -226,7 +206,7 @@ namespace ucaBot {
   //% weight=196
   export function setName(inName: string): void {
     name = inName;
-    send('0', 'NM', [name], false, -1);
+    send('0', 'NM', name, false);
     delay();
   }
   /**
@@ -255,7 +235,7 @@ namespace ucaBot {
   //% block="My position %pos (cm)"
   //% weight=190
   export function myPos(pos: Pos): number { 
-    if (send('0', 'GP', [], true, -1)){
+    if (send('0', 'GP', null, true)){
       if(pos == Pos.x)
         return x;
       else
@@ -270,7 +250,7 @@ namespace ucaBot {
   //% block="My direction"
   //% weight=185
   export function myDir(): number { 
-    if (send('0', 'GP', [], true, -1))
+    if (send('0', 'GP', null, true))
       return tt;
     else  
       return undefined;
@@ -285,7 +265,7 @@ namespace ucaBot {
   //% weight=180 
   export function rotate(p: number, dir: Dir) { 
     // request direction
-    if (send('0', 'GP', [], true, -1)){
+    if (send('0', 'GP', null, true)){
       let tt_p = 0;    let d = 0;
       if (dir == Dir.right){
         tt_p = tt - p;
@@ -306,7 +286,7 @@ namespace ucaBot {
         else
           motors(-d-9, d);
         basic.pause(100);
-        if (send('0', 'GP', [], true, 1)){
+        if (send('0', 'GP', null, true, 1)){
           p_aux = p;
           p =  Math.abs(tt_p - tt); 
           if (p > 180)
@@ -327,7 +307,7 @@ namespace ucaBot {
   //% cm.min = 1 cm.max = 90
   //% weight=175 
   export function move(cm: number): void { 
-    if (send('0', 'GP', [], true, -1)){
+    if (send('0', 'GP', null, true)){
       let aux = cm;  let v = 0;
       let xv = 0;    let yv = 0;
       let tt_o = tt; 
@@ -338,7 +318,7 @@ namespace ucaBot {
         v = pid(cm, 5, 100, 18, 25);
         motors(v, v);  
         basic.pause(250);
-        if (send('0', 'GP', [], true, 4)){
+        if (send('0', 'GP', null, true, 4)){
           cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
           d_tt = tt_o - tt;
           if (Math.abs(d_tt) > 300)
@@ -393,7 +373,7 @@ namespace ucaBot {
   //% y.min = 5 y.max = 57
   //% weight=170 
   export function toPoint(px: number, py: number, space = 0) {
-    if (send('0', 'GP', [], true, -1)){
+    if (send('0', 'GP', null, true)){
       let d = cm(px, x, py, y);
       let d_tt = 0;
       let v = 0;
@@ -411,7 +391,7 @@ namespace ucaBot {
       else
         r_angle = tt;
       while (d > (4 + space) && d <= aux){
-        if (send('0', 'GP', [], true, 4)){
+        if (send('0', 'GP', null, true, 4)){
           aux = d;
           d_tt = r_angle - tt;
           if (Math.abs(d_tt) > 300)
@@ -460,10 +440,10 @@ namespace ucaBot {
   export function detect(){
     search = true;
     basic.pause(30);
-    send('0', 'SC', [], true, -1);
+    send('0', 'SC', null, true);
     while (true){
       if (found){
-        send('0', 'FS', [], true, -1);
+        send('0', 'FS', null, true);
         basic.pause(50);
         break
       }
@@ -495,12 +475,12 @@ namespace ucaBot {
   export function goForObj(){
     busy = true;
     stopcar();
-    send('0', 'BU', [], true, -1);
+    send('0', 'BU', null, true);
     delay();
     if (x_o && search){
       if (type == 'SO'){
         toPoint(x_o, y_o, r_o);
-        send('0', 'SO', [id_ob], true, -1);
+        send('0', 'SO', id_ob, true);
       }
       else{
         if (parseInt(n_agents) > 1){
@@ -522,7 +502,7 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (cl){
-          send('0', 'CL', [], true, -1);
+          send('0', 'CL', null, true);
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
           cl = false;
         }
@@ -544,7 +524,7 @@ namespace ucaBot {
     let dir = Math.floor(Math.random() * 2);
     let a = Math.floor(Math.random() * 110) + 90;
     rotate(a, dir);
-    send('0', 'FC', [], true, -1);
+    send('0', 'FC', null, true);
     move(1);
     al = false;
     return
@@ -582,7 +562,7 @@ namespace ucaBot {
   //% block="Who are at least %d cm near me?"
   //% d.min = 12 d.max = 100
   export function nearMe(d: number): string { 
-    if (send('0', 'WN', [d.toString()], true, -1))
+    if (send('0', 'WN', d.toString(), true))
       return near;
     else
       return '0'
@@ -595,7 +575,7 @@ namespace ucaBot {
   //% id.min = 1 id.max = 3
   export function askHelp() {
     if (parseInt(n_agents) > 1){
-      send('0', 'CA', ['F'], false, -1);
+      send('0', 'CA', 'F', false);
       while (true){
         if (arrived != '')
           break
@@ -631,9 +611,9 @@ namespace ucaBot {
   //% block="Go to the leader"
   export function goToLeader() {
     if (calls != ''){
-      if (send('0', 'GP', [calls], true, -1)){
+      if (send('0', 'GP', calls, true)){
         toPoint(x, y, 20);
-        send('0', 'AR', [calls], false, -1);
+        send('0', 'AR', calls, false);
       }
       else 
         return;
@@ -665,7 +645,7 @@ namespace ucaBot {
   //% block="Follow me"
   export function followMe() {
     if (arrived != ''){
-      send('0', 'FM', [arrived], false, -1);
+      send('0', 'FM', arrived, false);
       basic.pause(5000);
     }
     else
@@ -679,9 +659,9 @@ namespace ucaBot {
   //% block="Follow leader"
   export function followLeader() {
     if (id2fw != ''){
-      if (send('0', 'GP', [id2fw], true, -1)){
+      if (send('0', 'GP', id2fw, true)){
         let af = tt;
-        if (send('0', 'GP', [], true, -1)){
+        if (send('0', 'GP', null, true)){
           let aa = tt;
           let angle = Math.abs(af - aa);
           if (af > aa){
