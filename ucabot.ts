@@ -444,7 +444,7 @@ namespace ucaBot {
     while (true){
       if (found){
         send('0', 'FS', null, true, -1);
-        basic.pause(50);
+        basic.pause(60);
         break
       }
       delay(); 
