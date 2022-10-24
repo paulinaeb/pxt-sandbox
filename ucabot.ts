@@ -373,7 +373,7 @@ namespace ucaBot {
   //% x.min = 5 x.max = 100
   //% y.min = 5 y.max = 57
   //% weight=170 
-  export function toPoint(px: number, py: number, space: number) {
+  export function toPoint(px: number, py: number, space = 0) {
     if (send('0', 'GP', null, true, -1)){
       let d = cm(px, x, py, y);
       let d_tt = 0;
