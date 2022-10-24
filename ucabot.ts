@@ -163,6 +163,7 @@ namespace ucaBot {
     if (p)
       resp = resp + p + '/';
     console.log('sent '+resp);
+    delay();
     radio.sendString(resp);
     if (req){
       let n_times = 220;
