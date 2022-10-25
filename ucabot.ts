@@ -130,13 +130,13 @@ namespace ucaBot {
             home.push(parseFloat(p[2]));
             send('0', 'HO', null, false, -1);
           }
-          else if ((c == 'BO' || c == 'SO') && search){
+          else if ((c == 'BO' || c == 'SO') && search && !found){
+            found = true;
             type = c;
             x_o = parseInt(p[0]);
             y_o = parseInt(p[1]);
             id_ob = p[2];
             r_o = parseFloat(p[3]);
-            found = true;
           }
         }
       }
