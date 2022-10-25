@@ -442,18 +442,15 @@ namespace ucaBot {
     search = true;
     send('0', 'SC', null, true, -1);
     while (true){
-      if (found){
-        search = false;
-        send('0', 'FS', null, true, -1);
+      if (found)
         break
-      }
       delay(); 
     }
   }
   /**
   * Do something on object detected.
   */ 
-  //% block="On object detected"
+  //% block="On object detected 1"
   //% weight=166
   export function onDetect(handler: () => void){
     control.onEvent(103, 3505, handler);
@@ -461,6 +458,8 @@ namespace ucaBot {
       while (true) { 
         if (found){
           found = false;
+          search = false;
+          send('0', 'FS', null, true, -1);
           control.raiseEvent(103, 3505, EventCreationMode.CreateAndFire); 
         }
         delay(); 
