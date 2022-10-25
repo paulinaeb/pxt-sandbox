@@ -167,7 +167,7 @@ namespace ucaBot {
     delay();
     radio.sendString(resp);
     if (req){
-      let n_times = 220;
+      let n_times = 100;
       wait = true;
       for (let i = 0; i < n_times; i++){
         if (act_val){
