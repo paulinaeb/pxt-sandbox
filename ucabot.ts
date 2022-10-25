@@ -428,7 +428,7 @@ namespace ucaBot {
       while (true){
         if (!cl && !al && !ir() && !busy)
           motors(15, 15)
-        if (ir() || busy)
+        if (ir())
           stopcar();
         basic.pause(25);
       }
@@ -471,6 +471,7 @@ namespace ucaBot {
   // sends msg
   function setBusy(){
     busy = true;
+    stopcar();
     send('0', 'BU', null, true, -1);
   }
   function notBusy(){
