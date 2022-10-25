@@ -36,6 +36,7 @@ namespace ucaBot {
   let r_o: number= null;
   let id_ob= '';
   let busy= false;
+  let obj_on = 0;
   
   export enum Pos {
     //% block="x"
@@ -109,7 +110,7 @@ namespace ucaBot {
             near = p[0];
             act_val = true;
           }
-          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'NB')
             act_val = true;
           else if (c == 'CA'){
             if (p.length > 0){
@@ -427,7 +428,7 @@ namespace ucaBot {
       while (true){
         if (!cl && !al && !ir() && !busy)
           motors(15, 15)
-        if (ir())
+        if (ir() || busy)
           stopcar();
         basic.pause(25);
       }
@@ -468,36 +469,69 @@ namespace ucaBot {
       }
     });
   }
+  // sends msg
+  function setBusy(){
+    busy = true;
+    send('0', 'BU', null, true, -1);
+  }
+  function notBusy(){
+    busy = false;
+    send('0', 'NB', null, true, -1);
+  }
+  function objError(){
+    basic.showString('Cant take obj');
+  }
   /**
   * Agents can go to objects and take them home
   */ 
-  //% block="Go to object"
+  //% block="Go to detected object"
   //% weight=167 
   export function goForObj(){
-    busy = true;
-    stopcar();
-    send('0', 'BU', null, true, -1);
-    delay();
+    setBusy();
     if (x_o && search){
-      if (type == 'SO'){
-        toPoint(x_o, y_o, r_o);
-        send('0', 'SO', id_ob, true, -1);
-      }
-      else{
-        if (parseInt(n_agents) > 1){
-          toPoint(x_o, y_o, r_o);
-          askHelp();
-        }
-      }
+      toPoint(x_o, y_o, r_o);
       search = false;
     }
-    busy = false;
+    notBusy();
   }
+/**
+ * Take object with agent
+ */ 
+  //% block="Take object"
+  //% weight=166 
+  export function takeObj(){
+    setBusy();
+    if (type == 'SO')
+      send('0', 'SO', id_ob, true, -1);
+    else
+      objError();
+    notBusy();
+  }
+  /**
+ * Take object between 2 agents
+ */ 
+  //% block="Take object between 2 agents"
+  //% weight=165 
+  export function ma_takeObj(){
+    setBusy();
+    if (type == 'BO'){
+      if (parseInt(n_agents) > 1){
+        askHelp();
+        send('0', 'BO', id_ob, true, -1);
+      }
+      else
+        objError();
+    }
+    else 
+      objError();
+    notBusy();
+  }
+
   /**
   * Do something on collision received
   */ 
   //% block="On collision received"
-  //% weight=167 
+  //% weight=164
   export function onCollision(handler: () => void){
     control.onEvent(102, 3504, handler);
     control.inBackground(() => {
@@ -515,7 +549,7 @@ namespace ucaBot {
   * Avoid collision when received
   */ 
   //% block="Avoid collision"
-  //% weight=167 
+  //% weight=163
   export function avoidCollision(){
     stopcar();
     al = true;
