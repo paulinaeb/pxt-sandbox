@@ -162,7 +162,7 @@ namespace ucaBot {
   function send(d: string, c: string, p: string, req: boolean, stop: number): boolean {
     resp = id + d + c;
     if (p)
-      resp = resp + p + '/';
+      resp = resp + p + '/00';
     console.log('sent '+resp);
     delay();
     radio.sendString(resp);
@@ -238,7 +238,7 @@ namespace ucaBot {
   //% weight=190
   export function myPos(pos: Pos): number { 
     if (send('0', 'GP', null, true, -1)){
-      if(pos == Pos.x)
+      if(!pos)
         return x;
       else
         return y;
