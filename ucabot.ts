@@ -441,12 +441,11 @@ namespace ucaBot {
   //% weight=167 
   export function detect(){
     search = true;
-    basic.pause(30);
     send('0', 'SC', null, true, -1);
     while (true){
       if (found){
+        search = false;
         send('0', 'FS', null, true, -1);
-        basic.pause(60);
         break
       }
       delay(); 
@@ -488,10 +487,8 @@ namespace ucaBot {
   //% weight=167 
   export function goForObj(){
     setBusy();
-    if (x_o && search){
+    if (x_o)
       toPoint(x_o, y_o, r_o);
-      search = false;
-    }
     notBusy();
   }
 /**
