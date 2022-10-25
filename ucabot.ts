@@ -11,7 +11,6 @@ namespace ucaBot {
   let resp: string=null;
   let id = '0';
   let n_agents = '0';
-  let near = '0';
   let name: string= null;
   let x= 0;
   let y= 0;
@@ -103,10 +102,6 @@ namespace ucaBot {
             x = parseFloat(p[0]);
             y = parseFloat(p[1]);
             tt = parseInt(p[2]);
-            act_val = true;
-          }
-          else if (c == 'WN'){
-            near = p[0];
             act_val = true;
           }
           else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU')
@@ -554,19 +549,6 @@ namespace ucaBot {
       }
     });
     return;
-  }
-  /**
- * Agent is able to know which agent(s) are around or near itself.
- * @param d cm between agents, eg: 45
- */
-  //% weight=160 
-  //% block="Who are at least %d cm near me?"
-  //% d.min = 12 d.max = 100
-  export function nearMe(d: number): string { 
-    if (send('0', 'WN', d.toString(), true, -1))
-      return near;
-    else
-      return '0'
   }
 /**
  * TODO: An agent can aks for other agent's help when needed
