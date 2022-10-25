@@ -68,11 +68,11 @@ namespace ucaBot {
         if (receivedString.length > 4){
           let str_p = receivedString.slice(4);
           let limit = (str_p.split("/").length-1); 
-          if (limit > 0){
+          if (limit){
             let index = 0;
             let aux = 0;
             for (let i = 0; i < limit; i++){ 
-              if (i == 0){
+              if (!i){
                 index = str_p.indexOf('/');
                 p.push(str_p.slice(0, index));
               }
@@ -86,7 +86,7 @@ namespace ucaBot {
                 if (!((p[i][char] >= '0' && p[i][char] <= '9') || p[i][char]=='.'))
                   flag+=1; 
               }
-              if (flag > 0)
+              if (flag)
                 p[i] = p[i].replace('0',''); 
             }
           }
