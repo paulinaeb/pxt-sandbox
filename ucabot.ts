@@ -164,8 +164,8 @@ namespace ucaBot {
     if (p)
       resp = resp + p + '/00';
     console.log('sent '+resp);
-    delay();
     radio.sendString(resp);
+    basic.pause(35);
     if (req){
       let n_times = 100;
       wait = true;
@@ -190,7 +190,6 @@ namespace ucaBot {
       }
       wait = false;
       send('0', 'SS', null, false, -1);
-      delay();
       return false;
     }
     else 
