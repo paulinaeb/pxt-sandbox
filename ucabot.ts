@@ -436,15 +436,16 @@ namespace ucaBot {
   /**
   * Agents can detect objects and take them home
   */ 
-  //% block="Detect objects"
+  //% block="Detect objects 1"
   //% weight=167 
   export function detect(){
-    search = true;
-    send('0', 'SC', null, true, -1);
-    while (true){
-      if (found)
-        break
-      delay(); 
+    if (send('0', 'SC', null, true, -1)){
+      search = true;
+      while (true){
+        if (found)
+          break
+        delay(); 
+      }
     }
   }
   /**
@@ -458,8 +459,8 @@ namespace ucaBot {
       while (true) { 
         if (found){
           found = false;
-          search = false;
-          send('0', 'FS', null, true, -1);
+          if (send('0', 'FS', null, true, -1))
+            search = false;
           control.raiseEvent(103, 3505, EventCreationMode.CreateAndFire); 
         }
         delay(); 
@@ -468,13 +469,13 @@ namespace ucaBot {
   }
   // sends msg
   function setBusy(){
-    busy = true;
     stopcar();
-    send('0', 'BU', null, true, -1);
+    if (send('0', 'BU', null, true, -1))
+      busy = true;
   }
   function notBusy(){
-    busy = false;
-    send('0', 'NB', null, true, -1);
+    if(send('0', 'NB', null, true, -1))
+      busy = false;
   }
   function objError(){
     basic.showString('Cant take obj');
