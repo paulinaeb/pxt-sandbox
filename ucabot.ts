@@ -104,7 +104,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act_val = true;
           }
-          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM')
             act_val = true;
           else if (c == 'CA'){
             if (p.length > 0){
@@ -293,7 +293,7 @@ namespace ucaBot {
     while (cm > 0 && cm <= aux){
       xv = x; 
       yv = y;
-      v = pid(cm, 5, 100, 18, 25);
+      v = pid(cm, 5, 100, 15, 22);
       motors(v, v);  
       basic.pause(250);
       send('0', 'GP', null, 4)
@@ -378,7 +378,7 @@ namespace ucaBot {
           motors(v - vc, v + vc);
         basic.pause(50);
       }
-      v = pid(d, 5, 100, 20, 25);
+      v = pid(d, 5, 100, 15, 20);
       motors(v, v);  
       d = cm(px, x, py, y);
       basic.pause(250);
@@ -688,8 +688,8 @@ namespace ucaBot {
     else
       return false;
   }
-}
 
   function delay(){
     basic.pause(20);
   }
+}
