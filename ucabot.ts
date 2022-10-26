@@ -374,9 +374,7 @@ namespace ucaBot {
     }
     else
       r_angle = tt;
-      send('0', 'GP', null, -1);
-      let d_aux = cm(px, x, py, y);
-    while (d > (3 + space) && d_aux <= aux){
+    while (d > (3 + space) && d <= aux){
       send('0', 'GP', null, 4);
       aux = d;
       d_tt = r_angle - tt;
