@@ -104,7 +104,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act_val = true;
           }
-          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'SS')
             act_val = true;
           else if (c == 'CA'){
             if (p.length > 0){
@@ -183,7 +183,6 @@ namespace ucaBot {
       }
       if (i == 100){
         send('0', 'SS', null, -1);
-        delay();
         send(d, c, p, stop);
         break;
       }
