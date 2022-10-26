@@ -104,7 +104,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act_val = true;
           }
-          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH')
             act_val = true;
           else if (c == 'CA'){
             if (p.length > 0){
@@ -128,9 +128,9 @@ namespace ucaBot {
             home.push(parseInt(p[0]));
             home.push(parseInt(p[1]));
             home.push(parseFloat(p[2]));
-            send('0', 'HO', null, false, -1);
+            send('0', 'HO', null, -1);
           }
-          else if ((c == 'BO' || c == 'SO') && search && !found){
+          else if ((c == 'BO' || c == 'SO') && search && !found && !busy){
             found = true;
             type = c;
             x_o = parseInt(p[0]);
@@ -150,45 +150,36 @@ namespace ucaBot {
     }
     return;
   } 
-  /**
-  * serialize msg and send request to sandBox.
-  */ 
-  function send(d: string, c: string, p: string, req: boolean, stop: number): boolean {
+
+  function send(d: string, c: string, p: string, stop: number) {
     resp = id + d + c;
     if (p)
       resp = resp + p + '/0';
     console.log('sent '+resp);
     delay();
     radio.sendString(resp);
-    if (req){
-      let n_times = 100;
-      wait = true;
-      for (let i = 0; i < n_times; i++){
-        if (act_val){
-          act_val = false;
-          wait = false;
-          return true;
-        }
-        else{
-          if (i == stop)
-            stopcar();
-          if (repeat){
-            repeat = false;
-            if (stop > 0)
-              stopcar();
-            let res = send(d, c, p, req, stop);
-            return res;
-          }
-        } 
-        basic.pause(50);
+    wait = true;
+    let i = 0
+    while (!act_val){
+      if (act_val){
+        act_val = false;
+        wait = false;
+        break;
       }
-      wait = false;
-      send('0', 'SS', null, false, -1);
-      delay();
-      return false;
+      else{
+        if (i == stop)
+          stopcar();
+        if (repeat){
+          repeat = false;
+          if (stop > 0)
+            stopcar();
+          send(d, c, p, stop);
+          break;
+        }
+      } 
+      i+=1;
+      basic.pause(50);
     }
-    else 
-      return true;
   }
   
   function pid(p: number, min_prev: number, max_prev: number, min_new: number, max_new: number): number{
@@ -202,7 +193,7 @@ namespace ucaBot {
   //% weight=196
   export function setName(inName: string): void {
     name = inName;
-    send('0', 'NM', name, false, -1);
+    send('0', 'NM', name, -1);
     delay();
   }
   /**
@@ -231,14 +222,11 @@ namespace ucaBot {
   //% block="My position %pos (cm)"
   //% weight=190
   export function myPos(pos: Pos): number { 
-    if (send('0', 'GP', null, true, -1)){
-      if(!pos)
-        return x;
-      else
-        return y;
-    }
+    send('0', 'GP', null, -1)
+    if(!pos)
+      return x;
     else
-      return undefined;
+      return y;
   }
   /**
   * Agents can know their direction in degrees on SandBox.
@@ -246,10 +234,8 @@ namespace ucaBot {
   //% block="My direction"
   //% weight=185
   export function myDir(): number { 
-    if (send('0', 'GP', null, true, -1))
-      return tt;
-    else  
-      return undefined;
+    send('0', 'GP', null, -1)
+    return tt;
   }
   /**
   * TODO: Rotate agent at an angle between 10 and 180
@@ -260,39 +246,35 @@ namespace ucaBot {
   //% p.min = 5 p.max = 180
   //% weight=180 
   export function rotate(p: number, dir: Dir) { 
-    // request direction
-    if (send('0', 'GP', null, true, -1)){
-      let tt_p = 0;    let d = 0;
-      if (!dir){
-        tt_p = tt - p;
-        if (tt_p < 0)
-          tt_p = 360 + tt_p;
-      }
-      else{
-        tt_p = tt + p;
-        if (tt_p > 360)
-          tt_p = tt_p - 360;
-      }
-      r_angle = tt_p;
-      let p_aux = p;
-      while (p > 4 && p <= p_aux){
-        d = pid(p, 10, 180, 18, 20);
-        if (!dir)
-          motors(d, -d-9);
-        else
-          motors(-d-9, d);
-        basic.pause(100);
-        if (send('0', 'GP', null, true, 1)){
-          p_aux = p;
-          p =  Math.abs(tt_p - tt); 
-          if (p > 180)
-            p = 360 - p;
-        }
-        else
-          return;   
-      } 
-      stopcar();
+    send('0', 'GP', null, -1)
+    let tt_p = 0;
+    let d = 0;
+    if (!dir){
+      tt_p = tt - p;
+      if (tt_p < 0)
+        tt_p = 360 + tt_p;
     }
+    else{
+      tt_p = tt + p;
+      if (tt_p > 360)
+        tt_p = tt_p - 360;
+    }
+    r_angle = tt_p;
+    let p_aux = p;
+    while (p > 4 && p <= p_aux){
+      d = pid(p, 10, 180, 18, 20);
+      if (!dir)
+        motors(d, -d-9);
+      else
+        motors(-d-9, d);
+      basic.pause(100);
+      send('0', 'GP', null, 1)
+      p_aux = p;
+      p =  Math.abs(tt_p - tt); 
+      if (p > 180)
+        p = 360 - p;  
+    } 
+    stopcar();
     return;
   }
   /**
@@ -303,36 +285,32 @@ namespace ucaBot {
   //% cm.min = 1 cm.max = 90
   //% weight=175 
   export function move(cm: number): void { 
-    if (send('0', 'GP', null, true, -1)){
-      let aux = cm;  let v = 0;
-      let xv = 0;    let yv = 0;
-      let tt_o = tt; 
-      let d_tt = 0;  let vc = 0;
-      while (cm > 0 && cm <= aux){
-        xv = x; 
-        yv = y;
-        v = pid(cm, 5, 100, 18, 25);
-        motors(v, v);  
-        basic.pause(250);
-        if (send('0', 'GP', null, true, 4)){
-          cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
-          d_tt = tt_o - tt;
-          if (Math.abs(d_tt) > 300)
-            d_tt = 360 + d_tt;
-          if (d_tt != 0 && Math.abs(d_tt) > 1){
-            vc = pid(Math.abs(d_tt), 2, 15, 6, 12);
-            if (d_tt < 0)
-              motors(v + vc, v - vc);
-            else
-              motors(v - vc, v + vc);
-            basic.pause(50);
-          }
-        }
+    send('0', 'GP', null, -1)
+    let aux = cm;  let v = 0;
+    let xv = 0;    let yv = 0;
+    let tt_o = tt; 
+    let d_tt = 0;  let vc = 0;
+    while (cm > 0 && cm <= aux){
+      xv = x; 
+      yv = y;
+      v = pid(cm, 5, 100, 18, 25);
+      motors(v, v);  
+      basic.pause(250);
+      send('0', 'GP', null, 4)
+      cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
+      d_tt = tt_o - tt;
+      if (Math.abs(d_tt) > 300)
+        d_tt = 360 + d_tt;
+      if (d_tt != 0 && Math.abs(d_tt) > 1){
+        vc = pid(Math.abs(d_tt), 2, 15, 6, 12);
+        if (d_tt < 0)
+          motors(v + vc, v - vc);
         else
-          return;
+          motors(v - vc, v + vc);
+        basic.pause(50);
       }
-      stopcar();
     }
+    stopcar();
     return;
   }
   function cm(x1: number, x2: number, y1: number, y2: number): number{
@@ -369,47 +347,43 @@ namespace ucaBot {
   //% y.min = 5 y.max = 57
   //% weight=170 
   export function toPoint(px: number, py: number, space = 0) {
-    if (send('0', 'GP', null, true, -1)){
-      let d = cm(px, x, py, y);
-      let d_tt = 0;
-      let v = 0;
-      let vc = 0;
-      let aux = 999;
-      let angle = rt_angle(x, px, y, py, tt, d);
-      if (angle > 7){
-        if (angle > 180){
-          angle = 360 - angle; 
-          rotate(angle, 0);
-        }
-        else 
-          rotate(angle, 1); 
+    send('0', 'GP', null, -1)
+    let d = cm(px, x, py, y);
+    let d_tt = 0;
+    let v = 0;
+    let vc = 0;
+    let aux = 999;
+    let angle = rt_angle(x, px, y, py, tt, d);
+    if (angle > 7){
+      if (angle > 180){
+        angle = 360 - angle; 
+        rotate(angle, 0);
       }
-      else
-        r_angle = tt;
-      while (d > (4 + space) && d <= aux){
-        if (send('0', 'GP', null, true, 4)){
-          aux = d;
-          d_tt = r_angle - tt;
-          if (Math.abs(d_tt) > 300)
-            d_tt = 360 + d_tt;
-          if (d_tt != 0 && Math.abs(d_tt) > 1){
-            vc = pid(Math.abs(d_tt), 2, 30, 6, 15);
-            if (d_tt < 0)
-              motors(v + vc, v - vc);
-            else
-              motors(v - vc, v + vc);
-            basic.pause(50);
-          }
-          v = pid(d, 5, 100, 20, 25);
-          motors(v, v);  
-          d = cm(px, x, py, y);
-          basic.pause(250);
-        }
+      else 
+        rotate(angle, 1); 
+    }
+    else
+      r_angle = tt;
+    while (d > (4 + space) && d <= aux){
+      send('0', 'GP', null, 4)
+      aux = d;
+      d_tt = r_angle - tt;
+      if (Math.abs(d_tt) > 300)
+        d_tt = 360 + d_tt;
+      if (d_tt != 0 && Math.abs(d_tt) > 1){
+        vc = pid(Math.abs(d_tt), 2, 30, 6, 15);
+        if (d_tt < 0)
+          motors(v + vc, v - vc);
         else
-          return;
+          motors(v - vc, v + vc);
+        basic.pause(50);
       }
-      stopcar();
-    } 
+      v = pid(d, 5, 100, 20, 25);
+      motors(v, v);  
+      d = cm(px, x, py, y);
+      basic.pause(250);
+    }
+    stopcar();
     return;
   }
   /**
@@ -436,10 +410,10 @@ namespace ucaBot {
   export function detect(){
     search = true;
     basic.pause(30);
-    send('0', 'SC', null, true, -1);
+    send('0', 'SC', null, -1);
     while (true){
       if (found){
-        send('0', 'FS', null, true, -1);
+        send('0', 'FS', null, -1);
         basic.pause(60);
         break
       }
@@ -471,12 +445,12 @@ namespace ucaBot {
   export function goForObj(){
     busy = true;
     stopcar();
-    send('0', 'BU', null, true, -1);
+    send('0', 'BU', null, -1);
     delay();
     if (x_o && search){
       if (type == 'SO'){
         toPoint(x_o, y_o, r_o);
-        send('0', 'SO', id_ob, true, -1);
+        send('0', 'SO', id_ob, -1);
       }
       else{
         if (parseInt(n_agents) > 1){
@@ -498,7 +472,7 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (cl){
-          send('0', 'CL', null, true, -1);
+          send('0', 'CL', null, -1);
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
           cl = false;
         }
@@ -520,7 +494,7 @@ namespace ucaBot {
     let dir = Math.floor(Math.random() * 2);
     let a = Math.floor(Math.random() * 110) + 90;
     rotate(a, dir);
-    send('0', 'FC', null, true, -1);
+    send('0', 'FC', null, -1);
     move(1);
     al = false;
     return
@@ -558,7 +532,7 @@ namespace ucaBot {
   //% id.min = 1 id.max = 3
   export function askHelp() {
     if (parseInt(n_agents) > 1){
-      send('0', 'CA', 'F', false, -1);
+      send('0', 'CA', 'F', -1);
       while (true){
         if (arrived != '')
           break
@@ -594,12 +568,9 @@ namespace ucaBot {
   //% block="Go to the leader"
   export function goToLeader() {
     if (calls != ''){
-      if (send('0', 'GP', calls, true, -1)){
-        toPoint(x, y, 20);
-        send('0', 'AR', calls, false, -1);
-      }
-      else 
-        return;
+      send('0', 'GP', calls, -1)
+      toPoint(x, y, 20);
+      send('0', 'AR', calls, -1);
     }
     return;
   }
@@ -628,7 +599,7 @@ namespace ucaBot {
   //% block="Follow me"
   export function followMe() {
     if (arrived != ''){
-      send('0', 'FM', arrived, false, -1);
+      send('0', 'FM', arrived, -1);
       basic.pause(5000);
     }
     else
@@ -642,33 +613,27 @@ namespace ucaBot {
   //% block="Follow leader"
   export function followLeader() {
     if (id2fw != ''){
-      if (send('0', 'GP', id2fw, true, -1)){
-        let af = tt;
-        if (send('0', 'GP', null, true, -1)){
-          let aa = tt;
-          let angle = Math.abs(af - aa);
-          if (af > aa){
-            if(angle > 180){
-              angle = 360 - angle;
-              rotate(angle, 0);
-            }
-            else
-              rotate(angle, 1);
-          }
-          else if (aa > af){
-            if (angle > 180){
-              angle = 360 - angle;
-              rotate(angle, 1);
-            }
-            else
-              rotate(angle, 0);
-          }
+      send('0', 'GP', id2fw, -1)
+      let af = tt;
+      send('0', 'GP', null, -1)
+      let aa = tt;
+      let angle = Math.abs(af - aa);
+      if (af > aa){
+        if(angle > 180){
+          angle = 360 - angle;
+          rotate(angle, 0);
         }
         else
-          return
+          rotate(angle, 1);
       }
-      else
-        return
+      else if (aa > af){
+        if (angle > 180){
+          angle = 360 - angle;
+          rotate(angle, 1);
+        }
+        else
+          rotate(angle, 0);
+      }
     }
     else
       basic.showString('Not asked to follow yet');
