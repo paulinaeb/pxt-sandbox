@@ -34,6 +34,7 @@ namespace ucaBot {
   let r_o: number= null;
   let id_ob= '';
   let busy= false;
+  let r_angle= 0;
   
   export enum Pos {
     //% block="x"
@@ -268,6 +269,7 @@ namespace ucaBot {
       if (tt_p > 360)
         tt_p = tt_p - 360;
     }
+    r_angle = tt_p;
     let p_aux = p;
     while (p > 4 && p <= p_aux){
       d = pid(p, 10, 180, 18, 19);
@@ -370,10 +372,11 @@ namespace ucaBot {
       else 
         rotate(angle, 1); 
     }
-    send('0', 'GP', null, -1);
-    d = cm(px, x, py, y);
-    let r_angle = tt;
-    while (d > (4 + space) && d <= aux){
+    else
+      r_angle = tt;
+      send('0', 'GP', null, -1);
+      let d_aux = cm(px, x, py, y);
+    while (d > (3 + space) && d_aux <= aux){
       send('0', 'GP', null, 4);
       aux = d;
       d_tt = r_angle - tt;
