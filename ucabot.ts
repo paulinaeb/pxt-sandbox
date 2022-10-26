@@ -162,6 +162,7 @@ namespace ucaBot {
     wait = true;
     let i = 0;
     while (!act_val){
+      console.log('loop'+i);
       if (act_val){
         act_val = false;
         wait = false;
@@ -185,7 +186,6 @@ namespace ucaBot {
         break;
       }
       i+=1;
-      console.log('loop'+i);
       basic.pause(50);
     }
     delay();
