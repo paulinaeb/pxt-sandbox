@@ -17,7 +17,6 @@ namespace ucaBot {
   let act_val= false;
   let tt= 0;
   let called= false;
-  let r_angle= 0;
   let wait= false;
   let repeat= false;
   let calls= '';
@@ -269,7 +268,6 @@ namespace ucaBot {
       if (tt_p > 360)
         tt_p = tt_p - 360;
     }
-    r_angle = tt_p;
     let p_aux = p;
     while (p > 4 && p <= p_aux){
       d = pid(p, 10, 180, 18, 19);
@@ -277,8 +275,8 @@ namespace ucaBot {
         motors(d, -d-9);
       else
         motors(-d-9, d);
-      basic.pause(60);
-      send('0', 'GP', null, 1);
+      basic.pause(100);
+      send('0', 'GP', null, 0);
       p_aux = p;
       p =  Math.abs(tt_p - tt); 
       if (p > 180)
@@ -372,8 +370,9 @@ namespace ucaBot {
       else 
         rotate(angle, 1); 
     }
-    else
-      r_angle = tt;
+    send('0', 'GP', null, -1);
+    d = cm(px, x, py, y);
+    let r_angle = tt;
     while (d > (4 + space) && d <= aux){
       send('0', 'GP', null, 4);
       aux = d;
