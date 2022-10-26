@@ -184,6 +184,7 @@ namespace ucaBot {
         break;
       }
       i+=1;
+      console.log('loop'+i);
       basic.pause(50);
     }
     delay();
