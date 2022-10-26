@@ -274,9 +274,9 @@ namespace ucaBot {
     while (p > 4 && p <= p_aux){
       d = pid(p, 10, 180, 18, 20);
       if (!dir)
-        motors(d, -d-9);
+        motors(d, -d-8);
       else
-        motors(-d-9, d);
+        motors(-d-8, d);
       basic.pause(60);
       send('0', 'GP', null, 1);
       p_aux = p;
