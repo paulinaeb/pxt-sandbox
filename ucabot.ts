@@ -181,7 +181,7 @@ namespace ucaBot {
           break;
         }
       }
-      if (i == 100){
+      if (i == 60){
         send('0', 'SS', null, -1);
         send(d, c, p, stop);
         break;
@@ -272,11 +272,11 @@ namespace ucaBot {
     r_angle = tt_p;
     let p_aux = p;
     while (p > 4 && p <= p_aux){
-      d = pid(p, 10, 180, 18, 20);
+      d = pid(p, 10, 180, 18, 19);
       if (!dir)
-        motors(d, -d-8);
+        motors(d, -d-9);
       else
-        motors(-d-8, d);
+        motors(-d-9, d);
       basic.pause(60);
       send('0', 'GP', null, 1);
       p_aux = p;
@@ -303,7 +303,7 @@ namespace ucaBot {
     while (cm > 0 && cm <= aux){
       xv = x; 
       yv = y;
-      v = pid(cm, 5, 100, 20, 25);
+      v = pid(cm, 5, 100, 18, 25);
       motors(v, v);  
       basic.pause(150);
       send('0', 'GP', null, 4);
@@ -388,7 +388,7 @@ namespace ucaBot {
           motors(v - vc, v + vc);
         basic.pause(50);
       }
-      v = pid(d, 5, 100, 23, 28);
+      v = pid(d, 5, 100, 15, 22);
       motors(v, v);  
       d = cm(px, x, py, y);
       basic.pause(200);
@@ -418,13 +418,12 @@ namespace ucaBot {
   //% block="Detect objects"
   //% weight=167 
   export function detect(){
-    search = true;
-    basic.pause(30);
     send('0', 'SC', null, -1);
+    search = true;
     while (true){
       if (found){
         send('0', 'FS', null, -1);
-        basic.pause(60);
+        search = false;
         break
       }
       delay(); 
@@ -439,7 +438,7 @@ namespace ucaBot {
     control.onEvent(103, 3505, handler);
     control.inBackground(() => {
       while (true) { 
-        if (found){
+        if (found && !search){
           found = false;
           control.raiseEvent(103, 3505, EventCreationMode.CreateAndFire); 
         }
@@ -457,7 +456,7 @@ namespace ucaBot {
     stopcar();
     send('0', 'BU', null, -1);
     delay();
-    if (x_o && search){
+    if (x_o){
       if (type == 'SO'){
         toPoint(x_o, y_o, r_o);
         send('0', 'SO', id_ob, -1);
@@ -468,7 +467,6 @@ namespace ucaBot {
           askHelp();
         }
       }
-      search = false;
     }
     busy = false;
   }
