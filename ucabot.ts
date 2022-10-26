@@ -52,7 +52,7 @@ namespace ucaBot {
   /**
    * TODO: Init agent with an ID on Sandbox.
    */
-  //% block="Init agent on Sandbox"
+  //% block="Init agent on Sandbox 1"
   //% weight=200
   export function initAgent(): void {
     radio.setGroup(23);
@@ -230,7 +230,7 @@ namespace ucaBot {
   //% block="My position %pos (cm)"
   //% weight=190
   export function myPos(pos: Pos): number { 
-    send('0', 'GP', null, -1)
+    send('0', 'GP', null, -1);
     if(!pos)
       return x;
     else
@@ -242,7 +242,7 @@ namespace ucaBot {
   //% block="My direction"
   //% weight=185
   export function myDir(): number { 
-    send('0', 'GP', null, -1)
+    send('0', 'GP', null, -1);
     return tt;
   }
   /**
@@ -254,7 +254,7 @@ namespace ucaBot {
   //% p.min = 5 p.max = 180
   //% weight=180 
   export function rotate(p: number, dir: Dir) { 
-    send('0', 'GP', null, -1)
+    send('0', 'GP', null, -1);
     let tt_p = 0;
     let d = 0;
     if (!dir){
@@ -276,7 +276,7 @@ namespace ucaBot {
       else
         motors(-d-9, d);
       basic.pause(60);
-      send('0', 'GP', null, 1)
+      send('0', 'GP', null, 1);
       p_aux = p;
       p =  Math.abs(tt_p - tt); 
       if (p > 180)
@@ -293,7 +293,7 @@ namespace ucaBot {
   //% cm.min = 1 cm.max = 90
   //% weight=175 
   export function move(cm: number): void { 
-    send('0', 'GP', null, -1)
+    send('0', 'GP', null, -1);
     let aux = cm;  let v = 0;
     let xv = 0;    let yv = 0;
     let tt_o = tt; 
@@ -304,7 +304,7 @@ namespace ucaBot {
       v = pid(cm, 5, 100, 20, 25);
       motors(v, v);  
       basic.pause(200);
-      send('0', 'GP', null, 4)
+      send('0', 'GP', null, 4);
       cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
       d_tt = tt_o - tt;
       if (Math.abs(d_tt) > 300)
@@ -355,7 +355,7 @@ namespace ucaBot {
   //% y.min = 5 y.max = 57
   //% weight=170 
   export function toPoint(px: number, py: number, space = 0) {
-    send('0', 'GP', null, -1)
+    send('0', 'GP', null, -1);
     let d = cm(px, x, py, y);
     let d_tt = 0;
     let v = 0;
@@ -373,7 +373,7 @@ namespace ucaBot {
     else
       r_angle = tt;
     while (d > (4 + space) && d <= aux){
-      send('0', 'GP', null, 4)
+      send('0', 'GP', null, 4);
       aux = d;
       d_tt = r_angle - tt;
       if (Math.abs(d_tt) > 300)
@@ -576,7 +576,7 @@ namespace ucaBot {
   //% block="Go to the leader"
   export function goToLeader() {
     if (calls != ''){
-      send('0', 'GP', calls, -1)
+      send('0', 'GP', calls, -1);
       toPoint(x, y, 20);
       send('0', 'AR', calls, -1);
     }
@@ -621,9 +621,9 @@ namespace ucaBot {
   //% block="Follow leader"
   export function followLeader() {
     if (id2fw != ''){
-      send('0', 'GP', id2fw, -1)
+      send('0', 'GP', id2fw, -1);
       let af = tt;
-      send('0', 'GP', null, -1)
+      send('0', 'GP', null, -1);
       let aa = tt;
       let angle = Math.abs(af - aa);
       if (af > aa){
