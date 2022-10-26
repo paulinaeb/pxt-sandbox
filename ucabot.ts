@@ -161,7 +161,7 @@ namespace ucaBot {
     console.log('act val '+ act_val);
     wait = true;
     let i = 0;
-    while (!act_val){
+    while (true){
       console.log('loop'+i);
       console.log('act val in loop'+ act_val);
       if (act_val){
