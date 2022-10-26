@@ -180,6 +180,7 @@ namespace ucaBot {
       i+=1;
       basic.pause(50);
     }
+    delay();
   }
   
   function pid(p: number, min_prev: number, max_prev: number, min_new: number, max_new: number): number{
