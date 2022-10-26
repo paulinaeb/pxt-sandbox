@@ -305,7 +305,7 @@ namespace ucaBot {
       yv = y;
       v = pid(cm, 5, 100, 20, 25);
       motors(v, v);  
-      basic.pause(200);
+      basic.pause(150);
       send('0', 'GP', null, 4);
       cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
       d_tt = tt_o - tt;
@@ -381,17 +381,17 @@ namespace ucaBot {
       if (Math.abs(d_tt) > 300)
         d_tt = 360 + d_tt;
       if (d_tt != 0 && Math.abs(d_tt) > 1){
-        vc = pid(Math.abs(d_tt), 2, 30, 6, 15);
+        vc = pid(Math.abs(d_tt), 2, 30, 4, 8);
         if (d_tt < 0)
           motors(v + vc, v - vc);
         else
           motors(v - vc, v + vc);
         basic.pause(50);
       }
-      v = pid(d, 5, 100, 15, 20);
+      v = pid(d, 5, 100, 23, 28);
       motors(v, v);  
       d = cm(px, x, py, y);
-      basic.pause(250);
+      basic.pause(200);
     }
     stopcar();
     return;
