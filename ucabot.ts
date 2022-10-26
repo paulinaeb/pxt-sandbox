@@ -274,7 +274,7 @@ namespace ucaBot {
         motors(d, -d-9);
       else
         motors(-d-9, d);
-      basic.pause(100);
+      basic.pause(60);
       send('0', 'GP', null, 1)
       p_aux = p;
       p =  Math.abs(tt_p - tt); 
@@ -300,9 +300,9 @@ namespace ucaBot {
     while (cm > 0 && cm <= aux){
       xv = x; 
       yv = y;
-      v = pid(cm, 5, 100, 15, 22);
+      v = pid(cm, 5, 100, 20, 25);
       motors(v, v);  
-      basic.pause(250);
+      basic.pause(200);
       send('0', 'GP', null, 4)
       cm = cm - Math.sqrt((x - xv) ** 2 + (y - yv) ** 2);
       d_tt = tt_o - tt;
