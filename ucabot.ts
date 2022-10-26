@@ -156,15 +156,17 @@ namespace ucaBot {
     if (p)
       resp = resp + p + '/0';
     console.log('sent '+resp);
-    delay();
     radio.sendString(resp);
-    console.log('act val'+ act_val);
+    delay();
+    console.log('act val '+ act_val);
     wait = true;
     let i = 0;
     while (!act_val){
       console.log('loop'+i);
+      console.log('act val in loop'+ act_val);
       if (act_val){
         act_val = false;
+        console.log('act val set to'+ act_val);
         wait = false;
         break;
       }
