@@ -52,7 +52,7 @@ namespace ucaBot {
   /**
    * TODO: Init agent with an ID on Sandbox.
    */
-  //% block="Init agent on Sandbox"
+  //% block="Init agent on Sandbox 2"
   //% weight=200
   export function initAgent(): void {
     radio.setGroup(23);
@@ -176,7 +176,13 @@ namespace ucaBot {
           send(d, c, p, stop);
           break;
         }
-      } 
+      }
+      if (i == 100){
+        send('0', 'SS', null, -1);
+        delay();
+        send(d, c, p, stop);
+        break;
+      }
       i+=1;
       basic.pause(50);
     }
