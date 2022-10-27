@@ -481,14 +481,11 @@ namespace ucaBot {
   //% block="Detect objects"
   //% weight=167 
   export function detect(){
-    send('0', 'SC', null, -1);
     search = true;
+    send('0', 'SC', null, -1);
     while (true){
-      if (found){
-        send('0', 'FS', null, -1);
-        search = false;
+      if (found)
         break;
-      }
       delay(); 
     }
   }
@@ -501,8 +498,10 @@ namespace ucaBot {
     control.onEvent(103, 3505, hd);
     control.inBackground(() => {
       while (true) { 
-        if (found && !search){
+        if (found){
+          search = false;
           found = false;
+          send('0', 'FS', null, -1);
           control.raiseEvent(103, 3505, EventCreationMode.CreateAndFire); 
         }
         delay(); 
@@ -520,7 +519,7 @@ namespace ucaBot {
         toPoint(x_o, y_o, r_o);
     if (type == 'SO')
       ar2so = true;
-    if (type == 'BO')
+    else if (type == 'BO')
       ar2bo = true;
     notBusy();
   }
