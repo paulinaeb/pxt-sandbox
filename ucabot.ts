@@ -486,7 +486,6 @@ namespace ucaBot {
     while (true){
       if (found){
         search = false;
-        send('0', 'FS', null, 0);
         break;
       }
       delay(); 
@@ -495,7 +494,7 @@ namespace ucaBot {
   /**
   * Do something on object detected.
   */ 
-  //% block="On object detected"
+  //% block="On object detected 1"
   //% weight=166
   export function onDetect(hd: () => void){
     control.onEvent(103, 3505, hd);
@@ -503,6 +502,7 @@ namespace ucaBot {
       while (true) { 
         if (found){
           found = false;
+          send('0', 'FS', null, 0);
           control.raiseEvent(103, 3505, EventCreationMode.CreateAndFire); 
         }
         delay(); 
