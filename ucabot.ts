@@ -421,6 +421,7 @@ namespace ucaBot {
   //% weight=168 
   export function stopexp(){
     exp = false;
+    stopcar;
   }
   /**
   * Returns true or false
@@ -513,7 +514,6 @@ namespace ucaBot {
   //% weight=167 
   export function goToObj(){
     busy = true;
-    stopcar();
     send('0', 'BU', null, -1);
     if (x_o)
         toPoint(x_o, y_o, r_o);
