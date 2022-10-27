@@ -53,7 +53,7 @@ namespace ucaBot {
   /**
    * TODO: Init agent with ID on Sandbox.
    */
-  //% block="Init agent on Sandbox"
+  //% block="Init agent"
   //% weight=200
   export function initAgent(): void {
     radio.setGroup(23);
