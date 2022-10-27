@@ -189,7 +189,7 @@ namespace ucaBot {
           break;
         }
       }
-      if (i == 60){
+      if (i == 60 && c != 'SS'){
         send('0', 'SS', null, -1);
         send(d, c, p, stop);
         break;
