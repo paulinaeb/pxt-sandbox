@@ -36,6 +36,8 @@ namespace ucaBot {
   let busy= false;
   let r_angle= 0;
   let exp = false;
+  let ar2so = false;
+  let ar2bo = false;
   
   export enum Pos {
     //% block="x"
@@ -513,12 +515,14 @@ namespace ucaBot {
   //% block="Go to object"
   //% weight=167 
   export function goToObj(){
-    busy = true;
-    send('0', 'BU', null, -1);
+    setBusy();
     if (x_o)
         toPoint(x_o, y_o, r_o);
-    busy = false;
-    send('0', 'NB', null, -1);
+    notBusy();
+    if (type == 'SO')
+      ar2so = true;
+    else if (type == 'BO')
+      ar2bo = true;
   }
   /**
   * Do something on arrived to small object
@@ -526,7 +530,16 @@ namespace ucaBot {
   //% block="On arrived to small object"
   //% weight=167 
   export function onSO(hd: () => void){
-    
+    control.onEvent(104, 3506, hd);
+    control.inBackground(() => {
+      while (true) { 
+        if (ar2so){
+          ar2so = false;
+          control.raiseEvent(104, 3506, EventCreationMode.CreateAndFire); 
+        }
+        delay(); 
+      }
+    });
   }
   /**
   * Do something on arrived to big object
@@ -534,7 +547,16 @@ namespace ucaBot {
   //% block="On arrived to big object"
   //% weight=167 
   export function onBO(hd: () => void){
-    
+    control.onEvent(105, 3507, hd);
+    control.inBackground(() => {
+      while (true) { 
+        if (ar2bo){
+          ar2bo = false;
+          control.raiseEvent(105, 3507, EventCreationMode.CreateAndFire); 
+        }
+        delay(); 
+      }
+    });
   }
   /**
   * Do something on collision received
@@ -546,9 +568,9 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (cl){
+          cl = false;
           send('0', 'CL', null, -1);
           control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
-          cl = false;
         }
         delay(); 
       }
@@ -568,9 +590,9 @@ namespace ucaBot {
     let dir = Math.floor(Math.random() * 2);
     let a = Math.floor(Math.random() * 110) + 90;
     rotate(a, dir);
-    send('0', 'FC', null, -1);
     move(1);
     al = false;
+    send('0', 'FC', null, -1);
     return
   }
   /**
@@ -795,5 +817,14 @@ namespace ucaBot {
 
   function delay(){
     basic.pause(20);
+  }
+
+  function setBusy(){
+    busy = true;
+    send('0', 'BU', null, -1);
+  }
+  function notBusy(){
+    busy = true;
+    send('0', 'NB', null, -1);
   }
 }
