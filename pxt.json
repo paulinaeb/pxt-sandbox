@@ -1,6 +1,6 @@
 {
     "name": "ucabot",
-    "version": "6.7.54",
+    "version": "6.7.55",
     "description": "Ucabot based on cuteBot, for micro:bit",
     "license": "MIT",
     "dependencies": {
