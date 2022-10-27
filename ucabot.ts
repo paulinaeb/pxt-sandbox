@@ -518,11 +518,11 @@ namespace ucaBot {
     setBusy();
     if (x_o)
         toPoint(x_o, y_o, r_o);
-    notBusy();
     if (type == 'SO')
       ar2so = true;
     else if (type == 'BO')
       ar2bo = true;
+    notBusy();
   }
   /**
   * Do something on arrived to small object
@@ -533,7 +533,7 @@ namespace ucaBot {
     control.onEvent(104, 3506, hd);
     control.inBackground(() => {
       while (true) { 
-        if (ar2so){
+        if (ar2so && !busy){
           ar2so = false;
           control.raiseEvent(104, 3506, EventCreationMode.CreateAndFire); 
         }
@@ -550,7 +550,7 @@ namespace ucaBot {
     control.onEvent(105, 3507, hd);
     control.inBackground(() => {
       while (true) { 
-        if (ar2bo){
+        if (ar2bo && !busy){
           ar2bo = false;
           control.raiseEvent(105, 3507, EventCreationMode.CreateAndFire); 
         }
@@ -820,11 +820,11 @@ namespace ucaBot {
   }
 
   function setBusy(){
-    busy = true;
     send('0', 'BU', null, -1);
+    busy = true;
   }
   function notBusy(){
-    busy = true;
     send('0', 'NB', null, -1);
+    busy = false;
   }
 }
