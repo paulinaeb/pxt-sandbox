@@ -453,6 +453,7 @@ namespace ucaBot {
   //% block="Take object"
   //% weight=168 
   export function takeObj(){
+    send('0', 'SO', id_ob, -1);
   }
   /**
   * Take object by various agents.
@@ -460,6 +461,7 @@ namespace ucaBot {
   //% block="Take object between various"
   //% weight=168 
   export function takeObj2(){
+    send('0', 'BO', id_ob, -1);
   }
   /**
   * Go home.
@@ -467,6 +469,8 @@ namespace ucaBot {
   //% block="Go home"
   //% weight=168 
   export function goHome(){
+    if (home.length)
+      toPoint(home[0], home[1], home[2]);
   }  
   /**
   * On arrived home
@@ -503,7 +507,7 @@ namespace ucaBot {
           stopcar();
           found = false;
           search = false;
-          send('0', 'FS', null, 0);
+          send('0', 'FS', null, -1);
           busy = false;
           control.raiseEvent(103, 3505, EventCreationMode.CreateAndFire); 
         }
@@ -519,7 +523,7 @@ namespace ucaBot {
   export function goToObj(){
     setBusy();
     if (x_o)
-        toPoint(x_o, y_o, r_o);
+      toPoint(x_o, y_o, r_o);
     if (type == 'SO')
       ar2so = true;
     else if (type == 'BO')
