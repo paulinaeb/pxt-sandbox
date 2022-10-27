@@ -51,9 +51,9 @@ namespace ucaBot {
     left,
   }
   /**
-   * TODO: Init agent with an ID on Sandbox.
+   * TODO: Init agent with ID on Sandbox.
    */
-  //% block="Init agent on Sandbox 1"
+  //% block="Init agent on Sandbox"
   //% weight=200
   export function initAgent(): void {
     radio.setGroup(23);
@@ -400,7 +400,7 @@ namespace ucaBot {
   /**
   * Agents can explore
   */ 
-  //% block="explore"
+  //% block="Explore"
   //% weight=168 
   export function explore(){
     exp = true;
@@ -415,11 +415,11 @@ namespace ucaBot {
     });
   }
   /**
-  * Stop exploreing
+  * Stop exploring
   */ 
-  //% block="Stop exploreing"
+  //% block="Stop exploring"
   //% weight=168 
-  export function stopexplore(){
+  export function stopexp(){
     exp = false;
   }
   /**
@@ -464,6 +464,13 @@ namespace ucaBot {
   //% block="Go home"
   //% weight=168 
   export function goHome(){
+  }  
+  /**
+  * On arrived home
+  */ 
+  //% block="On arrived home"
+  //% weight=168 
+  export function onArrHome(hd: () => void){
   }
   /**
   * Agents can detect objects and take them home
