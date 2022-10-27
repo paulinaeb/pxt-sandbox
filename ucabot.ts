@@ -131,6 +131,7 @@ namespace ucaBot {
             home.push(parseInt(p[0]));
             home.push(parseInt(p[1]));
             home.push(parseFloat(p[2]));
+            act_val = true;
           }
           else if ((c == 'BO' || c == 'SO') && search && !found && !busy){
             found = true;
@@ -465,7 +466,7 @@ namespace ucaBot {
   /**
   * Go home.
   */ 
-  //% block="Go home 1"
+  //% block="Go home"
   //% weight=168 
   export function goHome(){
     if (!home.length)
@@ -496,7 +497,7 @@ namespace ucaBot {
   /**
   * Do something on object detected.
   */ 
-  //% block="On object detected 1"
+  //% block="On object detected"
   //% weight=166
   export function onDetect(hd: () => void){
     control.onEvent(103, 3505, hd);
@@ -830,7 +831,7 @@ namespace ucaBot {
     busy = true;
   }
   function notBusy(){
-    busy = false;
     send('0', 'NB', null, -1);
+    busy = false;
   }
 }
