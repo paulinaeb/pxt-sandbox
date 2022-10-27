@@ -520,7 +520,7 @@ namespace ucaBot {
         toPoint(x_o, y_o, r_o);
     if (type == 'SO')
       ar2so = true;
-    else if (type == 'BO')
+    if (type == 'BO')
       ar2bo = true;
     notBusy();
   }
