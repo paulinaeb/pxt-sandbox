@@ -35,6 +35,7 @@ namespace ucaBot {
   let id_ob= '';
   let busy= false;
   let r_angle= 0;
+  let exp = false;
   
   export enum Pos {
     //% block="x"
@@ -104,7 +105,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act_val = true;
           }
-          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'SS')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'SS' || c == 'NB')
             act_val = true;
           else if (c == 'CA'){
             if (p.length > 0){
@@ -397,20 +398,72 @@ namespace ucaBot {
     return;
   }
   /**
-  * Agents can wander sandbox
+  * Agents can explore
   */ 
-  //% block="Wander Sandbox"
+  //% block="explore"
   //% weight=168 
-  export function wander(){
+  export function explore(){
+    exp = true;
     control.inBackground(() => {
       while (true){
-        if (!cl && !al && !ir() && !busy)
+        if (!cl && !al && !ir() && !busy && explore)
           motors(15, 15)
         if (ir())
           stopcar();
         basic.pause(25);
       }
     });
+  }
+  /**
+  * Stop exploreing
+  */ 
+  //% block="Stop exploreing"
+  //% weight=168 
+  export function stopexplore(){
+    exp = false;
+  }
+  /**
+  * Returns true or false
+  */ 
+  //% block="Exploring"
+  //% weight=168 
+  export function exploring(): boolean{
+    return exp;
+  }
+  /**
+  * To north.
+  */ 
+  //% block="Direction to north"
+  //% weight=168 
+  export function toNorth(){
+  }
+  /**
+  * To south.
+  */ 
+  //% block="Direction to south"
+  //% weight=168 
+  export function toSouth(){
+  }
+  /**
+  * Take object.
+  */ 
+  //% block="Take object"
+  //% weight=168 
+  export function takeObj(){
+  }
+  /**
+  * Take object by various agents.
+  */ 
+  //% block="Take object between various"
+  //% weight=168 
+  export function takeObj2(){
+  }
+  /**
+  * Go home.
+  */ 
+  //% block="Go home"
+  //% weight=168 
+  export function goHome(){
   }
   /**
   * Agents can detect objects and take them home
@@ -424,7 +477,7 @@ namespace ucaBot {
       if (found){
         send('0', 'FS', null, -1);
         search = false;
-        break
+        break;
       }
       delay(); 
     }
@@ -434,8 +487,8 @@ namespace ucaBot {
   */ 
   //% block="On object detected"
   //% weight=166
-  export function onDetect(handler: () => void){
-    control.onEvent(103, 3505, handler);
+  export function onDetect(hd: () => void){
+    control.onEvent(103, 3505, hd);
     control.inBackground(() => {
       while (true) { 
         if (found && !search){
@@ -447,36 +500,42 @@ namespace ucaBot {
     });
   }
   /**
-  * Agents can go to objects and take them home
+  * Agents can go to objects
   */ 
   //% block="Go to object"
   //% weight=167 
-  export function goForObj(){
+  export function goToObj(){
     busy = true;
     stopcar();
     send('0', 'BU', null, -1);
-    delay();
-    if (x_o){
-      if (type == 'SO'){
+    if (x_o)
         toPoint(x_o, y_o, r_o);
-        send('0', 'SO', id_ob, -1);
-      }
-      else{
-        if (parseInt(n_agents) > 1){
-          toPoint(x_o, y_o, r_o);
-          askHelp();
-        }
-      }
-    }
     busy = false;
+    send('0', 'NB', null, -1);
+  }
+  /**
+  * Do something on arrived to small object
+  */ 
+  //% block="On arrived to small object"
+  //% weight=167 
+  export function onSO(hd: () => void){
+    
+  }
+  /**
+  * Do something on arrived to big object
+  */ 
+  //% block="On arrived to big object"
+  //% weight=167 
+  export function onBO(hd: () => void){
+    
   }
   /**
   * Do something on collision received
   */ 
   //% block="On collision received"
   //% weight=167 
-  export function onCollision(handler: () => void){
-    control.onEvent(102, 3504, handler);
+  export function onCollision(hd: () => void){
+    control.onEvent(102, 3504, hd);
     control.inBackground(() => {
       while (true) { 
         if (cl){
@@ -521,8 +580,8 @@ namespace ucaBot {
  */
   //% weight=165 
   //% block="On all agents initialized"
-  export function Init_callback(handler: () => void) {
-    control.onEvent(99, 3501, handler);
+  export function Init_callback(hd: () => void) {
+    control.onEvent(99, 3501, hd);
     control.inBackground(() => {
       while (true) { 
         if (n_agents != '0')
@@ -533,11 +592,10 @@ namespace ucaBot {
     return;
   }
 /**
- * TODO: An agent can aks for other agent's help when needed
+ * TODO: An agent can ask for other's help when needed
  */
   //% weight=145 
-  //% block="Ask for help "
-  //% id.min = 1 id.max = 3
+  //% block="Ask for help"
   export function askHelp() {
     if (parseInt(n_agents) > 1){
       send('0', 'CA', 'F', -1);
@@ -552,12 +610,20 @@ namespace ucaBot {
     return;
   }
   /**
- * TODO: On an agent calling me
+ * TODO: Notify wait
+ */
+  //% weight=145 
+  //% block="Notify wait"
+  export function notify() {
+
+  }
+  /**
+ * TODO: On help call received
  */
   //% weight=140 
-  //% block="On an agent calling me"
-  export function calledByAgent(handler: () => void) {
-    control.onEvent(100, 3502, handler);
+  //% block="On help call received"
+  export function calledByAgent(hd: () => void) {
+    control.onEvent(100, 3502, hd);
     control.inBackground(() => {
       while (true) { 
         if (called){
@@ -570,11 +636,11 @@ namespace ucaBot {
     return;
   }
 /**
- * TODO: Go where the leader is
+ * TODO: Go to help
  */
   //% weight=135 
-  //% block="Go to the leader"
-  export function goToLeader() {
+  //% block="Go to help"
+  export function goToHelp() {
     if (calls != ''){
       send('0', 'GP', calls, -1);
       toPoint(x, y, 20);
@@ -582,13 +648,29 @@ namespace ucaBot {
     }
     return;
   }
+/**
+ * TODO: On help arrived
+ */
+  //% weight=135 
+  //% block="On help arrived"
+  export function helpArr(hd: () => void) {
+
+  }
+  /**
+ * TODO: On arrived to help
+ */
+  //% weight=135 
+  //% block="On arrived to help"
+  export function arr2help(hd: () => void) {
+
+  }
   /**
  * TODO: On 'follow me' received, previously called.
  */
   //% weight=140 
   //% block="On 'follow me' received"
-  export function askedToFollow(handler: () => void) {
-    control.onEvent(101, 3503, handler);
+  export function askedToFollow(hd: () => void) {
+    control.onEvent(101, 3503, hd);
     control.inBackground(() => {
       while (true) { 
         if (fw_req){
@@ -606,10 +688,8 @@ namespace ucaBot {
   //% weight=130 
   //% block="Follow me"
   export function followMe() {
-    if (arrived != ''){
+    if (arrived != '')
       send('0', 'FM', arrived, -1);
-      basic.pause(5000);
-    }
     else
       basic.showString('Ask for help first');
     return;
@@ -646,6 +726,15 @@ namespace ucaBot {
     else
       basic.showString('Not asked to follow yet');
     return;
+  }
+
+  /**
+ * TODO: Drop load
+ */
+  //% weight=130 
+  //% block="Drop load"
+  export function drop() {
+    
   }
 
   function motors(lspeed: number, rspeed: number) {
