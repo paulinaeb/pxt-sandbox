@@ -409,7 +409,7 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true){
         if (!cl && !al && !ir() && !busy && explore)
-          motors(15, 15)
+          motors(16, 16)
         if (ir())
           stopcar();
         basic.pause(25);
