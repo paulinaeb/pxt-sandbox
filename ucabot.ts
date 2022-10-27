@@ -131,7 +131,6 @@ namespace ucaBot {
             home.push(parseInt(p[0]));
             home.push(parseInt(p[1]));
             home.push(parseFloat(p[2]));
-            send('0', 'HO', null, -1);
           }
           else if ((c == 'BO' || c == 'SO') && search && !found && !busy){
             found = true;
@@ -466,11 +465,12 @@ namespace ucaBot {
   /**
   * Go home.
   */ 
-  //% block="Go home"
+  //% block="Go home 1"
   //% weight=168 
   export function goHome(){
-    if (home.length)
-      toPoint(home[0], home[1], home[2]);
+    if (!home.length)
+      send('0', 'HO', null, -1);
+    toPoint(home[0], home[1], home[2]);
   }  
   /**
   * On arrived home
