@@ -407,13 +407,14 @@ namespace ucaBot {
   export function explore(){
     exp = true;
     control.inBackground(() => {
-      while (true){
-        if (!cl && !al && !ir() && !busy && explore)
+      while (exp){
+        if (!cl && !al && !ir() && !busy)
           motors(16, 16)
         if (ir())
           stopcar();
         basic.pause(25);
       }
+      stopcar();
     });
   }
   /**
@@ -824,7 +825,7 @@ namespace ucaBot {
     busy = true;
   }
   function notBusy(){
-    send('0', 'NB', null, -1);
     busy = false;
+    send('0', 'NB', null, -1);
   }
 }
