@@ -37,6 +37,7 @@ namespace ucaBot {
   let r_angle= 0;
   let exp = false;
   let ar2so = false;
+  let nh = false;
   let ar2bo = false;
   
   export enum Pos {
@@ -128,9 +129,13 @@ namespace ucaBot {
           else if (c == 'CL' && !al)
             cl = true;
           else if (c == 'HO' && !home.length){
-            home.push(parseInt(p[0]));
-            home.push(parseInt(p[1]));
-            home.push(parseFloat(p[2]));
+            if (p[0] == 'NF')
+              nh = true;
+            else{
+              home.push(parseInt(p[0]));
+              home.push(parseInt(p[1]));
+              home.push(parseFloat(p[2]));
+            }
             act_val = true;
           }
           else if ((c == 'BO' || c == 'SO') && search && !found && !busy){
@@ -471,6 +476,8 @@ namespace ucaBot {
   export function goHome(){
     if (!home.length)
       send('0', 'HO', null, -1);
+    if (nh)
+      return;
     toPoint(home[0], home[1], home[2]);
   }  
   /**
