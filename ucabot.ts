@@ -484,8 +484,11 @@ namespace ucaBot {
     search = true;
     send('0', 'SC', null, -1);
     while (true){
-      if (found)
+      if (found){
+        search = false;
+        send('0', 'FS', null, 0);
         break;
+      }
       delay(); 
     }
   }
@@ -499,9 +502,7 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (found){
-          search = false;
           found = false;
-          send('0', 'FS', null, -1);
           control.raiseEvent(103, 3505, EventCreationMode.CreateAndFire); 
         }
         delay(); 
