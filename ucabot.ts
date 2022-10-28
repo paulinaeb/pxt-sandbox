@@ -183,12 +183,9 @@ namespace ucaBot {
           break;
         }
         if (i == 29){
-          console.log('i '+i+' c'+c);
           radio.sendString(id+'0SS');
-          delay();
-          console.log('ready');
+          basic.pause(30);
           send(d, c, p, stop);
-          console.log('repeated');
           break;
         }
       }
@@ -408,6 +405,7 @@ namespace ucaBot {
   //% weight=168 
   export function explore(){
     exp = true;
+    console.log(cl.toString()+al.toString()+busy.toString()+ir());
     control.inBackground(() => {
       while (exp){
         if (!cl && !al && !ir() && !busy)
