@@ -166,15 +166,14 @@ namespace ucaBot {
     console.log('sent '+resp);
     radio.sendString(resp);
     delay();
-    console.log('act val '+ act_val);
     wait = true;
     let i = 0;
     while (true){
-      console.log('loop'+i);
-      console.log('act val in loop'+ act_val);
+      console.log('loop '+i);
+      console.log('act val in loop '+ act_val);
       if (act_val){
         act_val = false;
-        console.log('act val set to'+ act_val);
+        console.log('act val set to '+ act_val);
         wait = false;
         break;
       }
@@ -189,9 +188,11 @@ namespace ucaBot {
           break;
         }
       }
-      if (i == 70){
+      if (i == 60){
         send('0', 'SS', null, -1);
+        console.log('ss sent to msg '+c);
         send(d, c, p, stop);
+        console.log('breaking loop');
         break;
       }
       i+=1;
