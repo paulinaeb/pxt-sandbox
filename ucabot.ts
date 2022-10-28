@@ -109,8 +109,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act_val = true;
           }
-          // else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'NM' || c == 'NB' || c == 'DL')
-          else if (c == 'ACK')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL')
             act_val = true;
           else if (c == 'CA'){
             if (p.length > 0){
@@ -402,7 +401,7 @@ namespace ucaBot {
   /**
   * Agents can explore
   */ 
-  //% block="Explore"
+  //% block="Explore sand"
   //% weight=168 
   export function explore(){
     exp = true;
