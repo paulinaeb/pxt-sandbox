@@ -151,10 +151,8 @@ namespace ucaBot {
       }
     });
     while (true) { 
-      if (n_agents != '0' && id != '0'){
-        basic.pause(50);
+      if (n_agents != '0' && id != '0')
         break; 
-      }
       delay(); 
     }
     return;
@@ -168,8 +166,7 @@ namespace ucaBot {
     radio.sendString(resp);
     delay();
     wait = true;
-    let i = 0;
-    while (true){
+    for (let i = 0; i < 30; i++){
       if (act_val){
         act_val = false;
         wait = false;
@@ -185,13 +182,11 @@ namespace ucaBot {
           send(d, c, p, stop);
           break;
         }
-        if (i == 30){
+        if (i == 29){
           send('0', 'SS', null, -1);
           send(d, c, p, stop);
-          break;
         }
       }
-      i+=1;
       basic.pause(50);
     }
     delay();
