@@ -405,7 +405,6 @@ namespace ucaBot {
   //% weight=168 
   export function explore(){
     exp = true;
-    console.log(cl.toString()+al.toString()+busy.toString()+ir());
     control.inBackground(() => {
       while (exp){
         if (!cl && !al && !ir() && !busy)
