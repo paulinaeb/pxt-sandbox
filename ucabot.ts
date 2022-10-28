@@ -39,7 +39,8 @@ namespace ucaBot {
   let ar2so = false;
   let nh = false;
   let ar2bo = false;
-  
+  let arr_home = false;
+
   export enum Pos {
     //% block="x"
     x,
@@ -108,7 +109,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act_val = true;
           }
-          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'SS' || c == 'NB')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'SS' || c == 'NB' || c == 'DL')
             act_val = true;
           else if (c == 'CA'){
             if (p.length > 0){
@@ -480,6 +481,7 @@ namespace ucaBot {
     if (nh)
       return;
     toPoint(home[0], home[1], home[2]);
+    arr_home = true;
   }  
   /**
   * On arrived home
@@ -487,6 +489,16 @@ namespace ucaBot {
   //% block="On arrived home"
   //% weight=168 
   export function onArrHome(hd: () => void){
+    control.onEvent(106, 3508, hd);
+    control.inBackground(() => {
+      while (true) { 
+        if (arr_home){
+          arr_home = false;
+          control.raiseEvent(106, 3508, EventCreationMode.CreateAndFire); 
+        }
+        delay(); 
+      }
+    });
   }
   /**
   * Agents can detect objects and take them home
@@ -778,7 +790,7 @@ namespace ucaBot {
   //% weight=130 
   //% block="Drop load"
   export function drop() {
-    
+    send('0', 'DL', null, -1);
   }
 
   function motors(lspeed: number, rspeed: number) {
