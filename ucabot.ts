@@ -170,11 +170,8 @@ namespace ucaBot {
     wait = true;
     let i = 0;
     while (true){
-      console.log('loop '+i);
-      console.log('in loop '+ act_val);
       if (act_val){
         act_val = false;
-        console.log('set to '+ act_val);
         wait = false;
         break;
       }
@@ -188,13 +185,11 @@ namespace ucaBot {
           send(d, c, p, stop);
           break;
         }
-      }
-      if (i == 25){
-        send('0', 'SS', null, -1);
-        console.log('ss sent to msg '+c);
-        send(d, c, p, stop);
-        console.log('breaking loop');
-        break;
+        if (i == 30){
+          send('0', 'SS', null, -1);
+          send(d, c, p, stop);
+          break;
+        }
       }
       i+=1;
       basic.pause(50);
