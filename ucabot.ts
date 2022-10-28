@@ -189,7 +189,7 @@ namespace ucaBot {
           break;
         }
       }
-      if (i == 60 && c != 'SS'){
+      if (i == 70){
         send('0', 'SS', null, -1);
         send(d, c, p, stop);
         break;
@@ -834,9 +834,10 @@ namespace ucaBot {
   }
 
   function setBusy(){
-    send('0', 'BU', null, -1);
     busy = true;
+    send('0', 'BU', null, -1);
   }
+
   function notBusy(){
     send('0', 'NB', null, -1);
     busy = false;
