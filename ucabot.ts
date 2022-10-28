@@ -183,8 +183,11 @@ namespace ucaBot {
           break;
         }
         if (i == 29){
+          console.log('i '+i+' c'+c);
           send('0', 'SS', null, -1);
+          console.log('ready');
           send(d, c, p, stop);
+          console.log('repeated');
         }
       }
       basic.pause(50);
