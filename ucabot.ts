@@ -109,7 +109,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act_val = true;
           }
-          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'SS' || c == 'NB' || c == 'DL')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL')
             act_val = true;
           else if (c == 'CA'){
             if (p.length > 0){
@@ -184,7 +184,8 @@ namespace ucaBot {
         }
         if (i == 29){
           console.log('i '+i+' c'+c);
-          send('0', 'SS', null, -1);
+          radio.sendString(id+'0SS');
+          delay();
           console.log('ready');
           send(d, c, p, stop);
           console.log('repeated');
