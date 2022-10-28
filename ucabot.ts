@@ -401,7 +401,7 @@ namespace ucaBot {
   /**
   * Agents can explore
   */ 
-  //% block="Explore"
+  //% block="Explore sand"
   //% weight=168 
   export function explore(){
     exp = true;
@@ -409,7 +409,7 @@ namespace ucaBot {
     control.inBackground(() => {
       while (exp){
         if (!cl && !al && !ir() && !busy)
-          motors(16, 16)
+          motors(16, 16);
         if (ir())
           stopcar();
         basic.pause(25);
