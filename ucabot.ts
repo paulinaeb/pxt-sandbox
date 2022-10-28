@@ -188,6 +188,7 @@ namespace ucaBot {
           console.log('ready');
           send(d, c, p, stop);
           console.log('repeated');
+          break;
         }
       }
       basic.pause(50);
