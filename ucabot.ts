@@ -10,11 +10,11 @@ namespace ucaBot {
   let p: string[]= null;
   let resp: string=null;
   let id = '0';
-  let n_agents = '0';
+  let n_a = '0';
   let name: string= null;
   let x= 0;
   let y= 0;
-  let act_val= false;
+  let act= false;
   let tt= 0;
   let called= false;
   let wait= false;
@@ -56,9 +56,9 @@ namespace ucaBot {
     left,
   }
   /**
-   * TODO: Init agent.
+   *  Init agent.
    */
-  //% block="Init agent 1"
+  //% block="Init agent"
   //% weight=200
   export function initAgent(){
     radio.setGroup(23);
@@ -73,24 +73,24 @@ namespace ucaBot {
           let str_p = msg.slice(4);
           let limit = (str_p.split("/").length-1); 
           if (limit){
-            let index = 0;
+            let j = 0;
             let aux = 0;
             for (let i = 0; i < limit; i++){ 
               if (!i){
-                index = str_p.indexOf('/');
-                p.push(str_p.slice(0, index));
+                j = str_p.indexOf('/');
+                p.push(str_p.slice(0, j));
               }
               else{
-                index = str_p.indexOf('/', index + 1);
-                p.push(str_p.slice(aux + 1, index));
+                j = str_p.indexOf('/', j + 1);
+                p.push(str_p.slice(aux + 1, j));
               } 
-              aux = index;
-              let flag = 0;
+              aux = j;
+              let f = 0;
               for (let char = 0; char < p[i].length; char++){  
                 if (!((p[i][char] >= '0' && p[i][char] <= '9') || p[i][char]=='.'))
-                  flag+=1; 
+                  f+=1; 
               }
-              if (flag)
+              if (f)
                 p[i] = p[i].replace('0',''); 
             }
           }
@@ -102,16 +102,16 @@ namespace ucaBot {
             basic.pause(1000);
             basic.clearScreen();
           }
-          else if (n_agents == '0' && c == 'AI')
-            n_agents = p[0];
+          else if (n_a == '0' && c == 'AI')
+            n_a = p[0];
           else if (c == 'GP'){
             x = parseFloat(p[0]);
             y = parseFloat(p[1]);
             tt = parseInt(p[2]);
-            act_val = true;
+            act = true;
           }
           else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL' || c == 'AC')
-            act_val = true;
+            act = true;
           else if (c == 'CA'){
             if (p.length){
               if (p[0] != id){
@@ -119,7 +119,7 @@ namespace ucaBot {
                 called = true;
               }
               else
-                act_val = true;
+                act = true;
             }
           }
           else if (c == 'NF' && wait)
@@ -142,7 +142,7 @@ namespace ucaBot {
               home.push(parseInt(p[1]));
               home.push(parseFloat(p[2]));
             }
-            act_val = true;
+            act = true;
           }
           else if ((c == 'BO' || c == 'SO') && search && !found && !busy){
             found = true;
@@ -156,7 +156,7 @@ namespace ucaBot {
       }
     });
     while (true) { 
-      if (n_agents != '0' && id != '0')
+      if (n_a != '0' && id != '0')
         break; 
       delay(); 
     }
@@ -170,8 +170,8 @@ namespace ucaBot {
     delay();
     wait = true;
     for (let i = 0; i < 25; i++){
-      if (act_val){
-        act_val = false;
+      if (act){
+        act = false;
         wait = false;
         break;
       }
@@ -254,7 +254,7 @@ namespace ucaBot {
     return tt;
   }
   /**
-  * TODO: Rotate agent at an angle between 5 and 180
+  *  Rotate agent at an angle between 5 and 180
   * @param p degrees to rotate, eg: 90
   */ 
   //% block="Rotate agent %p ° to %dir"
@@ -293,7 +293,7 @@ namespace ucaBot {
     stopcar();
   }
   /**
-  * TODO: Move in cm.
+  *  Move in cm.
   * @param cm cm to move, eg: 30 
   */ 
   //% block="Move forward %cm cm"
@@ -328,16 +328,13 @@ namespace ucaBot {
     stopcar();
   }
   function cm(x1: number, x2: number, y1: number, y2: number): number{
-    let d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-    return Math.round(d);
+    return Math.round(Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2));
   }
   function d2r(angle: number): number{
-    let radians = angle / 180 * Math.PI;
-    return radians;
+    return angle / 180 * Math.PI;
   }
   function r2d(angle: number): number{
-    let degrees = angle * 180 / Math.PI;
-    return degrees;
+    return angle * 180 / Math.PI;
   }
   function rt_angle(xa: number, xb: number, ya: number, yb: number, angle_a: number, d: number): number{
     let angle = -1 * d2r(angle_a);
@@ -619,11 +616,10 @@ namespace ucaBot {
   //% block="Number of agents on SandBox"
   //% weight=170 
   export function numberOfAgents(): number {
-    let num = parseInt(n_agents);
-    return num;
+    return parseInt(n_a);
   }
 /**
- * TODO: On all agents initialized on SandBox.
+ *  On all agents initialized on SandBox.
  */
   //% weight=165 
   //% block="On all agents initialized"
@@ -631,26 +627,26 @@ namespace ucaBot {
     control.onEvent(99, 3501, hd);
     control.inBackground(() => {
       while (true) { 
-        if (n_agents != '0')
+        if (n_a != '0')
           control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire); 
         delay(); 
       }
     });
   }
 /**
- * TODO: An agent can ask for other's help when needed
+ *  An agent can ask for other's help when needed
  */
   //% weight=145 
   //% block="Ask for help"
   export function askHelp() {
     setBusy();
-    if (parseInt(n_agents) > 1 && x_o)
+    if (parseInt(n_a) > 1 && x_o)
       send('0', 'CA', 'F', -1);
     else 
       basic.showString('Error');
   }
   /**
- * TODO: Notify wait
+ *  Notify wait
  */
   //% weight=145 
   //% block="Notify wait"
@@ -658,7 +654,7 @@ namespace ucaBot {
 
   }
   /**
- * TODO: On help call received
+ *  On help call received
  */
   //% weight=140 
   //% block="On help call received"
@@ -676,8 +672,8 @@ namespace ucaBot {
       }
     });
   }
-/**
- * TODO: Go to help
+  /**
+ *  Go to help
  */
   //% weight=135 
   //% block="Go to help"
@@ -685,13 +681,13 @@ namespace ucaBot {
     setBusy();
     if (calls != ''){
       send('0', 'GP', calls, -1);
-      toPoint(x, y, 10);
+      toPoint(x, y, 15);
       send('0', 'AR', calls, -1);
     }
     notBusy();
   }
 /**
- * TODO: On help arrived
+ *  On help arrived
  */
   //% weight=135 
   //% block="On help arrived"
@@ -709,7 +705,7 @@ namespace ucaBot {
     });
   }
   /**
- * TODO: On arrived to help
+ *  On arrived to help
  */
   //% weight=135 
   //% block="On arrived to help"
@@ -717,7 +713,7 @@ namespace ucaBot {
 
   }
   /**
- * TODO: On 'follow me' received, previously called.
+ *  On 'follow me' received, previously called.
  */
   //% weight=140 
   //% block="On 'follow me' received"
@@ -734,7 +730,7 @@ namespace ucaBot {
     });
   }
   /**
- * TODO: Indicates to an agent previously called to follow it.
+ *  Indicates to an agent previously called to follow it.
  */
   //% weight=130 
   //% block="Follow me"
@@ -745,11 +741,11 @@ namespace ucaBot {
     //   basic.showString('Ask for help first');
   }
   /**
- * TODO: Follow the leader who called it.
+ *  Follow the leader who called it.
  */
   //% weight=130 
   //% block="Follow leader"
-  export function followLeader() {
+  export function follow() {
     if (id2fw != ''){
       send('0', 'GP', id2fw, -1);
       let af = tt;
@@ -778,7 +774,7 @@ namespace ucaBot {
   }
 
   /**
- * TODO: Drop load
+ *  Drop load
  */
   //% weight=130 
   //% block="Drop load"
@@ -816,7 +812,7 @@ namespace ucaBot {
     }
   }
   /**
-   * TODO: stopcar
+   *  stopcar
    */
   //% block="Stop car now"
   //% weight=70
@@ -845,8 +841,8 @@ namespace ucaBot {
   }
 
   function notBusy(){
-    send('0', 'NB', null, -1);
     busy = false;
+    send('0', 'NB', null, -1);
   }
 
   function stopSearch(){
