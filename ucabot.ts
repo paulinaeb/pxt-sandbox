@@ -58,19 +58,19 @@ namespace ucaBot {
   /**
    * TODO: Init agent.
    */
-  //% block="Init agent on sb"
+  //% block="Init agent on sandbox"
   //% weight=200
   export function initAgent(){
     radio.setGroup(23);
-    radio.onReceivedString(function (receivedString) {
-      f = receivedString[0];
-      d = receivedString[1];
-      c = receivedString[2] + receivedString[3];
+    radio.onReceivedString(function (msg) {
+      f = msg[0];
+      d = msg[1];
+      c = msg[2] + msg[3];
       p = [];
       if (d == 'F' || d == id){
-        console.log(receivedString);  
-        if (receivedString.length > 4){
-          let str_p = receivedString.slice(4);
+        console.log(msg);  
+        if (msg.length > 4){
+          let str_p = msg.slice(4);
           let limit = (str_p.split("/").length-1); 
           if (limit){
             let index = 0;
