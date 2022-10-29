@@ -198,8 +198,7 @@ namespace ucaBot {
   }
   
   function pid(p: number, min_prev: number, max_prev: number, min_new: number, max_new: number): number{
-    let num = Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new); 
-    return num;
+    return Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new);
   }
   /**
   * Agents can set their name.
@@ -213,7 +212,7 @@ namespace ucaBot {
       delay();
   }
   /**
-  * Agents can know their name set.
+  * Agents can know their name.
   */ 
   //% block="My name"
   //% weight=196
@@ -812,9 +811,9 @@ namespace ucaBot {
     }
   }
   /**
-   *  stopcar
+   *  Stop car
    */
-  //% block="Stop car now"
+  //% block="Stop car"
   //% weight=70
   export function stopcar() {
     motors(0, 0);
