@@ -20,7 +20,8 @@ namespace ucaBot {
   let wait= false;
   let repeat= false;
   let calls= '';
-  let arrived= '';
+  let id_ar= '';
+  let arr = false;
   let id2fw= '';
   let fw_req= false;
   let cl= false;
@@ -109,10 +110,10 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act_val = true;
           }
-          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL' || c == 'AC')
             act_val = true;
           else if (c == 'CA'){
-            if (p.length > 0){
+            if (p.length){
               if (p[0] != id){
                 calls = p[0];
                 called = true;
@@ -121,8 +122,10 @@ namespace ucaBot {
           }
           else if (c == 'NF' && wait)
             repeat = true;
-          else if (c == 'AR')
-            arrived = p[0];
+          else if (c == 'AR'){
+            arr = true;
+            id_ar = p[0];
+          }
           else if (c == 'FM'){
             id2fw = p[0];
             fw_req = true;
@@ -628,7 +631,7 @@ namespace ucaBot {
  */
   //% weight=165 
   //% block="On all agents initialized"
-  export function Init_callback(hd: () => void) {
+  export function allInit(hd: () => void) {
     control.onEvent(99, 3501, hd);
     control.inBackground(() => {
       while (true) { 
@@ -645,17 +648,10 @@ namespace ucaBot {
   //% weight=145 
   //% block="Ask for help"
   export function askHelp() {
-    if (parseInt(n_agents) > 1){
+    if (parseInt(n_agents) > 1 && x_o)
       send('0', 'CA', 'F', -1);
-      while (true){
-        if (arrived != '')
-          break;
-        delay();
-      }
-    }
     else 
       basic.showString('Could not ask 4 help');
-    return;
   }
   /**
  * TODO: Notify wait
@@ -670,13 +666,13 @@ namespace ucaBot {
  */
   //% weight=140 
   //% block="On help call received"
-  export function calledByAgent(hd: () => void) {
+  export function agentCalled(hd: () => void) {
     control.onEvent(100, 3502, hd);
     control.inBackground(() => {
       while (true) { 
         if (called){
-          control.raiseEvent(100, 3502, EventCreationMode.CreateAndFire); 
           called = false;
+          control.raiseEvent(100, 3502, EventCreationMode.CreateAndFire); 
         }
         delay(); 
       }
@@ -702,7 +698,16 @@ namespace ucaBot {
   //% weight=135 
   //% block="On help arrived"
   export function helpArr(hd: () => void) {
-
+    control.onEvent(107, 3509, hd);
+    control.inBackground(() => {
+      while (true){
+        if (arr){
+          arr = false;
+          control.raiseEvent(107, 3509, EventCreationMode.CreateAndFire); 
+        }
+        delay();
+      }
+    });
   }
   /**
  * TODO: On arrived to help
@@ -722,8 +727,8 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (fw_req){
-          control.raiseEvent(101, 3503, EventCreationMode.CreateAndFire); 
           fw_req = false;
+          control.raiseEvent(101, 3503, EventCreationMode.CreateAndFire); 
         }
         delay(); 
       }
@@ -736,11 +741,10 @@ namespace ucaBot {
   //% weight=130 
   //% block="Follow me"
   export function followMe() {
-    if (arrived != '')
-      send('0', 'FM', arrived, -1);
-    else
-      basic.showString('Ask for help first');
-    return;
+    // if (arrived != '')
+    //   send('0', 'FM', arrived, -1);
+    // else
+    //   basic.showString('Ask for help first');
   }
   /**
  * TODO: Follow the leader who called it.
