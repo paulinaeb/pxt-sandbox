@@ -537,7 +537,6 @@ namespace ucaBot {
       ar2so = true;
     else if (type == 'BO')
       ar2bo = true;
-    notBusy();
   }
   /**
   * Do something on arrived to small object
@@ -548,8 +547,9 @@ namespace ucaBot {
     control.onEvent(104, 3506, hd);
     control.inBackground(() => {
       while (true) { 
-        if (ar2so && !busy){
+        if (ar2so){
           ar2so = false;
+          notBusy();
           control.raiseEvent(104, 3506, EventCreationMode.CreateAndFire); 
         }
         delay(); 
@@ -565,8 +565,9 @@ namespace ucaBot {
     control.onEvent(105, 3507, hd);
     control.inBackground(() => {
       while (true) { 
-        if (ar2bo && !busy){
+        if (ar2bo){
           ar2bo = false;
+          notBusy();
           control.raiseEvent(105, 3507, EventCreationMode.CreateAndFire); 
         }
         delay(); 
