@@ -58,7 +58,7 @@ namespace ucaBot {
   /**
    * TODO: Init agent.
    */
-  //% block="Init agent"
+  //% block="Init agent 1"
   //% weight=200
   export function initAgent(){
     radio.setGroup(23);
@@ -110,7 +110,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act_val = true;
           }
-          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL' || c == 'AC')
             act_val = true;
           else if (c == 'CA'){
             if (p.length){
