@@ -116,10 +116,6 @@ namespace ucaBot {
             if (p.length){
               if (p[0] != id){
                 calls = p[0];
-                if (search){
-                  stopSearch();
-                  act_val = true;
-                }
                 called = true;
               }
               else
@@ -173,7 +169,7 @@ namespace ucaBot {
     radio.sendString(resp);
     delay();
     wait = true;
-    for (let i = 0; i < 35; i++){
+    for (let i = 0; i < 25; i++){
       if (act_val){
         act_val = false;
         wait = false;
@@ -189,7 +185,7 @@ namespace ucaBot {
           send(d, c, p, stop);
           break;
         }
-        if (i == 34){
+        if (i == 24){
           radio.sendString(id+'0SS');
           basic.pause(30);
           send(d, c, p, stop);
@@ -206,7 +202,7 @@ namespace ucaBot {
     return num;
   }
   /**
-  * Agents can set their name when initialized on SandBox.
+  * Agents can set their name.
   */ 
   //% block="Set name %inName"
   //% weight=196
@@ -216,7 +212,7 @@ namespace ucaBot {
     delay();
   }
   /**
-  * Agents can know their name on SandBox.
+  * Agents can know their name set.
   */ 
   //% block="My name"
   //% weight=196
@@ -227,7 +223,7 @@ namespace ucaBot {
       return 'Name not set';
   }
   /**
-  * Agents can know their number on SandBox.
+  * ID assigned.
   */ 
   //% block="My number (ID)"
   //% weight=195
@@ -236,7 +232,7 @@ namespace ucaBot {
     return num;
   }
   /**
-  * Agents can know their position in cm on SandBox.
+  * Agents can know their position in cm.
   */ 
   //% block="My position %pos (cm)"
   //% weight=190
@@ -248,7 +244,7 @@ namespace ucaBot {
       return y;
   }
   /**
-  * Agents can know their direction in degrees on SandBox.
+  * Agents can know their direction in degrees.
   */ 
   //% block="My direction"
   //% weight=185
@@ -257,7 +253,7 @@ namespace ucaBot {
     return tt;
   }
   /**
-  * TODO: Rotate agent at an angle between 10 and 180
+  * TODO: Rotate agent at an angle between 5 and 180
   * @param p degrees to rotate, eg: 90
   */ 
   //% block="Rotate agent %p ° to %dir"
@@ -280,7 +276,7 @@ namespace ucaBot {
     }
     r_angle = tt_p;
     let p_aux = p;
-    while (p > 4 && p <= p_aux){
+    while (p > 6 && p <= p_aux){
       d = pid(p, 10, 180, 18, 19);
       if (!dir)
         motors(d, -d-9);
@@ -296,7 +292,7 @@ namespace ucaBot {
     stopcar();
   }
   /**
-  * TODO: Move in centimeters.
+  * TODO: Move in cm.
   * @param cm cm to move, eg: 30 
   */ 
   //% block="Move forward %cm cm"
@@ -403,9 +399,9 @@ namespace ucaBot {
     stopcar();
   }
   /**
-  * Agents can explore
+  * Explore sand.
   */ 
-  //% block="Explore sand"
+  //% block="Explore"
   //% weight=168 
   export function explore(){
     exp = true;
@@ -671,6 +667,8 @@ namespace ucaBot {
       while (true) { 
         if (called){
           called = false;
+          if (search)
+            stopSearch();
           control.raiseEvent(100, 3502, EventCreationMode.CreateAndFire); 
         }
         delay(); 
