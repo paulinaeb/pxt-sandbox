@@ -3,7 +3,7 @@
  */
 //% weight=5 color=#ff9da5  icon="\uf207"
 namespace ucaBot {
-  const STM8_ADDRESSS = 0x10;
+  const ADDR = 0x10;
   let f: string= null;
   let d: string= null;
   let c: string= null;
@@ -58,7 +58,7 @@ namespace ucaBot {
   /**
    * TODO: Init agent.
    */
-  //% block="Init agent on sandbox"
+  //% block="Init agent"
   //% weight=200
   export function initAgent(){
     radio.setGroup(23);
@@ -787,26 +787,26 @@ namespace ucaBot {
       buf[1] = 0x02; 
       buf[2] = lspeed; 
       buf[3] = 0; 
-      pins.i2cWriteBuffer(STM8_ADDRESSS, buf); 
+      pins.i2cWriteBuffer(ADDR, buf); 
     } else {
       buf[0] = 0x01;
       buf[1] = 0x01;
       buf[2] = lspeed * -1;
       buf[3] = 0;
-      pins.i2cWriteBuffer(STM8_ADDRESSS, buf); 
+      pins.i2cWriteBuffer(ADDR, buf); 
     }
     if (rspeed > 0) {
       buf[0] = 0x02;
       buf[1] = 0x02;
       buf[2] = rspeed;
       buf[3] = 0;
-      pins.i2cWriteBuffer(STM8_ADDRESSS, buf); 
+      pins.i2cWriteBuffer(ADDR, buf); 
     } else {
       buf[0] = 0x02;
       buf[1] = 0x01;
       buf[2] = rspeed * -1;
       buf[3] = 0;
-      pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+      pins.i2cWriteBuffer(ADDR, buf);
     }
   }
   /**
