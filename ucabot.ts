@@ -56,7 +56,7 @@ namespace ucaBot {
     left,
   }
   /**
-   * TODO: Init agent with ID on Sandbox.
+   * TODO: Init agent.
    */
   //% block="Init agent"
   //% weight=200
@@ -158,7 +158,6 @@ namespace ucaBot {
         break; 
       delay(); 
     }
-    return;
   } 
 
   function send(d: string, c: string, p: string, stop: number) {
@@ -289,7 +288,6 @@ namespace ucaBot {
         p = 360 - p;  
     } 
     stopcar();
-    return;
   }
   /**
   * TODO: Move in centimeters.
@@ -325,7 +323,6 @@ namespace ucaBot {
       }
     }
     stopcar();
-    return;
   }
   function cm(x1: number, x2: number, y1: number, y2: number): number{
     let d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
@@ -398,7 +395,6 @@ namespace ucaBot {
       basic.pause(200);
     }
     stopcar();
-    return;
   }
   /**
   * Agents can explore
@@ -614,7 +610,6 @@ namespace ucaBot {
     move(1);
     al = false;
     send('0', 'FC', null, -1);
-    return
   }
   /**
   * Agents can know how many agents are initialized on SandBox.
@@ -639,7 +634,6 @@ namespace ucaBot {
         delay(); 
       }
     });
-    return;
   }
 /**
  * TODO: An agent can ask for other's help when needed
@@ -676,7 +670,6 @@ namespace ucaBot {
         delay(); 
       }
     });
-    return;
   }
 /**
  * TODO: Go to help
@@ -689,7 +682,6 @@ namespace ucaBot {
       toPoint(x, y, 20);
       send('0', 'AR', calls, -1);
     }
-    return;
   }
 /**
  * TODO: On help arrived
@@ -732,7 +724,6 @@ namespace ucaBot {
         delay(); 
       }
     });
-    return;
   }
   /**
  * TODO: Indicates to an agent previously called to follow it.
@@ -776,7 +767,6 @@ namespace ucaBot {
     }
     else
       basic.showString('Error');
-    return;
   }
 
   /**
