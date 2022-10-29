@@ -455,9 +455,7 @@ namespace ucaBot {
   //% block="Take object"
   //% weight=168 
   export function takeObj(){
-    setBusy();
     send('0', 'SO', id_ob, -1);
-    notBusy();
   }
   /**
   * Take object by various agents.
@@ -465,9 +463,7 @@ namespace ucaBot {
   //% block="Take object between various"
   //% weight=168 
   export function takeObj2(){
-    setBusy();
     send('0', 'BO', id_ob, -1);
-    notBusy();
   }
   /**
   * Go home.
@@ -652,12 +648,10 @@ namespace ucaBot {
   //% weight=145 
   //% block="Ask for help"
   export function askHelp() {
-    setBusy();
     if (parseInt(n_agents) > 1 && x_o)
       send('0', 'CA', 'F', -1);
     else 
       basic.showString('Could not ask 4 help');
-    notBusy();
   }
   /**
  * TODO: Notify wait
