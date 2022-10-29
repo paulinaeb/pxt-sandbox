@@ -165,11 +165,10 @@ namespace ucaBot {
     resp = id + d + c;
     if (p)
       resp = resp + p + '/0';
-    console.log('sent '+resp);
     radio.sendString(resp);
     delay();
     wait = true;
-    for (let i = 0; i < 30; i++){
+    for (let i = 0; i < 35; i++){
       if (act_val){
         act_val = false;
         wait = false;
@@ -185,7 +184,7 @@ namespace ucaBot {
           send(d, c, p, stop);
           break;
         }
-        if (i == 29){
+        if (i == 34){
           radio.sendString(id+'0SS');
           basic.pause(30);
           send(d, c, p, stop);
@@ -651,7 +650,7 @@ namespace ucaBot {
     if (parseInt(n_agents) > 1 && x_o)
       send('0', 'CA', 'F', -1);
     else 
-      basic.showString('Could not ask 4 help');
+      basic.showString('Error');
   }
   /**
  * TODO: Notify wait
@@ -776,7 +775,7 @@ namespace ucaBot {
       }
     }
     else
-      basic.showString('Not asked to follow yet');
+      basic.showString('Error');
     return;
   }
 
