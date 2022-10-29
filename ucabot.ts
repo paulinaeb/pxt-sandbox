@@ -109,7 +109,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act_val = true;
           }
-          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'NM' || c == 'NB' || c == 'DL')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL')
             act_val = true;
           else if (c == 'CA'){
             if (p.length > 0){
@@ -405,7 +405,6 @@ namespace ucaBot {
   //% weight=168 
   export function explore(){
     exp = true;
-    console.log(cl.toString()+al.toString()+ir().toString()+busy.toString());
     control.inBackground(() => {
       while (exp){
         if (!cl && !al && !ir() && !busy)
