@@ -116,8 +116,10 @@ namespace ucaBot {
             if (p.length){
               if (p[0] != id){
                 calls = p[0];
-                if (search)
+                if (search){
                   stopSearch();
+                  act_val = true;
+                }
                 called = true;
               }
               else
