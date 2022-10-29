@@ -209,7 +209,8 @@ namespace ucaBot {
   export function setName(inName: string){
     name = inName;
     send('0', 'NM', name, -1);
-    delay();
+    if (id == '2')
+      delay();
   }
   /**
   * Agents can know their name set.
