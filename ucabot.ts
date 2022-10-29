@@ -118,6 +118,8 @@ namespace ucaBot {
                 calls = p[0];
                 called = true;
               }
+              else
+                act_val = true;
             }
           }
           else if (c == 'NF' && wait)
