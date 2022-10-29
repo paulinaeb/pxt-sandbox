@@ -60,7 +60,7 @@ namespace ucaBot {
    */
   //% block="Init agent"
   //% weight=200
-  export function initAgent(): void {
+  export function initAgent(){
     radio.setGroup(23);
     radio.onReceivedString(function (receivedString) {
       f = receivedString[0];
@@ -204,7 +204,7 @@ namespace ucaBot {
   */ 
   //% block="Set name %inName"
   //% weight=196
-  export function setName(inName: string): void {
+  export function setName(inName: string){
     name = inName;
     send('0', 'NM', name, -1);
     delay();
@@ -296,7 +296,7 @@ namespace ucaBot {
   //% block="Move forward %cm cm"
   //% cm.min = 1 cm.max = 90
   //% weight=175 
-  export function move(cm: number): void { 
+  export function move(cm: number){ 
     send('0', 'GP', null, -1);
     let aux = cm;  let v = 0;
     let xv = 0;    let yv = 0;
