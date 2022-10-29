@@ -110,12 +110,14 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act_val = true;
           }
-          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL' || c == 'AC')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL')
             act_val = true;
           else if (c == 'CA'){
             if (p.length){
               if (p[0] != id){
                 calls = p[0];
+                if (search)
+                  stopSearch();
                 called = true;
               }
               else
@@ -519,8 +521,7 @@ namespace ucaBot {
           busy = true;
           stopcar();
           found = false;
-          search = false;
-          send('0', 'FS', null, -1);
+          stopSearch();
           busy = false;
           control.raiseEvent(103, 3505, EventCreationMode.CreateAndFire); 
         }
@@ -643,6 +644,7 @@ namespace ucaBot {
   //% weight=145 
   //% block="Ask for help"
   export function askHelp() {
+    setBusy();
     if (parseInt(n_agents) > 1 && x_o)
       send('0', 'CA', 'F', -1);
     else 
@@ -679,11 +681,13 @@ namespace ucaBot {
   //% weight=135 
   //% block="Go to help"
   export function goToHelp() {
+    setBusy();
     if (calls != ''){
       send('0', 'GP', calls, -1);
-      toPoint(x, y, 20);
+      toPoint(x, y, 10);
       send('0', 'AR', calls, -1);
     }
+    notBusy();
   }
 /**
  * TODO: On help arrived
@@ -696,6 +700,7 @@ namespace ucaBot {
       while (true){
         if (arr){
           arr = false;
+          notBusy();
           control.raiseEvent(107, 3509, EventCreationMode.CreateAndFire); 
         }
         delay();
@@ -841,5 +846,10 @@ namespace ucaBot {
   function notBusy(){
     send('0', 'NB', null, -1);
     busy = false;
+  }
+
+  function stopSearch(){
+    search = false;
+    send('0', 'FS', null, -1);
   }
 }
