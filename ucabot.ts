@@ -169,7 +169,7 @@ namespace ucaBot {
     radio.sendString(resp);
     delay();
     wait = true;
-    for (let i = 0; i < 25; i++){
+    for (let i = 0; i < 30; i++){
       if (act){
         act = false;
         wait = false;
@@ -185,7 +185,7 @@ namespace ucaBot {
           send(d, c, p, stop);
           break;
         }
-        if (i == 24){
+        if (i == 29){
           radio.sendString(id+'0SS');
           basic.pause(30);
           send(d, c, p, stop);
@@ -375,7 +375,7 @@ namespace ucaBot {
     }
     else
       r_angle = tt;
-    while (d > (1 + space) && d <= aux){
+    while (d > (2 + space) && d <= aux){
       send('0', 'GP', null, 4);
       aux = d;
       d_tt = r_angle - tt;
