@@ -41,6 +41,8 @@ namespace ucaBot {
   let nh = false;
   let ar2bo = false;
   let arr_home = false;
+  let w = 0;
+  let z = 0;
 
   export enum Pos {
     //% block="x"
@@ -116,6 +118,8 @@ namespace ucaBot {
             if (p.length){
               if (p[0] != id){
                 calls = p[0];
+                w = parseInt(p[1]);
+                z = parseInt(p[2]);
                 called = true;
               }
               else
@@ -639,8 +643,13 @@ namespace ucaBot {
   //% block="Ask for help"
   export function askHelp() {
     setBusy();
-    if (parseInt(n_a) > 1 && x_o)
-      send('0', 'CA', 'F', -1);
+    if (parseInt(n_a) > 1 && x_o){
+      let d = cm(x, x_o, y, y_o);
+      let an = d2r(tt);
+      let a = Math.round(d * Math.cos(an) + x_o);
+      let b = Math.round(d * Math.sin(an) + y_o);
+      send('0', 'CA', 'F'+'/'+a+'/'+b, -1);
+    }
     else 
       basic.showString('Error');
   }
@@ -679,8 +688,7 @@ namespace ucaBot {
   export function goToHelp() {
     setBusy();
     if (calls != ''){
-      send('0', 'GP', calls, -1);
-      toPoint(x, y, 15);
+      toPoint(w, z);
       send('0', 'AR', calls, -1);
     }
     notBusy();
