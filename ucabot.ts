@@ -487,7 +487,7 @@ namespace ucaBot {
       while (true) { 
         if (arr_home){
           arr_home = false;
-          control.raiseEvent(106, 3508, EventCreationMode.CreateAndFire); 
+          re(106, 3508); 
         }
         delay(); 
       }
@@ -520,9 +520,9 @@ namespace ucaBot {
           busy = true;
           stopcar();
           found = false;
-          stopSearch();
+          ss();
           busy = false;
-          control.raiseEvent(103, 3505, EventCreationMode.CreateAndFire); 
+          re(103, 3505); 
         }
         delay(); 
       }
@@ -554,7 +554,7 @@ namespace ucaBot {
       while (true) { 
         if (ar2so && !busy){
           ar2so = false;
-          control.raiseEvent(104, 3506, EventCreationMode.CreateAndFire); 
+          re(104, 3506); 
         }
         delay(); 
       }
@@ -571,7 +571,7 @@ namespace ucaBot {
       while (true) { 
         if (ar2bo && !busy){
           ar2bo = false;
-          control.raiseEvent(105, 3507, EventCreationMode.CreateAndFire); 
+          re(105, 3507); 
         }
         delay(); 
       }
@@ -589,7 +589,7 @@ namespace ucaBot {
         if (cl){
           cl = false;
           send('0', 'CL', null, -1);
-          control.raiseEvent(102, 3504, EventCreationMode.CreateAndFire); 
+          re(102, 3504); 
         }
         delay(); 
       }
@@ -631,7 +631,7 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (n_a != '0')
-          control.raiseEvent(99, 3501, EventCreationMode.CreateAndFire); 
+          re(99, 3501); 
         delay(); 
       }
     });
@@ -673,8 +673,8 @@ namespace ucaBot {
         if (called){
           called = false;
           if (search)
-            stopSearch();
-          control.raiseEvent(100, 3502, EventCreationMode.CreateAndFire); 
+            ss();
+          re(100, 3502); 
         }
         delay(); 
       }
@@ -705,7 +705,7 @@ namespace ucaBot {
         if (arr){
           arr = false;
           notBusy();
-          control.raiseEvent(107, 3509, EventCreationMode.CreateAndFire); 
+          re(107, 3509); 
         }
         delay();
       }
@@ -730,7 +730,7 @@ namespace ucaBot {
       while (true) { 
         if (fw_req){
           fw_req = false;
-          control.raiseEvent(101, 3503, EventCreationMode.CreateAndFire); 
+          re(101, 3503); 
         }
         delay(); 
       }
@@ -826,7 +826,6 @@ namespace ucaBot {
   export function stopcar() {
     motors(0, 0);
   }
-
   function ir(): boolean {
     pins.setPull(DigitalPin.P13, PinPullMode.PullNone);
     pins.setPull(DigitalPin.P14, PinPullMode.PullNone);
@@ -837,23 +836,22 @@ namespace ucaBot {
     else
       return false;
   }
-
   function delay(){
     basic.pause(20);
   }
-
   function setBusy(){
     busy = true;
     send('0', 'BU', null, -1);
   }
-
   function notBusy(){
     busy = false;
     send('0', 'NB', null, -1);
   }
-
-  function stopSearch(){
+  function ss(){
     search = false;
     send('0', 'FS', null, -1);
+  }
+  function re(a:number, b:number){
+    control.raiseEvent(a, b, EventCreationMode.CreateAndFire); 
   }
 }
