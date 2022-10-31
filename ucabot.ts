@@ -1,6 +1,7 @@
 /**
  * Functions for ucaBot
  */
+//% group="micro:bit (V2)"
 //% weight=5 color=#ff9da5  icon="\uf207"
 namespace ucaBot {
   const ADDR = 0x10;
@@ -542,7 +543,7 @@ namespace ucaBot {
     al = false;
     send('0', 'FC', null, -1);
   }
-  //% block="Number of agents on SandBox"
+  //% block="Number of agents"
   //% weight=170 
   export function numberOfAgents(): number {
     return parseInt(n_a);
