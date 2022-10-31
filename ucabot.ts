@@ -57,8 +57,10 @@ namespace ucaBot {
     //% block="Left"
     left,
   }
+   //% group="micro:bit (V2)"
   //% block="Init agent"
   //% weight=200
+  //% parts="v2"
   export function initAgent(){
     radio.setGroup(23);
     radio.onReceivedString(function (msg) {
