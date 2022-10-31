@@ -57,9 +57,6 @@ namespace ucaBot {
     //% block="Left"
     left,
   }
-  /**
-   *  Init agent.
-   */
   //% block="Init agent"
   //% weight=200
   export function initAgent(){
@@ -204,9 +201,6 @@ namespace ucaBot {
   function pid(p: number, min_prev: number, max_prev: number, min_new: number, max_new: number): number{
     return Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new);
   }
-  /**
-  * Agents can set their name.
-  */ 
   //% block="Set name %inName"
   //% weight=196
   export function setName(inName: string){
@@ -215,9 +209,6 @@ namespace ucaBot {
     if (id == '2')
       delay();
   }
-  /**
-  * Agents can know their name.
-  */ 
   //% block="My name"
   //% weight=196
   export function myName(): string {
@@ -226,18 +217,12 @@ namespace ucaBot {
     else
       return 'Name not set';
   }
-  /**
-  * ID assigned.
-  */ 
   //% block="My number (ID)"
   //% weight=195
   export function myNum(): number {
     let num = parseInt(id);
     return num;
   }
-  /**
-  * Agents can know their position in cm.
-  */ 
   //% block="My position %pos (cm)"
   //% weight=190
   export function myPos(pos: Pos): number { 
@@ -247,9 +232,6 @@ namespace ucaBot {
     else
       return y;
   }
-  /**
-  * Agents can know their direction in degrees.
-  */ 
   //% block="My direction"
   //% weight=185
   export function myDir(): number { 
@@ -257,7 +239,6 @@ namespace ucaBot {
     return tt;
   }
   /**
-  *  Rotate agent at an angle between 5 and 180
   * @param p degrees to rotate, eg: 90
   */ 
   //% block="Rotate agent %p ° to %dir"
@@ -296,7 +277,6 @@ namespace ucaBot {
     stopcar();
   }
   /**
-  *  Move in cm.
   * @param cm cm to move, eg: 30 
   */ 
   //% block="Move forward %cm cm"
@@ -353,9 +333,6 @@ namespace ucaBot {
     }
     return Math.round(angle);
   }
-  /**
-  * Go from a point to another.
-  */ 
   //% block="Go to point x:%px y:%py"
   //% x.min = 5 x.max = 100
   //% y.min = 5 y.max = 57
@@ -399,9 +376,6 @@ namespace ucaBot {
     }
     stopcar();
   }
-  /**
-  * Explore sand.
-  */ 
   //% block="Explore"
   //% weight=168 
   export function explore(){
@@ -417,55 +391,34 @@ namespace ucaBot {
       stopcar();
     });
   }
-  /**
-  * Stop exploring
-  */ 
   //% block="Stop exploring"
   //% weight=168 
   export function stopexp(){
     exp = false;
   }
-  /**
-  * Returns true or false
-  */ 
   //% block="Exploring"
   //% weight=168 
   export function exploring(): boolean{
     return exp;
   }
-  /**
-  * To north.
-  */ 
   //% block="Direction to north"
   //% weight=168 
   export function toNorth(){
   }
-  /**
-  * To south.
-  */ 
   //% block="Direction to south"
   //% weight=168 
   export function toSouth(){
   }
-  /**
-  * Take object.
-  */ 
   //% block="Take object"
   //% weight=168 
   export function takeObj(){
     send('0', 'SO', id_ob, -1);
   }
-  /**
-  * Take object by various agents.
-  */ 
   //% block="Take object between various"
   //% weight=168 
   export function takeObj2(){
     send('0', 'BO', id_ob, -1);
   }
-  /**
-  * Go home.
-  */ 
   //% block="Go home"
   //% weight=168 
   export function goHome(){
@@ -475,10 +428,7 @@ namespace ucaBot {
       return;
     toPoint(home[0], home[1], home[2]);
     arr_home = true;
-  }  
-  /**
-  * On arrived home
-  */ 
+  }
   //% block="On arrived home"
   //% weight=168 
   export function onArrHome(hd: () => void){
@@ -493,9 +443,6 @@ namespace ucaBot {
       }
     });
   }
-  /**
-  * Agents can detect objects and take them home
-  */ 
   //% block="Detect objects"
   //% weight=167 
   export function detect(){
@@ -507,9 +454,6 @@ namespace ucaBot {
       delay(); 
     }
   }
-  /**
-  * Do something on object detected.
-  */ 
   //% block="On object detected"
   //% weight=166
   export function onDetect(hd: () => void){
@@ -528,9 +472,6 @@ namespace ucaBot {
       }
     });
   }
-  /**
-  * Agents can go to objects
-  */ 
   //% block="Go to object"
   //% weight=167 
   export function goToObj(){
@@ -543,9 +484,6 @@ namespace ucaBot {
       ar2bo = true;
     notBusy();
   }
-  /**
-  * Do something on arrived to small object
-  */ 
   //% block="On arrived to small object"
   //% weight=167 
   export function onSO(hd: () => void){
@@ -560,9 +498,6 @@ namespace ucaBot {
       }
     });
   }
-  /**
-  * Do something on arrived to big object
-  */ 
   //% block="On arrived to big object"
   //% weight=167 
   export function onBO(hd: () => void){
@@ -577,9 +512,6 @@ namespace ucaBot {
       }
     });
   }
-  /**
-  * Do something on collision received
-  */ 
   //% block="On collision received"
   //% weight=167 
   export function onCollision(hd: () => void){
@@ -595,9 +527,6 @@ namespace ucaBot {
       }
     });
   }
-  /**
-  * Avoid collision when received
-  */ 
   //% block="Avoid collision"
   //% weight=167 
   export function avoidCollision(){
@@ -613,17 +542,11 @@ namespace ucaBot {
     al = false;
     send('0', 'FC', null, -1);
   }
-  /**
-  * Agents can know how many agents are initialized on SandBox.
-  */ 
   //% block="Number of agents on SandBox"
   //% weight=170 
   export function numberOfAgents(): number {
     return parseInt(n_a);
   }
-/**
- *  On all agents initialized on SandBox.
- */
   //% weight=165 
   //% block="On all agents initialized"
   export function allInit(hd: () => void) {
@@ -636,9 +559,6 @@ namespace ucaBot {
       }
     });
   }
-/**
- *  An agent can ask for other's help when needed
- */
   //% weight=145 
   //% block="Ask for help"
   export function askHelp() {
@@ -653,17 +573,11 @@ namespace ucaBot {
     else 
       basic.showString('Error');
   }
-  /**
- *  Notify wait
- */
   //% weight=145 
   //% block="Notify wait"
   export function notify() {
 
   }
-  /**
- *  On help call received
- */
   //% weight=140 
   //% block="On help call received"
   export function agentCalled(hd: () => void) {
@@ -680,9 +594,6 @@ namespace ucaBot {
       }
     });
   }
-  /**
- *  Go to help
- */
   //% weight=135 
   //% block="Go to help"
   export function goToHelp() {
@@ -693,9 +604,6 @@ namespace ucaBot {
     }
     notBusy();
   }
-/**
- *  On help arrived
- */
   //% weight=135 
   //% block="On help arrived"
   export function helpArr(hd: () => void) {
@@ -711,17 +619,11 @@ namespace ucaBot {
       }
     });
   }
-  /**
- *  On arrived to help
- */
   //% weight=135 
   //% block="On arrived to help"
   export function arr2help(hd: () => void) {
 
   }
-  /**
- *  On 'follow me' received, previously called.
- */
   //% weight=140 
   //% block="On 'follow me' received"
   export function askedToFollow(hd: () => void) {
@@ -736,9 +638,6 @@ namespace ucaBot {
       }
     });
   }
-  /**
- *  Indicates to an agent previously called to follow it.
- */
   //% weight=130 
   //% block="Follow me"
   export function followMe() {
@@ -747,9 +646,6 @@ namespace ucaBot {
     // else
     //   basic.showString('Ask for help first');
   }
-  /**
- *  Follow the leader who called it.
- */
   //% weight=130 
   //% block="Follow leader"
   export function follow() {
@@ -779,16 +675,11 @@ namespace ucaBot {
     else
       basic.showString('Error');
   }
-
-  /**
- *  Drop load
- */
   //% weight=130 
   //% block="Drop load"
   export function drop() {
     send('0', 'DL', null, -1);
   }
-
   function motors(lspeed: number, rspeed: number) {
     let buf = pins.createBuffer(4);
     if (lspeed > 0) {
@@ -818,9 +709,6 @@ namespace ucaBot {
       pins.i2cWriteBuffer(ADDR, buf);
     }
   }
-  /**
-   *  Stop car
-   */
   //% block="Stop car"
   //% weight=70
   export function stopcar() {
