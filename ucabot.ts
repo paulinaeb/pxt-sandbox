@@ -1,7 +1,6 @@
 /**
  * Functions for ucaBot
  */
-
 //% weight=5 color=#ff9da5  icon="\uf207"
 namespace ucaBot {
   const ADDR = 0x10;
@@ -58,10 +57,8 @@ namespace ucaBot {
     //% block="Left"
     left,
   }
-  //% group="micro:bit (V2)"
   //% block="Init agent"
   //% weight=200
-  //% parts="v2"
   export function initAgent(){
     radio.setGroup(23);
     radio.onReceivedString(function (msg) {
@@ -112,7 +109,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act = true;
           }
-          else if (c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL' || c == 'AC' || c == 'FC' || c == 'IC')
+          else if (c == 'IC' || c == 'FC' || c == 'SC' || c == 'TO' || c == 'FS' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL' || c == 'AC')
             act = true;
           else if (c == 'CA'){
             if (p.length){
