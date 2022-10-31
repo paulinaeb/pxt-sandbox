@@ -2,6 +2,7 @@
  * Functions for ucaBot
  */
 //% group="micro:bit (V2)"
+//% parts="v2"
 //% weight=5 color=#ff9da5  icon="\uf207"
 namespace ucaBot {
   const ADDR = 0x10;
