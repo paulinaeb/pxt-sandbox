@@ -398,6 +398,12 @@ namespace ucaBot {
   export function stopexp(){
     exp = false;
   }
+    //% block="Stop detecting"
+  //% weight=168 
+  export function stopDetect(){
+    search = false;
+    send('0', 'FS', null, -1);
+  }
   //% block="Exploring"
   //% weight=168 
   export function exploring(): boolean{
@@ -466,7 +472,6 @@ namespace ucaBot {
           busy = true;
           stopcar();
           found = false;
-          ss();
           busy = false;
           re(103, 3505); 
         }
@@ -588,8 +593,6 @@ namespace ucaBot {
       while (true) { 
         if (called){
           called = false;
-          if (search)
-            ss();
           re(100, 3502); 
         }
         delay(); 
@@ -736,10 +739,6 @@ namespace ucaBot {
   function notBusy(){
     busy = false;
     send('0', 'NB', null, -1);
-  }
-  function ss(){
-    search = false;
-    send('0', 'FS', null, -1);
   }
   function re(a:number, b:number){
     control.raiseEvent(a, b, EventCreationMode.CreateAndFire); 
