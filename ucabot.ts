@@ -409,6 +409,11 @@ namespace ucaBot {
   export function exploring(): boolean{
     return exp;
   }
+  //% block="Detecting"
+  //% weight=168 
+  export function detecting(): boolean{
+    return search;
+  }
   //% block="Direction to north"
   //% weight=168 
   export function toNorth(){
