@@ -580,11 +580,6 @@ namespace ucaBot {
     else 
       basic.showString('Error');
   }
-  //% weight=145 
-  //% block="Notify wait"
-  export function notify() {
-
-  }
   //% weight=140 
   //% block="On help call received"
   export function agentCalled(hd: () => void) {
