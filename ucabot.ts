@@ -207,7 +207,7 @@ namespace ucaBot {
     name = inName;
     send('0', 'NM', name, -1);
     if (id == '2')
-      delay();
+      basic.pause(40);
   }
   //% block="My name"
   //% weight=196
