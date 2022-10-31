@@ -1,8 +1,7 @@
 /**
  * Functions for ucaBot
  */
-//% group="micro:bit (V2)"
-//% parts="v2"
+
 //% weight=5 color=#ff9da5  icon="\uf207"
 namespace ucaBot {
   const ADDR = 0x10;
@@ -59,8 +58,10 @@ namespace ucaBot {
     //% block="Left"
     left,
   }
+  //% group="micro:bit (V2)"
   //% block="Init agent"
   //% weight=200
+  //% parts="v2"
   export function initAgent(){
     radio.setGroup(23);
     radio.onReceivedString(function (msg) {
