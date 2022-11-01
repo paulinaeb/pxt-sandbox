@@ -609,7 +609,6 @@ namespace ucaBot {
       toPoint(w, z);
       send('0', 'AR', calls, -1);
     }
-    notBusy();
     a2h = true;
   }
   //% weight=135 
@@ -635,6 +634,7 @@ namespace ucaBot {
       while (true){
         if (a2h){
           a2h = false;
+          notBusy();
           re(108, 3510); 
         }
         delay();
