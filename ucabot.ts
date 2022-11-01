@@ -339,7 +339,7 @@ namespace ucaBot {
     }
     return Math.round(angle);
   }
-  //% block="Go to point x:%px y:%py 2"
+  //% block="Go to point x:%px y:%py"
   //% x.min = 5 x.max = 98
   //% y.min = 5 y.max = 57
   //% weight=170 
