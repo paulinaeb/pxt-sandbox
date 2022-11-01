@@ -552,8 +552,8 @@ namespace ucaBot {
     let a = Math.floor(Math.random() * 110) + 90;
     rotate(a, dir);
     move(1);
-    al = false;
     send('0', 'FC', null, -1);
+    al = false;
   }
   //% block="Number of agents"
   //% weight=170 
