@@ -22,6 +22,7 @@ namespace ucaBot {
   let calls= '';
   let id_ar= '';
   let arr = false;
+  let a2h = false;
   let id2fw= '';
   let fw_req= false;
   let cl= false;
@@ -608,6 +609,7 @@ namespace ucaBot {
       send('0', 'AR', calls, -1);
     }
     notBusy();
+    a2h = true;
   }
   //% weight=135 
   //% block="On help arrived"
@@ -627,7 +629,16 @@ namespace ucaBot {
   //% weight=135 
   //% block="On arrived to help"
   export function arr2help(hd: () => void) {
-
+    control.onEvent(108, 3510, hd);
+    control.inBackground(() => {
+      while (true){
+        if (a2h){
+          a2h = false;
+          re(108, 3510); 
+        }
+        delay();
+      }
+    });
   }
   //% weight=140 
   //% block="On 'follow me' received"
