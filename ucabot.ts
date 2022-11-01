@@ -339,7 +339,7 @@ namespace ucaBot {
     }
     return Math.round(angle);
   }
-  //% block="Go to point x:%px y:%py 2"
+  //% block="Go to point x:%px y:%py"
   //% x.min = 5 x.max = 98
   //% y.min = 5 y.max = 57
   //% weight=170 
@@ -361,7 +361,8 @@ namespace ucaBot {
     }
     else
       r_angle = tt;
-    move(2);
+    move(1);
+    d = d - 1;
     while (d > 2 + space && d <= aux){
       send('0', 'GP', null, 2);
       aux = d;
