@@ -340,8 +340,8 @@ namespace ucaBot {
     return Math.round(angle);
   }
   //% block="Go to point x:%px y:%py"
-  //% x.min = 5 x.max = 100
-  //% y.min = 5 y.max = 57
+  //% x.min = 2 x.max = 90
+  //% y.min = 2 y.max = 57
   //% weight=170 
   export function toPoint(px: number, py: number, space = 0) {
     send('0', 'GP', null, -1);
@@ -349,7 +349,6 @@ namespace ucaBot {
     let d_tt = 0;
     let v = 0;
     let vc = 0;
-    let aux = 999;
     let angle = rt_angle(x, px, y, py, tt, d);
     if (angle > 6){
       if (angle > 180){
@@ -361,11 +360,8 @@ namespace ucaBot {
     }
     else
       r_angle = tt;
-    send('0', 'GP', null, -1);
-    d = cm(px, x, py, y);
-    while (d > (1 + space) && d <= aux){
-      send('0', 'GP', null, 4);
-      aux = d;
+    while (d > 1.5 + space){
+      send('0', 'GP', null, 2);
       d_tt = r_angle - tt;
       if (Math.abs(d_tt) > 300)
         d_tt = 360 + d_tt;
@@ -377,7 +373,7 @@ namespace ucaBot {
           motors(v - vc, v + vc);
         basic.pause(50);
       }
-      v = pid(d, 5, 100, 15, 22);
+      v = pid(d, 2, 90, 15, 21);
       motors(v, v);  
       d = cm(px, x, py, y);
       basic.pause(100);
