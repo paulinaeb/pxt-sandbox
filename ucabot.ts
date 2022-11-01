@@ -191,7 +191,7 @@ namespace ucaBot {
         }
         if (i == 29){
           radio.sendString(id+'0SS');
-          basic.pause(30);
+          basic.pause(40);
           send(d, c, p, stop);
           break;
         }
