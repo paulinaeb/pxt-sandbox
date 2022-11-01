@@ -112,7 +112,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act = true;
           }
-          else if (c == 'TO' || c == 'NM' || c == 'DL' || c == 'AC')
+          else if (c == 'TO' || c == 'NM' || c == 'AC')
             act = true;
           else if (c == 'CA'){
             if (p.length){
@@ -270,9 +270,9 @@ namespace ucaBot {
     while (p > 6 && p <= p_aux){
       d = pid(p, 10, 180, 18, 19);
       if (!dir)
-        motors(d, -d-9);
+        motors(d, -d-8);
       else
-        motors(-d-9, d);
+        motors(-d-8, d);
       basic.pause(100);
       send('0', 'GP', null, 0);
       p_aux = p;
@@ -351,7 +351,7 @@ namespace ucaBot {
     let vc = 0;
     let aux = 999;
     let angle = rt_angle(x, px, y, py, tt, d);
-    if (angle > 5){
+    if (angle > 6){
       if (angle > 180){
         angle = 360 - angle; 
         rotate(angle, 0);
@@ -361,7 +361,9 @@ namespace ucaBot {
     }
     else
       r_angle = tt;
-    while (d > (2 + space) && d <= aux){
+    send('0', 'GP', null, -1);
+    d = cm(px, x, py, y);
+    while (d > (1 + space) && d <= aux){
       send('0', 'GP', null, 4);
       aux = d;
       d_tt = r_angle - tt;
@@ -378,7 +380,7 @@ namespace ucaBot {
       v = pid(d, 5, 100, 15, 22);
       motors(v, v);  
       d = cm(px, x, py, y);
-      basic.pause(120);
+      basic.pause(100);
     }
     stopcar();
   }
