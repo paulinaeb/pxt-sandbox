@@ -361,7 +361,7 @@ namespace ucaBot {
     }
     else
       r_angle = tt;
-    while (d > 1.5 + space && d <= aux){
+    while (d > 2 + space && d <= aux){
       send('0', 'GP', null, 2);
       aux = d;
       d_tt = r_angle - tt;
@@ -378,7 +378,7 @@ namespace ucaBot {
       v = pid(d, 5, 100, 15, 22);
       motors(v, v);  
       d = cm(px, x, py, y);
-      basic.pause(100);
+      basic.pause(80);
     }
     stopcar();
   }
