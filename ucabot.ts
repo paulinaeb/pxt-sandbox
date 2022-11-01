@@ -510,6 +510,7 @@ namespace ucaBot {
       while (true) { 
         if (ar2so && !busy){
           ar2so = false;
+          delay(); 
           re(104, 3506); 
         }
         delay(); 
@@ -524,6 +525,7 @@ namespace ucaBot {
       while (true) { 
         if (ar2bo && !busy){
           ar2bo = false;
+          delay(); 
           re(105, 3507); 
         }
         delay(); 
