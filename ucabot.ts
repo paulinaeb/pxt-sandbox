@@ -44,6 +44,7 @@ namespace ucaBot {
   let arr_home = false;
   let w = 0;
   let z = 0;
+  let all = false;
 
   export enum Pos {
     //% block="x"
@@ -111,7 +112,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act = true;
           }
-          else if (c == 'TO' || c == 'BU' || c == 'SH' || c == 'NM' || c == 'NB' || c == 'DL' || c == 'AC')
+          else if (c == 'TO' || c == 'NM' || c == 'DL' || c == 'AC')
             act = true;
           else if (c == 'CA'){
             if (p.length){
@@ -159,8 +160,10 @@ namespace ucaBot {
       }
     });
     while (true) { 
-      if (n_a != '0' && id != '0')
+      if (n_a != '0' && id != '0'){
+        all = true;
         break; 
+      }
       delay(); 
     }
   } 
@@ -375,7 +378,7 @@ namespace ucaBot {
       v = pid(d, 5, 100, 15, 22);
       motors(v, v);  
       d = cm(px, x, py, y);
-      basic.pause(200);
+      basic.pause(120);
     }
     stopcar();
   }
@@ -566,8 +569,10 @@ namespace ucaBot {
     control.onEvent(99, 3501, hd);
     control.inBackground(() => {
       while (true) { 
-        if (n_a != '0')
+        if (all){
+          all = false;
           re(99, 3501); 
+        }
         delay(); 
       }
     });
@@ -583,8 +588,6 @@ namespace ucaBot {
       let b = Math.round(d * Math.sin(an) + y_o);
       send('0', 'CA', 'F'+'/'+a+'/'+b, -1);
     }
-    else 
-      basic.showString('Error');
   }
   //% weight=140 
   //% block="On help call received"
@@ -659,8 +662,6 @@ namespace ucaBot {
   export function followMe() {
     // if (arrived != '')
     //   send('0', 'FM', arrived, -1);
-    // else
-    //   basic.showString('Ask for help first');
   }
   //% weight=130 
   //% block="Follow leader"
@@ -688,8 +689,6 @@ namespace ucaBot {
           rotate(angle, 0);
       }
     }
-    else
-      basic.showString('Error');
   }
   //% weight=130 
   //% block="Drop load"
