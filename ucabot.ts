@@ -268,7 +268,7 @@ namespace ucaBot {
     r_angle = tt_p;
     let p_aux = p;
     while (p > 5 && p <= p_aux){
-      d = pid(p, 6, 180, 18, 19);
+      d = 18;
       if (!dir)
         motors(d, -d-8);
       else
@@ -361,9 +361,8 @@ namespace ucaBot {
     }
     else
       r_angle = tt;
-    move(1);
-    d = d - 1;
-    while (d > 2 + space && d <= aux){
+    let i = 0;
+    while (d > 1.5 + space && d <= aux){
       send('0', 'GP', null, 2);
       aux = d;
       d_tt = r_angle - tt;
@@ -380,7 +379,10 @@ namespace ucaBot {
       v = pid(d, 5, 100, 15, 22);
       motors(v, v);  
       d = cm(px, x, py, y);
+      if (!i)
+        basic.pause(80);
       basic.pause(80);
+      i+=1;
     }
     stopcar();
   }
