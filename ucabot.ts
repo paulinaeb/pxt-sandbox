@@ -204,13 +204,13 @@ namespace ucaBot {
     delay();
   }
   
-  function pid(p: number, min_prev: number, max_prev: number, min_new: number, max_new: number): number{
-    return Math.round((p - min_prev) / (max_prev - min_prev) * (max_new - min_new) + min_new);
+  function pid(p: number, min_a: number, max_a: number, min_n: number, max_n: number): number{
+    return Math.round((p - min_a) / (max_a - min_a) * (max_n - min_n) + min_n);
   }
   //% block="Set name %inName"
   //% weight=196
-  export function setName(inName: string){
-    name = inName;
+  export function setName(a: string){
+    name = a;
     send('0', 'NM', name, -1);
     if (id == '2')
       basic.pause(50);
