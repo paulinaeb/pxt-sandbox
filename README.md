@@ -1,6 +1,5 @@
 # Ucabot: MakeCode microbit extension using cuteBot
-designed for:
-![](/image.png/)
+designed for Sandbox
 
 ## ~ hint
 
@@ -8,7 +7,7 @@ To use this package, go to https://makecode.microbit.org, click ``Add package`` 
 
 ## Basic usage
 ```
-Currently working on blocks!
+Currently working on blocks
 ```
 
 ## Supported targets
