@@ -433,6 +433,7 @@ namespace ucaBot {
   //% block="Take object"
   //% weight=168 
   export function takeObj(){
+    delay();
     send('0', 'SO', id_ob, -1);
   }
   //% block="Take object between various"
@@ -584,7 +585,6 @@ namespace ucaBot {
   //% weight=145 
   //% block="Ask for help"
   export function askHelp() {
-    setBusy();
     if (parseInt(n_a) > 1 && x_o){
       let d = cm(x, x_o, y, y_o);
       let an = d2r(tt);
@@ -625,7 +625,6 @@ namespace ucaBot {
       while (true){
         if (arr){
           arr = false;
-          notBusy();
           re(107, 3509); 
         }
         delay();
