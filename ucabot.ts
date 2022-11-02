@@ -203,7 +203,6 @@ namespace ucaBot {
     }
     delay();
   }
-  
   function pid(p: number, min_a: number, max_a: number, min_n: number, max_n: number): number{
     return Math.round((p - min_a) / (max_a - min_a) * (max_n - min_n) + min_n);
   }
@@ -267,13 +266,13 @@ namespace ucaBot {
     }
     r_angle = tt_p;
     let p_aux = p;
-    while (p > 5 && p <= p_aux){
+    while (p > 6 && p <= p_aux){
       d = 18;
       if (!dir)
         motors(d, -d-8);
       else
         motors(-d-8, d);
-      basic.pause(100);
+      basic.pause(90);
       send('0', 'GP', null, 0);
       p_aux = p;
       p =  Math.abs(tt_p - tt); 
@@ -340,7 +339,7 @@ namespace ucaBot {
     return Math.round(angle);
   }
   //% block="Go to point x:%px y:%py"
-  //% x.min = 5 x.max = 98
+  //% x.min = 5 x.max = 100
   //% y.min = 5 y.max = 57
   //% weight=170 
   export function toPoint(px: number, py: number, space = 0) {
@@ -362,7 +361,7 @@ namespace ucaBot {
     else
       r_angle = tt;
     let i = 0;
-    while (d > 1.5 + space && d <= aux){
+    while (d > (1.5 + space) && d <= aux){
       send('0', 'GP', null, 2);
       aux = d;
       d_tt = r_angle - tt;
@@ -374,13 +373,13 @@ namespace ucaBot {
           motors(v + vc, v - vc);
         else
           motors(v - vc, v + vc);
-        basic.pause(50);
+        basic.pause(40);
       }
       v = pid(d, 5, 100, 15, 22);
       motors(v, v);  
       d = cm(px, x, py, y);
       if (!i)
-        basic.pause(80);
+        basic.pause(100);
       basic.pause(80);
       i+=1;
     }
@@ -512,7 +511,6 @@ namespace ucaBot {
       while (true) { 
         if (ar2so && !busy){
           ar2so = false;
-          delay(); 
           re(104, 3506); 
         }
         delay(); 
@@ -527,7 +525,6 @@ namespace ucaBot {
       while (true) { 
         if (ar2bo && !busy){
           ar2bo = false;
-          delay(); 
           re(105, 3507); 
         }
         delay(); 
