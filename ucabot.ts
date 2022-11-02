@@ -176,9 +176,8 @@ namespace ucaBot {
     wait = true;
     act = false;
     delay();
-    for (let i = 0; i < 30; i++){
+    for (let i = 0; i < 35; i++){
       if (act){
-        act = false;
         wait = false;
         break;
       }
@@ -192,7 +191,7 @@ namespace ucaBot {
           send(d, c, p, stop);
           break;
         }
-        if (i == 29){
+        if (i == 34){
           radio.sendString(id+'0SS');
           basic.pause(40);
           send(d, c, p, stop);
