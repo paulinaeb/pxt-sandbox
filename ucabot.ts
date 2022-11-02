@@ -176,7 +176,8 @@ namespace ucaBot {
     wait = true;
     act = false;
     delay();
-    for (let i = 0; i < 35; i++){
+    let i = 0;
+    while(true){
       if (act){
         wait = false;
         break;
@@ -198,6 +199,7 @@ namespace ucaBot {
           break;
         }
       }
+      i+=1;
       basic.pause(50);
     }
     delay();
