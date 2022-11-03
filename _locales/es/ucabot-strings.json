@@ -11,7 +11,7 @@
   "ucaBot.move|block": "Move forward %cm cm",
   "ucaBot.toPoint|block": "Ir al punto x:%px y:%py",
   "ucaBot.wander|block": "Deambular",
-  "ucaBot.stop|block": "Parar las tareas en ejecución",
+  "ucaBot.stop|block": "Parar lo que estoy haciendo",
   "ucaBot.toNorth|block": "Dirección al norte",
   "ucaBot.toSouth|block": "Dirección al sur",
   "ucaBot.takeObj|block": "Tomar objeto",
