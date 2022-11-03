@@ -371,7 +371,7 @@ namespace ucaBot {
     }
     stopcar();
   }
-  //% block="Wander"
+  //% block="Wander around"
   //% weight=168 
   export function wander(){
     wan = true;
@@ -439,7 +439,7 @@ namespace ucaBot {
   }
   //% block="On arrived home"
   //% weight=168 
-  export function onArrHome(hd: () => void){
+  export function onHome(hd: () => void){
     control.onEvent(106, 3508, hd);
     control.inBackground(() => {
       while (true) { 
@@ -469,10 +469,8 @@ namespace ucaBot {
     control.inBackground(() => {
       while (true) { 
         if (found){
-          busy = true;
           stopcar();
           found = false;
-          busy = false;
           re(103, 3505); 
         }
         delay(); 
@@ -521,7 +519,7 @@ namespace ucaBot {
   }
   //% block="On collision received"
   //% weight=167 
-  export function onCollision(hd: () => void){
+  export function onColl(hd: () => void){
     control.onEvent(102, 3504, hd);
     control.inBackground(() => {
       while (true) { 
@@ -536,7 +534,7 @@ namespace ucaBot {
   }
   //% block="Avoid collision"
   //% weight=167 
-  export function avoidCollision(){
+  export function avoidColl(){
     stopcar();
     al = true;
     motors(-31,-31);
@@ -551,7 +549,7 @@ namespace ucaBot {
   }
   //% block="Number of agents"
   //% weight=170 
-  export function numberOfAgents(): number {
+  export function numAgents(): number {
     return parseInt(n_a);
   }
   //% weight=165 
@@ -635,7 +633,7 @@ namespace ucaBot {
   }
   //% weight=140 
   //% block="On 'follow me' received"
-  export function askedToFollow(hd: () => void) {
+  export function asked2follow(hd: () => void) {
     control.onEvent(101, 3503, hd);
     control.inBackground(() => {
       while (true) { 
