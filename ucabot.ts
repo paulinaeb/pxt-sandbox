@@ -371,9 +371,9 @@ namespace ucaBot {
     }
     stopcar();
   }
-  //% block="Explore"
+  //% block="Wander"
   //% weight=168 
-  export function explore(){
+  export function wander(){
     wan = true;
     control.inBackground(() => {
       while (wan){
