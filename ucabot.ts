@@ -172,7 +172,7 @@ namespace ucaBot {
   function send(d: string, c: string, p: string, stop: number) {
     resp = id + d + c;
     if (p)
-      resp = resp + p + '/0';
+      resp = resp + p + '/';
     radio.sendString(resp);
     wait = true;
     act = false;
@@ -564,7 +564,7 @@ namespace ucaBot {
       let a = Math.round(d * Math.cos(an) + x_o);
       let b = Math.round(d * Math.sin(an) + y_o);
       delay();
-      send('0', 'CA', 'F'+'/'+a+'/'+b, -1);
+      send('0', 'CA', 'F'+'/'+a+'/'+b+'/'+id_ob, -1);
     }
   }
   //% weight=140 
@@ -724,8 +724,8 @@ namespace ucaBot {
     send('0', 'BU', null, -1);
   }
   function notBusy(){
-    busy = false;
     send('0', 'NB', null, -1);
+    busy = false;
   }
   function re(a:number, b:number){
     control.raiseEvent(a, b, EventCreationMode.CreateAndFire); 
