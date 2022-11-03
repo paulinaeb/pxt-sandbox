@@ -576,6 +576,7 @@ namespace ucaBot {
       let an = d2r(tt);
       let a = Math.round(d * Math.cos(an) + x_o);
       let b = Math.round(d * Math.sin(an) + y_o);
+      delay();
       send('0', 'CA', 'F'+'/'+a+'/'+b, -1);
     }
   }
@@ -602,6 +603,7 @@ namespace ucaBot {
       send('0', 'AR', calls, -1);
     }
     a2h = true;
+    notBusy();
   }
   //% weight=135 
   //% block="On help arrived"
@@ -625,7 +627,6 @@ namespace ucaBot {
       while (true){
         if (a2h){
           a2h = false;
-          notBusy();
           re(108, 3510); 
         }
         delay();
