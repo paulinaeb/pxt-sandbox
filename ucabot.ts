@@ -424,6 +424,7 @@ namespace ucaBot {
   //% block="Take object between various"
   //% weight=168 
   export function takeObj2(){
+    delay();
     send('0', 'BO', id_ob, -1);
   }
   //% block="Go home"
