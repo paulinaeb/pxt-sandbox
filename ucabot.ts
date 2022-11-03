@@ -28,7 +28,7 @@ namespace ucaBot {
   let cl= false;
   let al= false;
   let home: number[]= [];
-  let search= false;
+  let sc= false;
   let found= false;
   let type= '';
   let x_o: number= null;
@@ -37,7 +37,7 @@ namespace ucaBot {
   let id_ob= '';
   let busy= false;
   let r_angle= 0;
-  let exp = false;
+  let wan = false;
   let ar2so = false;
   let nh = false;
   let ar2bo = false;
@@ -62,6 +62,7 @@ namespace ucaBot {
    //% group="micro:bit (V2)"
   //% block="Init agent"
   //% weight=200
+  //% parts="v2"
   export function initAgent(){
     radio.setGroup(23);
     radio.onReceivedString(function (msg) {
@@ -104,7 +105,7 @@ namespace ucaBot {
             basic.pause(1000);
             basic.clearScreen();
           }
-          else if (n_a == '0' && c == 'AI')
+          else if (c == 'AI')
             n_a = p[0];
           else if (c == 'GP'){
             x = parseFloat(p[0]);
@@ -148,7 +149,7 @@ namespace ucaBot {
             }
             act = true;
           }
-          else if ((c == 'BO' || c == 'SO') && search && !found && !busy){
+          else if ((c == 'BO' || c == 'SO') && sc && !found && !busy){
             found = true;
             type = c;
             x_o = parseInt(p[0]);
@@ -228,21 +229,6 @@ namespace ucaBot {
   export function myNum(): number {
     let num = parseInt(id);
     return num;
-  }
-  //% block="My position %pos (cm)"
-  //% weight=190
-  export function myPos(pos: Pos): number { 
-    send('0', 'GP', null, -1);
-    if(!pos)
-      return x;
-    else
-      return y;
-  }
-  //% block="My direction"
-  //% weight=185
-  export function myDir(): number { 
-    send('0', 'GP', null, -1);
-    return tt;
   }
   /**
   * @param p degrees to rotate, eg: 90
@@ -389,9 +375,9 @@ namespace ucaBot {
   //% block="Explore"
   //% weight=168 
   export function explore(){
-    exp = true;
+    wan = true;
     control.inBackground(() => {
-      while (exp){
+      while (wan){
         if (!cl && !al && !ir() && !busy)
           motors(16, 16);
         if (ir())
@@ -401,26 +387,26 @@ namespace ucaBot {
       stopcar();
     });
   }
-  //% block="Stop exploring"
+  //% block="Stop wandering"
   //% weight=168 
-  export function stopexp(){
-    exp = false;
+  export function stopWander(){
+    wan = false;
   }
     //% block="Stop detecting"
   //% weight=168 
   export function stopDetect(){
-    search = false;
+    sc = false;
     send('0', 'FS', null, -1);
   }
-  //% block="Exploring"
+  //% block="Wandering"
   //% weight=168 
-  export function exploring(): boolean{
-    return exp;
+  export function wandering(): boolean{
+    return wan;
   }
   //% block="Detecting"
   //% weight=168 
   export function detecting(): boolean{
-    return search;
+    return sc;
   }
   //% block="Direction to north"
   //% weight=168 
@@ -468,7 +454,7 @@ namespace ucaBot {
   //% block="Detect objects"
   //% weight=167 
   export function detect(){
-    search = true;
+    sc = true;
     send('0', 'SC', null, -1);
     while (true){
       if (found)
