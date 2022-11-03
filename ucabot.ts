@@ -386,26 +386,15 @@ namespace ucaBot {
       stopcar();
     });
   }
-  //% block="Stop wandering"
+  //% block="Stop current task(s)"
   //% weight=168 
-  export function stopWander(){
-    wan = false;
-  }
-    //% block="Stop detecting"
-  //% weight=168 
-  export function stopDetect(){
-    sc = false;
-    send('0', 'FS', null, -1);
-  }
-  //% block="Wandering"
-  //% weight=168 
-  export function wandering(): boolean{
-    return wan;
-  }
-  //% block="Detecting"
-  //% weight=168 
-  export function detecting(): boolean{
-    return sc;
+  export function stop(){
+    if (wan)
+      wan = false;
+    if (sc){
+      sc = false;
+      send('0', 'FS', null, -1);
+    }
   }
   //% block="Direction to north"
   //% weight=168 
