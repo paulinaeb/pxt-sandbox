@@ -612,7 +612,7 @@ namespace ucaBot {
     control.onEvent(108, 3510, hd);
     control.inBackground(() => {
       while (true){
-        if (a2h){
+        if (a2h && !busy){
           a2h = false;
           re(108, 3510); 
         }
