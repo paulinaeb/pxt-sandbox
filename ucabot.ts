@@ -121,6 +121,7 @@ namespace ucaBot {
                 calls = p[0];
                 w = parseInt(p[1]);
                 z = parseInt(p[2]);
+                id_ob = p[3];
                 called = true;
               }
               else
