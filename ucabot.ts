@@ -563,6 +563,7 @@ namespace ucaBot {
       let an = d2r(tt);
       let a = Math.round(d * Math.cos(an) + x_o);
       let b = Math.round(d * Math.sin(an) + y_o);
+      delay();
       send('0', 'CA', 'F'+'/'+a+'/'+b, -1);
     }
   }
