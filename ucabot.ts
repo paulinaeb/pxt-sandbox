@@ -189,6 +189,7 @@ namespace ucaBot {
     console.log('init act '+act.toString());
     let i = 0;
     while(true){
+      console.log(i);
       if (act){
         wait = false;
         act = false;
@@ -198,7 +199,7 @@ namespace ucaBot {
       else{
         if (i == 29){
           radio.sendString(id+'0SS');
-          console.log('act b4 pause '+act.toString());
+          console.log('sent ss act b4 pause '+act.toString());
           basic.pause(40);
           act = false;
           console.log('act after pause '+act.toString());
