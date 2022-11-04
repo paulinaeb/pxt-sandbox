@@ -46,6 +46,7 @@ namespace ucaBot {
   let z = 0;
   let all = false;
   let to = false;
+  let sf = false;
 
   export enum Pos {
     //% block="x"
@@ -161,6 +162,13 @@ namespace ucaBot {
           }
           else if(c == 'TO')
             to = true;
+          else if (c == 'GA'){
+            x_o = parseFloat(p[0]);
+            y_o = parseFloat(p[1]);
+            act = true;
+          }
+          else if (c == 'SF')
+            sf = true;
         }
       }
     });
@@ -652,6 +660,17 @@ namespace ucaBot {
   //% block="Follow leader"
   export function follow() {
     if (id2fw){
+      send('0', 'GA', id2fw, -1);
+      send('0', 'GP', null, -1);
+      let d = cm(x, x_o, y, y_o);
+      while (true){
+        send('0', 'GA', id2fw, -1);
+        toPoint(x_o, y_o, d);
+        if (sf){
+          sf = false; 
+          break;
+        }
+      }
       // send('0', 'GP', id2fw, -1);
       // let af = tt;
       // send('0', 'GP', null, -1);
