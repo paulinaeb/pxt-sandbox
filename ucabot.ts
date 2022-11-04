@@ -185,6 +185,7 @@ namespace ucaBot {
     radio.sendString(resp);
     wait = true;
     delay();
+    console.log('sent: '+resp);
     console.log('init act '+act.toString());
     let i = 0;
     while(true){
