@@ -113,7 +113,7 @@ namespace ucaBot {
             tt = parseInt(p[2]);
             act = true;
           }
-          else if (c == 'TO' || c == 'NM' || c == 'AC')
+          else if (c == 'NM' || c == 'AC')
             act = true;
           else if (c == 'CA'){
             if (p.length){
@@ -131,8 +131,8 @@ namespace ucaBot {
           else if (c == 'NF' && wait)
             repeat = true;
           else if (c == 'AR'){
-            arr = true;
             id_ar = p[0];
+            arr = true;
           }
           else if (c == 'FM'){
             id2fw = p[0];
@@ -585,7 +585,7 @@ namespace ucaBot {
   //% block="Go to help"
   export function goToHelp() {
     setBusy();
-    if (calls != ''){
+    if (calls){
       toPoint(w, z);
       send('0', 'AR', calls, -1);
     }
@@ -637,34 +637,34 @@ namespace ucaBot {
   //% weight=130 
   //% block="Follow me"
   export function followMe() {
-    // if (arrived != '')
-    //   send('0', 'FM', arrived, -1);
+    if (id_ar)
+      send('0', 'FM', id_ar, -1);
   }
   //% weight=130 
   //% block="Follow leader"
   export function follow() {
-    if (id2fw != ''){
-      send('0', 'GP', id2fw, -1);
-      let af = tt;
-      send('0', 'GP', null, -1);
-      let aa = tt;
-      let angle = Math.abs(af - aa);
-      if (af > aa){
-        if(angle > 180){
-          angle = 360 - angle;
-          rotate(angle, 0);
-        }
-        else
-          rotate(angle, 1);
-      }
-      else if (aa > af){
-        if (angle > 180){
-          angle = 360 - angle;
-          rotate(angle, 1);
-        }
-        else
-          rotate(angle, 0);
-      }
+    if (id2fw){
+      // send('0', 'GP', id2fw, -1);
+      // let af = tt;
+      // send('0', 'GP', null, -1);
+      // let aa = tt;
+      // let angle = Math.abs(af - aa);
+      // if (af > aa){
+      //   if(angle > 180){
+      //     angle = 360 - angle;
+      //     rotate(angle, 0);
+      //   }
+      //   else
+      //     rotate(angle, 1);
+      // }
+      // else if (aa > af){
+      //   if (angle > 180){
+      //     angle = 360 - angle;
+      //     rotate(angle, 1);
+      //   }
+      //   else
+      //     rotate(angle, 0);
+      // }
     }
   }
   //% weight=130 
@@ -701,9 +701,7 @@ namespace ucaBot {
       pins.i2cWriteBuffer(ADDR, buf);
     }
   }
-  //% block="Stop car"
-  //% weight=70
-  export function stopcar() {
+  function stopcar() {
     motors(0, 0);
   }
   function ir(): boolean {
@@ -725,6 +723,7 @@ namespace ucaBot {
   }
   function notBusy(){
     send('0', 'NB', null, -1);
+    delay();
     busy = false;
   }
   function re(a:number, b:number){
