@@ -108,10 +108,10 @@ namespace ucaBot {
           else if (c == 'AI')
             n_a = p[0];
           else if (c == 'GP'){
+            act = true;
             x = parseFloat(p[0]);
             y = parseFloat(p[1]);
             tt = parseInt(p[2]);
-            act = true;
           }
           else if (c == 'NM' || c == 'AC')
             act = true;
@@ -144,6 +144,7 @@ namespace ucaBot {
             if (p.length){
               home.push(parseInt(p[0]));
               home.push(parseInt(p[1]));
+              home.push(parseInt(p[2]));
             }
             act = true;
           }
@@ -182,12 +183,12 @@ namespace ucaBot {
       resp = resp + p + '/';
     radio.sendString(resp);
     wait = true;
-    act = false;
     delay();
     let i = 0;
     while(true){
       if (act){
         wait = false;
+        act = false;
         break;
       }
       else{
@@ -203,6 +204,7 @@ namespace ucaBot {
         if (i == 29){
           radio.sendString(id+'0SS');
           basic.pause(40);
+          act = false;
           send(d, c, p, stop);
           break;
         }
@@ -433,7 +435,7 @@ namespace ucaBot {
       send('0', 'HO', null, -1);
     if (!home.length)
       return;
-    toPoint(home[0], home[1]);
+    toPoint(home[0], home[1], home[2]);
     arr_home = true;
   }
   //% block="On arrived home"
