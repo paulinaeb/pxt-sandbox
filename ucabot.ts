@@ -9,8 +9,8 @@ namespace ucaBot {
   let c: string= null;
   let p: string[]= null;
   let resp: string=null;
-  let id = '0';
-  let n_a = '0';
+  let id = '';
+  let n_a = '';
   let name: string= null;
   let x= 0;
   let y= 0;
@@ -39,7 +39,6 @@ namespace ucaBot {
   let r_angle= 0;
   let wan = false;
   let ar2so = false;
-  let nh = false;
   let ar2bo = false;
   let arr_home = false;
   let w = 0;
@@ -73,14 +72,13 @@ namespace ucaBot {
       c = msg[2] + msg[3];
       p = [];
       if (d == 'F' || d == id){
-        console.log(msg);  
         if (msg.length > 4){
           let str_p = msg.slice(4);
-          let limit = (str_p.split("/").length-1); 
-          if (limit){
+          let n = (str_p.split("/").length-1); 
+          if (n){
             let j = 0;
             let aux = 0;
-            for (let i = 0; i < limit; i++){ 
+            for (let i = 0; i < n; i++){ 
               if (!i){
                 j = str_p.indexOf('/');
                 p.push(str_p.slice(0, j));
@@ -101,7 +99,7 @@ namespace ucaBot {
           }
         }
         if (f == '0'){
-          if (id == '0' && c == 'II'){
+          if (!id && c == 'II'){
             id = p[0];
             basic.showString(id);
             basic.pause(1000);
@@ -142,13 +140,10 @@ namespace ucaBot {
           }
           else if (c == 'CL' && !al)
             cl = true;
-          else if (c == 'HO' && !home.length){
-            if (p[0] == 'NF')
-              nh = true;
-            else{
+          else if (c == 'HO'){
+            if (p.length){
               home.push(parseInt(p[0]));
               home.push(parseInt(p[1]));
-              home.push(parseFloat(p[2]));
             }
             act = true;
           }
@@ -173,7 +168,7 @@ namespace ucaBot {
       }
     });
     while (true) { 
-      if (n_a != '0' && id != '0'){
+      if (n_a && id){
         all = true;
         break; 
       }
@@ -225,8 +220,6 @@ namespace ucaBot {
   export function setName(a: string){
     name = a;
     send('0', 'NM', name, -1);
-    if (id == '2')
-      basic.pause(60);
   }
   //% block="My name"
   //% weight=196
@@ -438,9 +431,9 @@ namespace ucaBot {
   export function goHome(){
     if (!home.length)
       send('0', 'HO', null, -1);
-    if (nh)
+    if (!home.length)
       return;
-    toPoint(home[0], home[1], home[2]);
+    toPoint(home[0], home[1]);
     arr_home = true;
   }
   //% block="On arrived home"
@@ -671,27 +664,6 @@ namespace ucaBot {
           break;
         }
       }
-      // send('0', 'GP', id2fw, -1);
-      // let af = tt;
-      // send('0', 'GP', null, -1);
-      // let aa = tt;
-      // let angle = Math.abs(af - aa);
-      // if (af > aa){
-      //   if(angle > 180){
-      //     angle = 360 - angle;
-      //     rotate(angle, 0);
-      //   }
-      //   else
-      //     rotate(angle, 1);
-      // }
-      // else if (aa > af){
-      //   if (angle > 180){
-      //     angle = 360 - angle;
-      //     rotate(angle, 1);
-      //   }
-      //   else
-      //     rotate(angle, 0);
-      // }
     }
   }
   //% weight=130 
