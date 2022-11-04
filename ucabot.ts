@@ -197,16 +197,16 @@ namespace ucaBot {
         break;
       }
       else{
-        if (i == 29){
-          radio.sendString(id+'0SS');
-          console.log('sent ss act b4 pause '+act.toString());
-          basic.pause(40);
-          act = false;
-          console.log('act after pause '+act.toString());
-          console.log('resent '+id+c);
-          send(d, c, p, stop);
-          break;
-        }
+        // if (i == 29){
+        //   radio.sendString(id+'0SS');
+        //   console.log('sent ss act b4 pause '+act.toString());
+        //   basic.pause(40);
+        //   act = false;
+        //   console.log('act after pause '+act.toString());
+        //   console.log('resent '+id+c);
+        //   send(d, c, p, stop);
+        //   break;
+        // }
         if (i == stop)
           stopcar();
         if (repeat){
