@@ -223,6 +223,15 @@ namespace ucaBot {
   function pid(p: number, min_a: number, max_a: number, min_n: number, max_n: number): number{
     return Math.round((p - min_a) / (max_a - min_a) * (max_n - min_n) + min_n);
   }
+    //% block="My position %pos (cm)"
+  //% weight=190
+  export function myPos(pos: Pos): number { 
+    send('0', 'GP', null, -1);
+    if(!pos)
+      return x;
+    else
+      return y;
+  }
   //% block="Set name %a"
   //% weight=196
   export function setName(a: string){
