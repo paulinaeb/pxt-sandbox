@@ -67,11 +67,12 @@ namespace ucaBot {
   export function initAgent(){
     radio.setGroup(23);
     radio.onReceivedString(function (msg) {
-      f = msg[0];
       d = msg[1];
-      c = msg[2] + msg[3];
-      p = [];
       if (d == 'F' || d == id){
+        console.log('received: '+msg);
+        f = msg[0];
+        c = msg[2] + msg[3];
+        p = [];
         if (msg.length > 4){
           let str_p = msg.slice(4);
           let n = (str_p.split("/").length-1); 
@@ -177,34 +178,39 @@ namespace ucaBot {
     }
   } 
 
-  function send(d: string, c: string, p: string, stop: number) {
+  function send(d: string, c: string, p: string, stop: number){
     resp = id + d + c;
     if (p)
       resp = resp + p + '/';
     radio.sendString(resp);
     wait = true;
     delay();
+    console.log('init act '+act.toString());
     let i = 0;
     while(true){
       if (act){
         wait = false;
         act = false;
+        console.log('found and breaking, act '+act.toString());
         break;
       }
       else{
+        if (i == 29){
+          radio.sendString(id+'0SS');
+          console.log('act b4 pause '+act.toString());
+          basic.pause(40);
+          act = false;
+          console.log('act after pause '+act.toString());
+          console.log('resent '+id+c);
+          send(d, c, p, stop);
+          break;
+        }
         if (i == stop)
           stopcar();
         if (repeat){
           repeat = false;
           if (stop > 0)
             stopcar();
-          send(d, c, p, stop);
-          break;
-        }
-        if (i == 29){
-          radio.sendString(id+'0SS');
-          basic.pause(40);
-          act = false;
           send(d, c, p, stop);
           break;
         }
