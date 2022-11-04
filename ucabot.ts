@@ -45,6 +45,7 @@ namespace ucaBot {
   let w = 0;
   let z = 0;
   let all = false;
+  let to = false;
 
   export enum Pos {
     //% block="x"
@@ -158,6 +159,8 @@ namespace ucaBot {
             id_ob = p[2];
             r_o = parseFloat(p[3]);
           }
+          else if(c == 'TO')
+            to = true;
         }
       }
     });
@@ -416,6 +419,11 @@ namespace ucaBot {
   export function takeObj2(){
     delay();
     send('0', 'BO', id_ob, -1);
+    while (true){
+      if (to)
+        break;
+      delay();
+    }
   }
   //% block="Go home"
   //% weight=168 
