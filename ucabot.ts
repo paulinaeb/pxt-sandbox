@@ -61,7 +61,7 @@ namespace ucaBot {
     left,
   }
    //% group="micro:bit (V2)"
-  //% block="Init agent"
+  //% block="Init agent 1"
   //% weight=200
   //% parts="v2"
   export function initAgent(){
