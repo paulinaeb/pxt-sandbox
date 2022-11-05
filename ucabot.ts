@@ -191,7 +191,6 @@ namespace ucaBot {
     radio.sendString(resp);
     console.log('sent: '+resp);
     wait = true;
-    delay();
     let i = 0;
     while(true){
       if (act){
@@ -202,7 +201,6 @@ namespace ucaBot {
       else{
         if (i == 29){
           radio.sendString(id+'0SS,');
-          basic.pause(40);
           act = false;
           send(d, c, p, stop);
           break;
@@ -220,7 +218,6 @@ namespace ucaBot {
       i+=1;
       basic.pause(50);
     }
-    delay();
   }
   function pid(p: number, min_a: number, max_a: number, min_n: number, max_n: number): number{
     return Math.round((p - min_a) / (max_a - min_a) * (max_n - min_n) + min_n);
@@ -437,13 +434,11 @@ namespace ucaBot {
   //% block="Take object"
   //% weight=168 
   export function takeObj(){
-    delay();
     send('0', 'SO', id_ob, -1);
   }
   //% block="Take object between various"
   //% weight=168 
   export function takeObj2(){
-    delay();
     send('0', 'BO', id_ob, -1);
     while (true){
       if (to)
@@ -751,7 +746,6 @@ namespace ucaBot {
   }
   function notBusy(){
     send('0', 'NB', null, -1);
-    delay();
     busy = false;
   }
   function re(a:number, b:number){
