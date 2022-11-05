@@ -8,7 +8,7 @@
   "ucaBot.myName|block": "Mi nombre",
   "ucaBot.myNum|block": "Mi número (ID)",
   "ucaBot.rotate|block": "Rotar agente %p ° a la %dir",
-  "ucaBot.move|block": "Move forward %cm cm",
+  "ucaBot.move|block": "Avanzar %cm cm",
   "ucaBot.toPoint|block": "Ir al punto x:%px y:%py",
   "ucaBot.wander|block": "Deambular",
   "ucaBot.stop|block": "Parar lo que estoy haciendo",
