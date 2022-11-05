@@ -69,7 +69,6 @@ namespace ucaBot {
     radio.onReceivedString(function (msg) {
       d = msg[1];
       if (d == 'F' || d == id){
-        console.log('received: '+msg);
         f = msg[0];
         c = msg[2] + msg[3];
         p = [];
@@ -183,17 +182,15 @@ namespace ucaBot {
     if (p)
       resp = resp + p + '/';
     radio.sendString(resp);
+    radio.sendString(',');
     wait = true;
     delay();
-    console.log('sent: '+resp);
-    console.log('init act '+act.toString());
     let i = 0;
     while(true){
       console.log(i);
       if (act){
         wait = false;
         act = false;
-        console.log('found and breaking, act '+act.toString());
         break;
       }
       else{
