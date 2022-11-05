@@ -60,6 +60,12 @@ namespace ucaBot {
     //% block="Left"
     left,
   }
+  export enum Or {
+    //% block="North"
+    north,
+    //% block="South"
+    south,
+  }
    //% group="micro:bit (V2)"
   //% block="Init agent 1"
   //% weight=200
@@ -414,14 +420,14 @@ namespace ucaBot {
       send('0', 'FS', null, -1);
     }
   }
-  //% block="Direction to north"
+  //% block="Direction to %a"
   //% weight=168 
-  export function toNorth(){
+  export function dirTo(a: Or){
+    // if (!a)
+    
+    // else
   }
-  //% block="Direction to south"
-  //% weight=168 
-  export function toSouth(){
-  }
+  
   //% block="Take object"
   //% weight=168 
   export function takeObj(){
