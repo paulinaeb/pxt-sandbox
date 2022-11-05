@@ -185,8 +185,9 @@ namespace ucaBot {
   } 
 
   function send(d: string, c: string, p: string, stop: number){
+    resp = id + d + c;
     if (!p)
-      resp = id + d + c + ',';
+      resp = resp + ',';
     else
       resp = resp + p + '/,';
     radio.sendString(resp);
