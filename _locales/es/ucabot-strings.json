@@ -3,6 +3,8 @@
   "ucaBot.Dir.left|block": "Izquierda",
   "ucaBot.Pos.x|block": "x",
   "ucaBot.Pos.y|block": "y",
+  "ucaBot.Or.north|block": "Norte",
+  "ucaBot.Or.south|block": "Sur",
   "ucaBot.initAgent|block": "Inicializar agente",
   "ucaBot.setName|block": "Mi nombre es %a",
   "ucaBot.myName|block": "Mi nombre",
