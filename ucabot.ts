@@ -686,6 +686,10 @@ namespace ucaBot {
     }
   }
   //% weight=130 
+  //% block="Stop following me"
+  export function stopFw() {
+  }
+  //% weight=130 
   //% block="Drop load"
   export function drop() {
     send('0', 'DL', null, -1);

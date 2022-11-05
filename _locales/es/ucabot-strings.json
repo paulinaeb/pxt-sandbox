@@ -35,6 +35,7 @@
   "ucaBot.follow|block": "Seguir al líder",
   "ucaBot.drop|block": "Dejar carga",
   "ucaBot.followMe|block": "Sígueme",
+  "ucaBot.stopFw|block": "Deja de seguirme",
   "ucaBot|block": "ucaBot",
   "{id:category}ucaBot": "ucaBot"
 }

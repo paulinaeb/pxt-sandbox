@@ -35,6 +35,7 @@
   "ucaBot.follow|block": "Follow leader",
   "ucaBot.drop|block": "Drop load",
   "ucaBot.followMe|block": "Follow me",
+  "ucaBot.stopFw|block": "Stop following me",
   "ucaBot|block": "ucaBot",
   "{id:category}ucaBot": "ucaBot"
 }
