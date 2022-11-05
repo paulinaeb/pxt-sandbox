@@ -69,6 +69,7 @@ namespace ucaBot {
     radio.onReceivedString(function (msg) {
       d = msg[1];
       if (d == 'F' || d == id){
+        console.log('received: '+msg);
         f = msg[0];
         c = msg[2] + msg[3];
         p = [];
@@ -182,6 +183,7 @@ namespace ucaBot {
     if (p)
       resp = resp + p + '/,';
     radio.sendString(resp);
+    console.log('sent: '+resp);
     wait = true;
     delay();
     let i = 0;
