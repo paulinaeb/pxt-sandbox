@@ -9,6 +9,8 @@
   "ucaBot.setName|block": "Mi nombre es %a",
   "ucaBot.myName|block": "Mi nombre",
   "ucaBot.myNum|block": "Mi número (ID)",
+  "ucaBot.myPos|block": "Mi posición %pos",
+  "ucaBot.myDir|block": "Mi dirección (°)",
   "ucaBot.rotate|block": "Rotar agente %p ° a la %dir",
   "ucaBot.move|block": "Avanzar %cm cm",
   "ucaBot.toPoint|block": "Ir al punto x:%px y:%py",

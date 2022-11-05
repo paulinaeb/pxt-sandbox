@@ -253,6 +253,12 @@ namespace ucaBot {
   export function myNum(): number {
     return parseInt(id);
   }
+  //% block="My direction (°)"
+  //% weight=185
+  export function myDir(): number { 
+    send('0', 'GP', null, -1);
+    return tt;
+  }
   /**
   * @param p degrees to rotate, eg: 90
   */ 
