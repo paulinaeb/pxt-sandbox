@@ -178,11 +178,10 @@ namespace ucaBot {
   } 
 
   function send(d: string, c: string, p: string, stop: number){
-    resp = id + d + c;
+    resp = id + d + c + ',';
     if (p)
-      resp = resp + p + '/';
+      resp = resp + p + '/,';
     radio.sendString(resp);
-    radio.sendString(',');
     wait = true;
     delay();
     let i = 0;
