@@ -203,7 +203,7 @@ namespace ucaBot {
       }
       else{
         if (i == 29){
-          radio.sendString(id+'0SS');
+          radio.sendString(id+'0SS,');
           delay();
           act = false;
           send(d, c, p, stop);
