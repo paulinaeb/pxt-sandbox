@@ -1,6 +1,6 @@
 {
     "name": "ucabot",
-    "version": "6.14.19",
+    "version": "6.14.20",
     "description": "Ucabot using on cuteBot, for micro:bit",
     "license": "MIT",
     "dependencies": {
@@ -29,5 +29,7 @@
         "microbit"
     ],
     "preferredEditor": "tsprj",
-    "disablesVariants": [ "mbdal" ]
+    "disablesVariants": [
+        "mbdal"
+    ]
 }
