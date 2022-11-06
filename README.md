@@ -1,9 +1,9 @@
-# Ucabot: MakeCode microbit extension using cuteBot
+# sandbox: MakeCode microbit extension using cuteBot
 designed for Sandbox
 
 ## ~ hint
 
-To use this package, go to https://makecode.microbit.org, click ``Add package`` insert the link https://github.com/paulinaeb/pxt-ucabot for **ucabot**
+To use this package, go to https://makecode.microbit.org, click ``Add package`` insert the link https://github.com/paulinaeb/pxt-sandbox for **sandbox**
 
 ## Basic usage
 ```
@@ -19,5 +19,5 @@ Currently working on blocks
 MIT
 
 ```package
-ucabot=github:paulinaeb/pxt-ucabot
+sandbox=github:paulinaeb/pxt-sandbox
 ```

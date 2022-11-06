@@ -1,8 +1,8 @@
 /**
- * Functions for ucaBot
+ * Functions for sandbox
  */
 //% weight=5 color=#ff9da5  icon="\uf207"
-namespace ucaBot {
+namespace sandbox {
   const ADDR = 0x10;
   let f: string= null;
   let d: string= null;
