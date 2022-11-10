@@ -482,11 +482,6 @@ namespace sandbox {
   export function detect(){
     sc = true;
     send('0', 'SC', null, -1);
-    while (true){
-      if (found)
-        break;
-      delay(); 
-    }
   }
   //% block="On object detected"
   //% weight=166
