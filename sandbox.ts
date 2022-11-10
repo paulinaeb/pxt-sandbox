@@ -67,7 +67,7 @@ namespace sandbox {
     south,
   }
    //% group="micro:bit (V2)"
-  //% block="Init agent 1"
+  //% block="Init agent"
   //% weight=200
   //% parts="v2"
   export function initAgent(){
