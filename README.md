@@ -1,4 +1,4 @@
-# sandbox: MakeCode microbit extension using cuteBot
+# sandbox: MakeCode microbit extension using cuteBot ejemplo
 designed for Sandbox
 
 ## ~ hint
