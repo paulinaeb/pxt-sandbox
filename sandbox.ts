@@ -199,7 +199,7 @@ namespace sandbox {
       else{
         if (i == stop)
           stopcar();
-        if (repeat || i == 3){
+        if (repeat || i == 4){
           repeat = false;
           if (stop > 0)
             stopcar();
@@ -527,8 +527,8 @@ namespace sandbox {
   //% block="Avoid collision"
   //% weight=167 
   export function avoidColl(){
-    stopcar();
     al = true;
+    stopcar();
     motors(-31,-31);
     basic.pause(300);
     stopcar();
