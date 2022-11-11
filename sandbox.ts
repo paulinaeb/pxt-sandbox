@@ -120,7 +120,7 @@ namespace sandbox {
             y = parseFloat(p[1]);
             tt = parseInt(p[2]);
           }
-          else if (c == 'NM' || c == 'AC')
+          else if (c == 'AC')
             act = true;
           else if (c == 'CA'){
             if (p.length){
@@ -224,15 +224,6 @@ namespace sandbox {
   function pid(p: number, min_a: number, max_a: number, min_n: number, max_n: number): number{
     return Math.round((p - min_a) / (max_a - min_a) * (max_n - min_n) + min_n);
   }
-    //% block="My position %pos (cm)"
-  //% weight=190
-  export function myPos(pos: Pos): number { 
-    send('0', 'GP', null, -1);
-    if(!pos)
-      return x;
-    else
-      return y;
-  }
   //% block="Set name %a"
   //% weight=196
   export function setName(a: string){
@@ -252,20 +243,7 @@ namespace sandbox {
   export function myNum(): number {
     return parseInt(id);
   }
-  //% block="My direction (°)"
-  //% weight=185
-  export function myDir(): number { 
-    send('0', 'GP', null, -1);
-    return tt;
-  }
-  /**
-  * @param p degrees to rotate, eg: 90
-  */ 
-  //% block="Rotate agent %p ° to %dir"
-  //% p.shadow="protractorPicker"
-  //% p.min = 5 p.max = 180
-  //% weight=180 
-  export function rotate(p: number, dir: Dir) { 
+  function rotate(p: number, dir: Dir) { 
     send('0', 'GP', null, -1);
     let tt_p = 0;
     let d = 0;
@@ -296,13 +274,7 @@ namespace sandbox {
     } 
     stopcar();
   }
-  /**
-  * @param cm cm to move, eg: 30 
-  */ 
-  //% block="Move forward %cm cm"
-  //% cm.min = 1 cm.max = 90
-  //% weight=175 
-  export function move(cm: number){ 
+  function move(cm: number){ 
     send('0', 'GP', null, -1);
     let aux = cm;  let v = 0;
     let xv = 0;    let yv = 0;
@@ -353,11 +325,7 @@ namespace sandbox {
     }
     return Math.round(angle);
   }
-  //% block="Go to point x:%px y:%py"
-  //% x.min = 5 x.max = 100
-  //% y.min = 5 y.max = 57
-  //% weight=170 
-  export function toPoint(px: number, py: number, space = 0) {
+  function toPoint(px: number, py: number, space = 0) {
     send('0', 'GP', null, -1);
     let d = cm(px, x, py, y);
     let d_tt = 0;
