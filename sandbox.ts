@@ -185,9 +185,12 @@ namespace sandbox {
       resp = resp + p + '/,';
     act = false;
     radio.sendString(resp);
+    console.log('sent '+resp);
+    delay();
     wait = true;
     let i = 0;
     while(true){
+      console.log(i+'\n');
       if (act){
         wait = false;
         act = false;
