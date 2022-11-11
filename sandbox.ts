@@ -210,6 +210,7 @@ namespace sandbox {
       i+=1;
       basic.pause(50);
     }
+    delay();
   }
   function pid(p: number, min_a: number, max_a: number, min_n: number, max_n: number): number{
     return Math.round((p - min_a) / (max_a - min_a) * (max_n - min_n) + min_n);
