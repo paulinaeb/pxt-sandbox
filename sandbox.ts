@@ -195,7 +195,7 @@ namespace sandbox {
       }
       else{
         if (i == 19){
-          radio.sendString(id+'0SS,');
+          send(d, 'SS', null, -1);
           send(d, c, p, stop);
           break;
         }
