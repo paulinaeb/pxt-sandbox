@@ -47,13 +47,6 @@ namespace sandbox {
   let to = false;
   let sf = false;
 
-  export enum Pos {
-    //% block="x"
-    x,
-    //% block="y"
-    y,
-  }
-
   export enum Dir {
     //% block="Right"
     right,
