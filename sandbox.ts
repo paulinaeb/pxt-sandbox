@@ -185,7 +185,6 @@ namespace sandbox {
       resp = resp + p + '/,';
     act = false;
     radio.sendString(resp);
-    console.log('sent: '+resp);
     wait = true;
     let i = 0;
     while(true){
@@ -195,7 +194,7 @@ namespace sandbox {
         break;
       }
       else{
-        if (i == 24){
+        if (i == 19){
           radio.sendString(id+'0SS,');
           send(d, c, p, stop);
           break;
