@@ -1,6 +1,6 @@
 {
     "name": "sandbox",
-    "version": "6.15.11",
+    "version": "6.15.12",
     "description": "sandbox using on cuteBot, for micro:bit",
     "license": "MIT",
     "dependencies": {
