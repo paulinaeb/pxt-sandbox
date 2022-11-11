@@ -199,7 +199,7 @@ namespace sandbox {
       else{
         if (i == stop)
           stopcar();
-        if (repeat){
+        if (repeat || i == 3){
           repeat = false;
           if (stop > 0)
             stopcar();
@@ -207,7 +207,7 @@ namespace sandbox {
           break;
         }
       }
-      i+=1;
+      i += 1;
       basic.pause(50);
     }
     delay();
