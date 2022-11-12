@@ -651,6 +651,8 @@ namespace sandbox {
         toPoint(x_o, y_o, d);
         if (sf){
           sf = false; 
+          send('0', 'GA', id2fw, -1);
+          toPoint(x_o, y_o, d);
           break;
         }
       }
@@ -659,6 +661,7 @@ namespace sandbox {
   //% weight=130 
   //% block="Stop following me"
   export function stopFw() {
+    send('0', 'SF', id_ar, -1);
   }
   //% weight=130 
   //% block="Drop load"
