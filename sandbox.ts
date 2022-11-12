@@ -68,7 +68,6 @@ namespace sandbox {
     radio.onReceivedString(function (msg) {
       d = msg[1];
       if (d == 'F' || d == id){
-        console.log('received: '+msg);
         f = msg[0];
         c = msg[2] + msg[3];
         p = [];
@@ -186,11 +185,9 @@ namespace sandbox {
     act = false;
     wait = true;
     radio.sendString(resp);
-    console.log('sent '+resp);
     delay();
     let i = 0;
     while(true){
-      console.log(i+'\n');
       if (act){
         wait = false;
         act = false;
