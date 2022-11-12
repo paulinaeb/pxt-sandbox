@@ -369,7 +369,7 @@ namespace sandbox {
       v = pid(d, 5, 100, 15, 22);
       motors(v, v);  
       d = cm(px, x, py, y);
-      basic.pause(100);
+      basic.pause(150);
       if (i > 3 && d > aux)
         break;
       i+=1;
