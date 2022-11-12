@@ -199,7 +199,7 @@ namespace sandbox {
       else{
         if (i == stop)
           stopcar();
-        if (repeat || i == 4){
+        if (repeat || i == 2){
           repeat = false;
           if (stop > 0)
             stopcar();
