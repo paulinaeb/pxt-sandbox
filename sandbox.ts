@@ -11,32 +11,32 @@ namespace sandbox {
   let resp: string=null;
   let id = '';
   let n_a = '';
-  let name: string= null;
-  let x= 0;
-  let y= 0;
-  let act= false;
-  let tt= 0;
-  let called= false;
-  let wait= false;
-  let repeat= false;
-  let calls= '';
-  let id_ar= '';
+  let name: string = null;
+  let x = 0;
+  let y = 0;
+  let act = false;
+  let tt = 0;
+  let called = false;
+  let wait = false;
+  let repeat = false;
+  let calls = '';
+  let id_ar = '';
   let arr = false;
   let a2h = false;
-  let id2fw= '';
-  let fw_req= false;
-  let cl= false;
-  let al= false;
-  let home: number[]= [];
-  let sc= false;
-  let found= false;
-  let type= '';
-  let x_o: number= null;
-  let y_o: number= null;
-  let r_o: number= null;
-  let id_ob= '';
-  let busy= false;
-  let r_angle= 0;
+  let id2fw = '';
+  let fw_req = false;
+  let cl = false;
+  let al = false;
+  let home: number[] = [];
+  let sc = false;
+  let found = false;
+  let type = '';
+  let x_o: number = null;
+  let y_o: number = null;
+  let r_o: number = null;
+  let id_ob = '';
+  let busy = false;
+  let r_angle = 0;
   let wan = false;
   let ar2so = false;
   let ar2bo = false;
@@ -60,7 +60,6 @@ namespace sandbox {
     //% block="South"
     south = 270,
   }
-   //% group="micro:bit (V2)"
   //% block="Init agent"
   //% weight=200
   //% parts="v2"
@@ -148,7 +147,7 @@ namespace sandbox {
             }
             act = true;
           }
-          else if ((c == 'BO' || c == 'SO') && sc && !found && !busy){
+          else if ((c == 'BO' || c == 'SO') && sc && !found){
             found = true;
             type = c;
             x_o = parseInt(p[0]);
@@ -365,10 +364,11 @@ namespace sandbox {
   //% block="Wander around"
   //% weight=168 
   export function wander(){
+    setBusy();
     wan = true;
     control.inBackground(() => {
       while (wan){
-        if (!cl && !al && !ir() && !busy)
+        if (!al && !ir())
           motors(16, 16);
         if (ir())
           stopcar();
@@ -380,8 +380,10 @@ namespace sandbox {
   //% block="Stop current task(s)"
   //% weight=168 
   export function stop(){
-    if (wan)
+    if (wan){
       wan = false;
+      notBusy();
+    }
     if (sc){
       sc = false;
       send('0', 'FS', null, -1);
@@ -428,11 +430,13 @@ namespace sandbox {
   //% block="Go home"
   //% weight=168 
   export function goHome(){
+    setBusy();
     if (!home.length)
       send('0', 'HO', null, -1);
     if (!home.length)
       return;
     toPoint(home[0], home[1], home[2]);
+    notBusy();
     arr_home = true;
   }
   //% block="On arrived home"
@@ -646,6 +650,7 @@ namespace sandbox {
   //% weight=130 
   //% block="Follow leader"
   export function follow() {
+    setBusy();
     if (id2fw){
       send('0', 'GA', id2fw, -1);
       send('0', 'GP', null, -1);
@@ -660,6 +665,7 @@ namespace sandbox {
           break;
         }
       }
+      notBusy();
       arr_home = true;
     }
   }
