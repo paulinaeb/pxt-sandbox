@@ -56,9 +56,9 @@ namespace sandbox {
   }
   export enum Or {
     //% block="North"
-    north,
+    north = 90,
     //% block="South"
-    south,
+    south = 270,
   }
    //% group="micro:bit (V2)"
   //% block="Init agent"
@@ -401,12 +401,27 @@ namespace sandbox {
       send('0', 'FS', null, -1);
     }
   }
-  //% block="Direction to %a"
+  //% block="Direction to %af"
   //% weight=168 
-  export function dirTo(a: Or){
-    // if (!a)
-    
-    // else
+  export function dirTo(af: Or){
+    send('0', 'GP', null, -1);
+    let angle = Math.abs(af - tt);
+    if (af > tt){
+      if(angle > 180){
+        angle = 360 - angle;
+        rotate(angle, 0);
+      }
+      else
+        rotate(angle, 1);
+    }
+    else if (tt > af){
+      if (angle > 180){
+        angle = 360 - angle;
+        rotate(angle, 1);
+      }
+      else
+        rotate(angle, 0);
+    }
   }
   
   //% block="Take object"

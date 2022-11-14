@@ -16,7 +16,7 @@
   "sandbox.toPoint|block": "Ir al punto x:%px y:%py",
   "sandbox.wander|block": "Deambular",
   "sandbox.stop|block": "Parar lo que estoy haciendo",
-  "sandbox.dirTo|block": "Dirección al %a",
+  "sandbox.dirTo|block": "Dirección al %af",
   "sandbox.takeObj|block": "Tomar objeto",
   "sandbox.takeObj2|block": "Tomar objeto entre varios",
   "sandbox.goHome|block": "Ir a casa",
