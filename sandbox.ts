@@ -348,6 +348,8 @@ namespace sandbox {
       r_angle = tt;
     let i = 0;
     while (d > 1.5 + space){
+      // if (called && busy)
+      //   break;
       send('0', 'GP', null, 2);
       aux = d;
       d_tt = r_angle - tt;
@@ -375,7 +377,6 @@ namespace sandbox {
   //% block="Wander around"
   //% weight=168 
   export function wander(){
-    setBusy();
     wan = true;
     control.inBackground(() => {
       while (wan){
@@ -383,6 +384,8 @@ namespace sandbox {
           motors(16, 16);
         if (ir())
           stopcar();
+        if (busy)
+          wan = false;
         basic.pause(25);
       }
       stopcar();
@@ -392,10 +395,8 @@ namespace sandbox {
   //% block="Stop current task(s)"
   //% weight=168 
   export function stop(){
-    if (wan){
+    if (wan)
       wan = false;
-      notBusy();
-    }
     if (sc){
       sc = false;
       send('0', 'FS', null, -1);
@@ -475,8 +476,10 @@ namespace sandbox {
   //% block="Detect objects"
   //% weight=167 
   export function detect(){
-    sc = true;
-    send('0', 'SC', null, -1);
+    if (!busy){
+      sc = true;
+      send('0', 'SC', null, -1);
+    }
   }
 
   //% block="On object detected"
@@ -611,7 +614,7 @@ namespace sandbox {
       while (true) { 
         if (called && !al && !busy){
           called = false;
-          re(100, 3502); 
+          re(100, 3502);
         }
         delay(); 
       }
