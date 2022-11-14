@@ -266,13 +266,8 @@ namespace sandbox {
     } 
     stopcar();
   }
-  /**
-  * @param cm cm to move, eg: 30 
-  */ 
-  //% block="Move forward %cm cm"
-  //% cm.min = 1 cm.max = 90
-  //% weight=175 
-  export function move(cm: number){ 
+  
+  function move(cm: number){ 
     send('0', 'GP', null, -1);
     let aux = cm;  let v = 0;
     let xv = 0;    let yv = 0;
@@ -323,11 +318,8 @@ namespace sandbox {
     }
     return Math.round(angle);
   }
-  //% block="Go to point x:%px y:%py"
-  //% x.min = 5 x.max = 100
-  //% y.min = 5 y.max = 57
-  //% weight=170 
-  export function toPoint(px: number, py: number, space = 0) {
+
+  function toPoint(px: number, py: number, space = 0) {
     send('0', 'GP', null, -1);
     let d = cm(px, x, py, y);
     let d_tt = 0;
