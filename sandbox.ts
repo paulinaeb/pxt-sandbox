@@ -46,6 +46,7 @@ namespace sandbox {
   let all = false;
   let to = false;
   let sf = false;
+  let dl = false;
 
   export enum Dir {
     //% block="Right"
@@ -164,6 +165,8 @@ namespace sandbox {
           }
           else if (c == 'SF')
             sf = true;
+          else if (c == 'DL')
+            dl = true;
         }
       }
     });
@@ -656,6 +659,7 @@ namespace sandbox {
           break;
         }
       }
+      arr_home = true;
     }
   }
   //% weight=130 
@@ -667,6 +671,11 @@ namespace sandbox {
   //% block="Drop load"
   export function drop() {
     send('0', 'DL', null, -1);
+    while (true){
+      if (dl)
+        break;
+      delay();
+    }
   }
   function motors(lspeed: number, rspeed: number) {
     let buf = pins.createBuffer(4);
