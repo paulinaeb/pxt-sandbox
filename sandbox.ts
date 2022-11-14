@@ -54,12 +54,14 @@ namespace sandbox {
     //% block="Left"
     left,
   }
+
   export enum Or {
     //% block="North"
     north = 90,
     //% block="South"
     south = 270,
   }
+
   //% block="Init agent"
   //% weight=200
   //% parts="v2"
@@ -211,15 +213,18 @@ namespace sandbox {
     }
     delay();
   }
+
   function pid(p: number, min_a: number, max_a: number, min_n: number, max_n: number): number{
     return Math.round((p - min_a) / (max_a - min_a) * (max_n - min_n) + min_n);
   }
+
   //% block="Set name %a"
   //% weight=196
   export function setName(a: string){
     name = a;
     send('0', 'NM', name, -1);
   }
+
   //% block="My name"
   //% weight=196
   export function myName(): string {
@@ -228,6 +233,7 @@ namespace sandbox {
     else
       return 'Name not set';
   }
+
   //% block="My number (ID)"
   //% weight=195
   export function myNum(): number {
@@ -294,15 +300,19 @@ namespace sandbox {
     }
     stopcar();
   }
+
   function cm(x1: number, x2: number, y1: number, y2: number): number{
     return Math.round(Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2));
   }
+
   function d2r(angle: number): number{
     return angle / 180 * Math.PI;
   }
+
   function r2d(angle: number): number{
     return angle * 180 / Math.PI;
   }
+
   function rt_angle(xa: number, xb: number, ya: number, yb: number, angle_a: number, d: number): number{
     let angle = -1 * d2r(angle_a);
     let xt = ((xb - xa) * Math.cos(angle)) - ((yb - ya) * Math.sin(angle));
@@ -361,6 +371,7 @@ namespace sandbox {
     }
     stopcar();
   }
+
   //% block="Wander around"
   //% weight=168 
   export function wander(){
@@ -377,6 +388,7 @@ namespace sandbox {
       stopcar();
     });
   }
+
   //% block="Stop current task(s)"
   //% weight=168 
   export function stop(){
@@ -389,6 +401,7 @@ namespace sandbox {
       send('0', 'FS', null, -1);
     }
   }
+
   //% block="Direction to %af"
   //% weight=168 
   export function dirTo(af: Or){
@@ -417,6 +430,7 @@ namespace sandbox {
   export function takeObj(){
     send('0', 'SO', id_ob, -1);
   }
+
   //% block="Take object between various"
   //% weight=168 
   export function takeObj2(){
@@ -427,6 +441,7 @@ namespace sandbox {
       delay();
     }
   }
+
   //% block="Go home"
   //% weight=168 
   export function goHome(){
@@ -439,6 +454,7 @@ namespace sandbox {
     notBusy();
     arr_home = true;
   }
+
   //% block="On arrived home"
   //% weight=168 
   export function onHome(hd: () => void){
@@ -453,12 +469,14 @@ namespace sandbox {
       }
     });
   }
+
   //% block="Detect objects"
   //% weight=167 
   export function detect(){
     sc = true;
     send('0', 'SC', null, -1);
   }
+
   //% block="On object detected"
   //% weight=166
   export function onDetect(hd: () => void){
@@ -474,6 +492,7 @@ namespace sandbox {
       }
     });
   }
+
   //% block="Go to object"
   //% weight=167 
   export function goToObj(){
@@ -486,6 +505,7 @@ namespace sandbox {
       ar2bo = true;
     notBusy();
   }
+
   //% block="On arrived to small object"
   //% weight=167 
   export function onSO(hd: () => void){
@@ -500,6 +520,7 @@ namespace sandbox {
       }
     });
   }
+
   //% block="On arrived to big object"
   //% weight=167 
   export function onBO(hd: () => void){
@@ -514,6 +535,7 @@ namespace sandbox {
       }
     });
   }
+
   //% block="On collision received"
   //% weight=167 
   export function onColl(hd: () => void){
@@ -529,6 +551,7 @@ namespace sandbox {
       }
     });
   }
+
   //% block="Avoid collision"
   //% weight=167 
   export function avoidColl(){
@@ -544,11 +567,13 @@ namespace sandbox {
     send('0', 'FC', null, -1);
     al = false;
   }
+
   //% block="Number of agents"
   //% weight=170 
   export function numAgents(): number {
     return parseInt(n_a);
   }
+
   //% weight=165 
   //% block="On all agents initialized"
   export function allInit(hd: () => void) {
@@ -563,6 +588,7 @@ namespace sandbox {
       }
     });
   }
+
   //% weight=145 
   //% block="Ask for help"
   export function askHelp() {
@@ -574,6 +600,7 @@ namespace sandbox {
       send('0', 'CA', 'F'+'/'+a+'/'+b+'/'+id_ob, -1);
     }
   }
+
   //% weight=140 
   //% block="On help call received"
   export function agentCalled(hd: () => void) {
@@ -588,6 +615,7 @@ namespace sandbox {
       }
     });
   }
+
   //% weight=135 
   //% block="Go to help"
   export function goToHelp() {
@@ -599,6 +627,7 @@ namespace sandbox {
     a2h = true;
     notBusy();
   }
+
   //% weight=135 
   //% block="On help arrived"
   export function helpArr(hd: () => void) {
@@ -613,6 +642,7 @@ namespace sandbox {
       }
     });
   }
+
   //% weight=135 
   //% block="On arrived to help"
   export function arr2help(hd: () => void) {
@@ -627,6 +657,7 @@ namespace sandbox {
       }
     });
   }
+
   //% weight=140 
   //% block="On 'follow me' received"
   export function asked2follow(hd: () => void) {
@@ -641,12 +672,14 @@ namespace sandbox {
       }
     });
   }
+
   //% weight=130 
   //% block="Follow me"
   export function followMe() {
     if (id_ar)
       send('0', 'FM', id_ar, -1);
   }
+
   //% weight=130 
   //% block="Follow leader"
   export function follow() {
@@ -669,11 +702,13 @@ namespace sandbox {
       arr_home = true;
     }
   }
+
   //% weight=130 
   //% block="Stop following me"
   export function stopFw() {
     send('0', 'SF', id_ar, -1);
   }
+
   //% weight=130 
   //% block="Drop load"
   export function drop() {
@@ -684,6 +719,7 @@ namespace sandbox {
       delay();
     }
   }
+
   function motors(lspeed: number, rspeed: number) {
     let buf = pins.createBuffer(4);
     if (lspeed > 0) {
@@ -713,9 +749,11 @@ namespace sandbox {
       pins.i2cWriteBuffer(ADDR, buf);
     }
   }
+
   function stopcar() {
     motors(0, 0);
   }
+
   function ir(): boolean {
     pins.setPull(DigitalPin.P13, PinPullMode.PullNone);
     pins.setPull(DigitalPin.P14, PinPullMode.PullNone);
@@ -726,17 +764,21 @@ namespace sandbox {
     else
       return false;
   }
+
   function delay(){
     basic.pause(20);
   }
+
   function setBusy(){
     busy = true;
     send('0', 'BU', null, -1);
   }
+
   function notBusy(){
     send('0', 'NB', null, -1);
     busy = false;
   }
+  
   function re(a:number, b:number){
     control.raiseEvent(a, b, EventCreationMode.CreateAndFire); 
   }
