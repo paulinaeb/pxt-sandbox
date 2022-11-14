@@ -234,14 +234,8 @@ namespace sandbox {
   export function myNum(): number {
     return parseInt(id);
   }
-  /**
-  * @param p degrees to rotate, eg: 90
-  */ 
-  //% block="Rotate agent %p ° to %dir"
-  //% p.shadow="protractorPicker"
-  //% p.min = 5 p.max = 180
-  //% weight=180 
-  export function rotate(p: number, dir: Dir) { 
+
+  function rotate(p: number, dir: Dir) { 
     send('0', 'GP', null, -1);
     let tt_p = 0;
     let d = 0;
