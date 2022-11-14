@@ -405,6 +405,7 @@ namespace sandbox {
   //% block="Direction to %af"
   //% weight=168 
   export function dirTo(af: Or){
+    busy = true;
     send('0', 'GP', null, -1);
     let angle = Math.abs(af - tt);
     if (af > tt){
@@ -423,6 +424,7 @@ namespace sandbox {
       else
         rotate(angle, 0);
     }
+    busy = false;
   }
   
   //% block="Take object"
@@ -607,7 +609,7 @@ namespace sandbox {
     control.onEvent(100, 3502, hd);
     control.inBackground(() => {
       while (true) { 
-        if (called){
+        if (called && !al && !busy){
           called = false;
           re(100, 3502); 
         }
@@ -778,7 +780,7 @@ namespace sandbox {
     send('0', 'NB', null, -1);
     busy = false;
   }
-  
+
   function re(a:number, b:number){
     control.raiseEvent(a, b, EventCreationMode.CreateAndFire); 
   }
