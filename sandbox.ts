@@ -47,6 +47,7 @@ namespace sandbox {
   let to = false;
   let sf = false;
   let dl = false;
+  let kill = false;
 
   export enum Dir {
     //% block="Right"
@@ -348,8 +349,10 @@ namespace sandbox {
       r_angle = tt;
     let i = 0;
     while (d > 1.5 + space){
-      // if (called && busy)
-      //   break;
+      if (called){
+        kill = true;
+        break;
+      }
       send('0', 'GP', null, 2);
       aux = d;
       d_tt = r_angle - tt;
@@ -455,7 +458,10 @@ namespace sandbox {
       return;
     toPoint(home[0], home[1], home[2]);
     notBusy();
-    arr_home = true;
+    if (!kill)
+      arr_home = true;
+    else 
+      kill = false;
   }
 
   //% block="On arrived home"
@@ -504,10 +510,14 @@ namespace sandbox {
     setBusy();
     if (x_o)
       toPoint(x_o, y_o, r_o);
-    if (type == 'SO')
-      ar2so = true;
-    else if (type == 'BO')
-      ar2bo = true;
+    if (!kill){
+      if (type == 'SO')
+        ar2so = true;
+      else if (type == 'BO')
+        ar2bo = true;
+    }
+    else
+      kill = false;
     notBusy();
   }
 
