@@ -460,8 +460,10 @@ namespace sandbox {
     notBusy();
     if (!kill)
       arr_home = true;
-    else 
+    else{
       kill = false;
+      drop();
+    }
   }
 
   //% block="On arrived home"
