@@ -462,7 +462,7 @@ namespace sandbox {
       arr_home = true;
     else{
       kill = false;
-      drop('0');
+      drop(0);
     }
   }
 
@@ -728,8 +728,8 @@ namespace sandbox {
 
   //% weight=130 
   //% block="Drop load"
-  export function drop(is_home: string = '1') {
-    send('0', 'DL', is_home, -1);
+  export function drop(is_home: number = 1) {
+    send('0', 'DL', is_home.toString(), -1);
     while (true){
       if (dl)
         break;
