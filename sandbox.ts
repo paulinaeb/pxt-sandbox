@@ -33,7 +33,6 @@ namespace sandbox {
   let type = '';
   let x_o: number = null;
   let y_o: number = null;
-  let r_o: number = null;
   let id_ob = '';
   let busy = false;
   let r_angle = 0;
@@ -156,7 +155,6 @@ namespace sandbox {
             x_o = parseInt(p[0]);
             y_o = parseInt(p[1]);
             id_ob = p[2];
-            r_o = parseFloat(p[3]);
           }
           else if(c == 'TO')
             to = true;
@@ -511,7 +509,7 @@ namespace sandbox {
   export function goToObj(){
     setBusy();
     if (x_o)
-      toPoint(x_o, y_o, r_o);
+      toPoint(x_o, y_o, 11);
     if (!kill){
       if (type == 'SO')
         ar2so = true;
