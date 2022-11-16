@@ -210,6 +210,7 @@ namespace sandbox {
       i += 1;
       basic.pause(50);
     }
+    delay();
   }
 
   function pid(p: number, min_a: number, max_a: number, min_n: number, max_n: number): number{
