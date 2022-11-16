@@ -210,7 +210,6 @@ namespace sandbox {
       i += 1;
       basic.pause(50);
     }
-    delay();
   }
 
   function pid(p: number, min_a: number, max_a: number, min_n: number, max_n: number): number{
@@ -334,6 +333,7 @@ namespace sandbox {
     let v = 0;
     let vc = 0;
     let aux = 999;
+    let flag = false;
     let angle = rt_angle(x, px, y, py, tt, d);
     if (angle > 6){
       if (angle > 180){
@@ -349,6 +349,10 @@ namespace sandbox {
     while (d > 1.5 + space){
       if (called){
         kill = true;
+        break;
+      }
+      if (al){
+        flag = true;
         break;
       }
       send('0', 'GP', null, 2);
@@ -371,6 +375,15 @@ namespace sandbox {
       if (i > 3 && d > aux)
         break;
       i+=1;
+    }
+    if (flag){
+      while (true){
+        if (!al){
+          toPoint(px, py, space);
+          break;
+        }
+        delay();
+      }
     }
     stopcar();
   }
@@ -608,7 +621,7 @@ namespace sandbox {
   //% block="Ask for help"
   export function askHelp() {
     if (parseInt(n_a) > 1 && x_o){
-      let d = cm(x, x_o, y, y_o);
+      let d = cm(x, x_o, y, y_o) - 1;
       let an = d2r(tt);
       let a = Math.round(d * Math.cos(an) + x_o);
       let b = Math.round(d * Math.sin(an) + y_o);
