@@ -47,6 +47,7 @@ namespace sandbox {
   let sf = false;
   let dl = false;
   let kill = false;
+  let moving = false;
 
   export enum Dir {
     //% block="Right"
@@ -328,6 +329,7 @@ namespace sandbox {
   }
 
   function toPoint(px: number, py: number, space = 0) {
+    moving = true;
     send('0', 'GP', null, -1);
     let d = cm(px, x, py, y);
     let d_tt = 0;
@@ -387,11 +389,13 @@ namespace sandbox {
       }
     }
     stopcar();
+    moving = false;
   }
 
   //% block="Wander around"
   //% weight=168 
   export function wander(){
+    moving = true;
     wan = true;
     control.inBackground(() => {
       while (wan){
@@ -405,6 +409,7 @@ namespace sandbox {
       }
       stopcar();
     });
+    moving = false;
   }
 
   //% block="Stop current task(s)"
@@ -463,13 +468,13 @@ namespace sandbox {
   //% block="Go home"
   //% weight=168 
   export function goHome(){
-    setBusy();
+    busy = true;
     if (!home.length)
       send('0', 'HO', null, -1);
     if (!home.length)
       return;
     toPoint(home[0], home[1], home[2]);
-    notBusy();
+    busy = false;
     if (!kill)
       arr_home = true;
     else{
@@ -521,7 +526,7 @@ namespace sandbox {
   //% block="Go to object"
   //% weight=167 
   export function goToObj(){
-    setBusy();
+    busy = true;
     if (x_o)
       toPoint(x_o, y_o, 11);
     if (!kill){
@@ -532,7 +537,7 @@ namespace sandbox {
     }
     else
       kill = false;
-    notBusy();
+    busy = false;
   }
 
   //% block="On arrived to small object"
@@ -648,13 +653,13 @@ namespace sandbox {
   //% weight=135 
   //% block="Go to help"
   export function goToHelp() {
-    setBusy();
+    busy = true;
     if (calls){
       toPoint(w, z);
       send('0', 'AR', calls, -1);
     }
     a2h = true;
-    notBusy();
+    busy = false;
   }
 
   //% weight=135 
@@ -712,7 +717,7 @@ namespace sandbox {
   //% weight=130 
   //% block="Follow leader"
   export function follow() {
-    setBusy();
+    busy = true;
     if (id2fw){
       send('0', 'GA', id2fw, -1);
       send('0', 'GP', null, -1);
@@ -727,7 +732,7 @@ namespace sandbox {
           break;
         }
       }
-      notBusy();
+      busy = false;;
       arr_home = true;
     }
   }
@@ -796,16 +801,6 @@ namespace sandbox {
 
   function delay(){
     basic.pause(20);
-  }
-
-  function setBusy(){
-    busy = true;
-    send('0', 'BU', null, -1);
-  }
-
-  function notBusy(){
-    send('0', 'NB', null, -1);
-    busy = false;
   }
 
   function re(a:number, b:number){
