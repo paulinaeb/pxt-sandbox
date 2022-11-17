@@ -329,7 +329,7 @@ namespace sandbox {
   }
 
   function toPoint(px: number, py: number, space = 0) {
-    moving = true;
+    setMoving();
     send('0', 'GP', null, -1);
     let d = cm(px, x, py, y);
     let d_tt = 0;
@@ -389,13 +389,13 @@ namespace sandbox {
       }
     }
     stopcar();
-    moving = false;
+    notMoving();
   }
 
   //% block="Wander around"
   //% weight=168 
   export function wander(){
-    moving = true;
+    setMoving();
     wan = true;
     control.inBackground(() => {
       while (wan){
@@ -409,7 +409,7 @@ namespace sandbox {
       }
       stopcar();
     });
-    moving = false;
+    notMoving();
   }
 
   //% block="Stop current task(s)"
@@ -805,5 +805,15 @@ namespace sandbox {
 
   function re(a:number, b:number){
     control.raiseEvent(a, b, EventCreationMode.CreateAndFire); 
+  }
+
+  function setMoving(){
+    moving = true;
+    send('0', 'BU', null, -1);
+  }
+
+  function notMoving(){
+    send('0', 'NB', null, -1);
+    moving = false;
   }
 }
