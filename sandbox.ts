@@ -414,20 +414,23 @@ namespace sandbox {
           motors(16, 16);
         if (ir())
           stopcar();
-        if (busy)
+        if (busy){
+          notMoving();
           wan = false;
+        }
         basic.pause(25);
       }
       stopcar();
     });
-    notMoving();
   }
 
   //% block="Stop current task(s)"
   //% weight=168 
   export function stop(){
-    if (wan)
+    if (wan){
+      notMoving();
       wan = false;
+    }
     if (sc){
       sc = false;
       send('0', 'FS', null, -1);
