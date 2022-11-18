@@ -47,10 +47,6 @@ namespace sandbox {
   let sf = false;
   let dl = false;
   let kill = false;
-  let moving = false;
-  let coll_type = '';
-  let dir_coll = 0;
-  let cm_coll = 0;
 
   export enum Dir {
     //% block="Right"
@@ -143,16 +139,8 @@ namespace sandbox {
             id2fw = p[0];
             fw_req = true;
           }
-          else if ((c == 'CL' || c == 'CR') && !al){
-            coll_type = c;
-            if (coll_type == 'CR'){
-              dir_coll = parseInt(p[0]);
-              cm_coll = parseFloat(p[1]);
-            }
-            else
-              cm_coll = 1;
+          else if (c == 'CL' && !al)
             cl = true;
-          }
           else if (c == 'HO'){
             if (p.length){
               home.push(parseInt(p[0]));
@@ -475,13 +463,13 @@ namespace sandbox {
   //% block="Go home"
   //% weight=168 
   export function goHome(){
-    busy = true;
+    setBusy();
     if (!home.length)
       send('0', 'HO', null, -1);
     if (!home.length)
       return;
     toPoint(home[0], home[1], home[2]);
-    busy = false;
+    notBusy();
     if (!kill)
       arr_home = true;
     else{
@@ -533,7 +521,7 @@ namespace sandbox {
   //% block="Go to object"
   //% weight=167 
   export function goToObj(){
-    busy = true;
+    setBusy();
     if (x_o)
       toPoint(x_o, y_o, 11);
     if (!kill){
@@ -544,7 +532,7 @@ namespace sandbox {
     }
     else
       kill = false;
-    busy = false;
+    notBusy();
   }
 
   //% block="On arrived to small object"
@@ -601,18 +589,10 @@ namespace sandbox {
     motors(-31,-31);
     basic.pause(300);
     stopcar();
-    let dir = 0;
-    let a = 0;
-    if (coll_type == 'CL'){
-      dir = Math.floor(Math.random() * 2);
-      a = Math.floor(Math.random() * 110) + 90;
-    }
-    else{
-      dir = dir_coll;
-      a = 90;
-    }
+    let dir = Math.floor(Math.random() * 2);
+    let a = Math.floor(Math.random() * 110) + 90;
     rotate(a, dir);
-    move(cm_coll);
+    move(1);
     send('0', 'FC', null, -1);
     al = false;
   }
@@ -668,13 +648,13 @@ namespace sandbox {
   //% weight=135 
   //% block="Go to help"
   export function goToHelp() {
-    busy = true;
+    setBusy();
     if (calls){
       toPoint(w, z);
       send('0', 'AR', calls, -1);
     }
     a2h = true;
-    busy = false;
+    notBusy();
   }
 
   //% weight=135 
@@ -732,7 +712,7 @@ namespace sandbox {
   //% weight=130 
   //% block="Follow leader"
   export function follow() {
-    busy = true;
+    setBusy();
     if (id2fw){
       send('0', 'GA', id2fw, -1);
       send('0', 'GP', null, -1);
@@ -747,7 +727,7 @@ namespace sandbox {
           break;
         }
       }
-      busy = false;;
+      notBusy();
       arr_home = true;
     }
   }
@@ -818,8 +798,17 @@ namespace sandbox {
     basic.pause(20);
   }
 
+  function setBusy(){
+    busy = true;
+    send('0', 'BU', null, -1);
+  }
+
+  function notBusy(){
+    send('0', 'NB', null, -1);
+    busy = false;
+  }
+
   function re(a:number, b:number){
     control.raiseEvent(a, b, EventCreationMode.CreateAndFire); 
   }
-
 }
