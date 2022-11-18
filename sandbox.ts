@@ -47,9 +47,6 @@ namespace sandbox {
   let sf = false;
   let dl = false;
   let kill = false;
-  let coll_type = '';
-  let dir_coll = 0;
-  let cm_coll = 0;
 
   export enum Dir {
     //% block="Right"
@@ -142,16 +139,8 @@ namespace sandbox {
             id2fw = p[0];
             fw_req = true;
           }
-          else if ((c == 'CL'|| c == 'CR') && !al){
-            coll_type = c;
-            if (coll_type == 'CR'){
-              dir_coll = parseInt(p[0]);
-              cm_coll = parseFloat(p[1]);
-            }
-            else
-              cm_coll = 1;
+          else if (c == 'CL' && !al)
             cl = true;
-          }
           else if (c == 'HO'){
             if (p.length){
               home.push(parseInt(p[0]));
@@ -600,18 +589,10 @@ namespace sandbox {
     motors(-31,-31);
     basic.pause(300);
     stopcar();
-    let dir = 0;
-    let a = 0;
-    if (coll_type == 'CL'){
-      dir = Math.floor(Math.random() * 2);
-      a = Math.floor(Math.random() * 110) + 90;
-    }
-    else{
-      dir = dir_coll;
-      a = 90;
-    }
+    let dir = Math.floor(Math.random() * 2);
+    let a = Math.floor(Math.random() * 110) + 90;
     rotate(a, dir);
-    move(cm_coll);
+    move(1);
     send('0', 'FC', null, -1);
     al = false;
   }
