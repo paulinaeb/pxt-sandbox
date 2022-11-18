@@ -258,9 +258,9 @@ namespace sandbox {
     while (p > 6 && p <= p_aux){
       d = 18;
       if (!dir)
-        motors(d, -d-8);
+        motors(d, -d-9);
       else
-        motors(-d-8, d);
+        motors(-d-9, d);
       basic.pause(90);
       send('0', 'GP', null, 0);
       p_aux = p;
