@@ -62,7 +62,7 @@ namespace sandbox {
     south = 270,
   }
 
-  //% block="Init agent"
+  //% block="Init agent."
   //% weight=200
   //% parts="v2"
   export function initAgent(){
