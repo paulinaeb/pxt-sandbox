@@ -733,8 +733,41 @@ namespace sandbox {
   }
 
   //% weight=130 
+  //% block="Al finalizar"
+  //% color=#FFD033
+  export function stopFw(hd: () => void) {
+  }
+
+  //% weight=130 
+  //% block="Para todos los presentes..."
+  //% color=#37B4E3
+  export function toall() {
+  }
+
+  //% weight=130 
+  //% block="¡Muchas gracias!"
+  //% color=#027935
+  export function thanks() {
+  }
+  //% weight=130 
+  //% block="Por su presencia"
+  //% color=#FFD033
+  export function pr() {
+  }
+  //% weight=130 
+  //% block="Por su atención"
+  //% color=#37B4E3
+  export function at() {
+  }
+  //% weight=130 
+  //% block="Y todo su apoyo"
+  //% color=#027935
+  export function ap() {
+  }
+
+  //% weight=130 
   //% block="Stop following me"
-  export function stopFw() {
+  export function onfinish() {
     send('0', 'SF', id_ar, -1);
   }
 
