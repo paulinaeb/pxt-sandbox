@@ -739,28 +739,28 @@ namespace sandbox {
   }
 
   //% weight=130 
-  //% block="Para todos los presentes..."
+  //% block="Para todos los presentes"
   //% color=#37B4E3
   export function toall() {
   }
 
   //% weight=130 
-  //% block="¡Muchas gracias!"
+  //% block="¡Muchas gracias!..."
   //% color=#027935
   export function thanks() {
   }
   //% weight=130 
-  //% block="Por su presencia"
+  //% block="...Por su atención..."
   //% color=#FFD033
   export function pr() {
   }
   //% weight=130 
-  //% block="Por su atención"
+  //% block="...Por su confianza..."
   //% color=#37B4E3
   export function at() {
   }
   //% weight=130 
-  //% block="Y todo su apoyo"
+  //% block="...Y todo su apoyo."
   //% color=#027935
   export function ap() {
   }
