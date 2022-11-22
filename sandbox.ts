@@ -735,7 +735,7 @@ namespace sandbox {
   //% weight=130 
   //% block="Al finalizar"
   //% color=#FFD033
-  export function stopFw(hd: () => void) {
+  export function onfinish(hd: () => void) {
   }
 
   //% weight=130 
@@ -767,7 +767,7 @@ namespace sandbox {
 
   //% weight=130 
   //% block="Stop following me"
-  export function onfinish() {
+  export function stopFw() {
     send('0', 'SF', id_ar, -1);
   }
 
